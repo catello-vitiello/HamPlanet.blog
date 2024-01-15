@@ -1,7 +1,7 @@
 package content_writer.dao;
 
 import content_writer.entity.Content_Writer;
-import databaseServices.GenericUserCrud;
+import databaseServices.GenericCrudOp;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.LinkedList;
 
-public class Content_WriterDao implements GenericUserCrud<Content_Writer> {
+public class Content_WriterDao implements GenericCrudOp<Content_Writer> {
 
     private DataSource ds = null;
 
@@ -97,7 +97,7 @@ public class Content_WriterDao implements GenericUserCrud<Content_Writer> {
     /*	            INSERT NEW CONTENT WRITER            	*/
     /********************************************************/
     @Override
-    public boolean insertNewUser(Content_Writer user) throws SQLException {
+    public boolean insert(Content_Writer user) throws SQLException {
 
         int res=0;
         Connection connection = null;
@@ -130,7 +130,7 @@ public class Content_WriterDao implements GenericUserCrud<Content_Writer> {
     /*	               DELETE CONTENT WRITER               	*/
     /********************************************************/
     @Override
-    public boolean deleteAccount(Content_Writer user) throws SQLException {
+    public boolean delete(Content_Writer user) throws SQLException {
 
         int res = 0;
 
@@ -162,7 +162,7 @@ public class Content_WriterDao implements GenericUserCrud<Content_Writer> {
     /*	               UPDATE CONTENT WRITER               	*/
     /********************************************************/
     @Override
-    public boolean updateUser(Content_Writer user) throws SQLException {
+    public boolean update(Content_Writer user) throws SQLException {
 
         int res = 0;
         Connection connection = null;

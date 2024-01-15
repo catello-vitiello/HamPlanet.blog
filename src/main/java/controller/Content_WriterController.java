@@ -90,7 +90,7 @@ public class Content_WriterController extends HttpServlet {
             cw.setCompetenze(competenze);
 
             try{
-                if(model.insertNewUser(cw))
+                if(model.insert(cw))
                     utils.UtilityClass.print("###### Inserimento nuovo Content Writer effettuato!"); //da eliminare
                 else
                     utils.UtilityClass.print("###### Inserimento nuovo Content Writer fallito!"); //da eliminare
@@ -117,7 +117,7 @@ public class Content_WriterController extends HttpServlet {
 
             try{
 
-                if(model.deleteAccount(cw))
+                if(model.delete(cw))
                     utils.UtilityClass.print("###### Eliminazione Content Writer effettuata!"); //da eliminare
                 else
                     utils.UtilityClass.print("###### Eliminazione Content Writer fallita!"); //da eliminare
@@ -185,7 +185,7 @@ public class Content_WriterController extends HttpServlet {
             if(change != 0){
                 try{
 
-                    if(model.updateUser(cw))
+                    if(model.update(cw))
                         utils.UtilityClass.print("###### Aggiornamento Content Writer effettuato!"); //da eliminare
                     else
                         utils.UtilityClass.print("###### Aggiornamento Content Writer fallito!"); //da eliminare
