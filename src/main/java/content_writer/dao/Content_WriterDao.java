@@ -97,7 +97,7 @@ public class Content_WriterDao implements GenericCrudOp<Content_Writer> {
     /*	            INSERT NEW CONTENT WRITER            	*/
     /********************************************************/
     @Override
-    public boolean insert(Content_Writer user) throws SQLException {
+    public boolean insert(Content_Writer entity) throws SQLException {
 
         int res=0;
         Connection connection = null;
@@ -109,10 +109,10 @@ public class Content_WriterDao implements GenericCrudOp<Content_Writer> {
             connection = ds.getConnection();
             preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setString(1, user.getUserName());
-            preparedStatement.setString(2, user.getEmail());
-            preparedStatement.setString(3, utils.CifraPassword.toHash(user.getPasswd()));
-            preparedStatement.setString(4, user.getCompetenze());
+            preparedStatement.setString(1, entity.getUserName());
+            preparedStatement.setString(2, entity.getEmail());
+            preparedStatement.setString(3, utils.CifraPassword.toHash(entity.getPasswd()));
+            preparedStatement.setString(4, entity.getCompetenze());
 
             utils.UtilityClass.print(">.Inserimento nuovo utente: " + preparedStatement);
             res = preparedStatement.executeUpdate();
