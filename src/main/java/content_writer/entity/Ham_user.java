@@ -2,21 +2,21 @@ package content_writer.entity;
 
 import java.io.Serializable;
 
-public class Content_Writer implements Serializable, Cloneable{
-
-    private int id;
-    private String userName, email, passwd, competenze;
-
-    public Content_Writer(){
-
+public class Ham_user implements Serializable, Cloneable{
+    private static final long serialVersionUID = 1L;
+    
+    public enum Role{
+    	utente,
+    	content_writer,
+    	supervisore
     }
+    
+	private int id;
+    private String userName, email, passwd, competenze;
+    private Role ruolo;
 
-    public Content_Writer(int id, String userName, String email, String passwd, String competenze){
-        this.id = id;
-        this.userName = userName;
-        this.email = email;
-        this.passwd = passwd;
-        this.competenze = competenze;
+    public Ham_user(){
+    	
     }
 
     public int getId() {
@@ -59,10 +59,18 @@ public class Content_Writer implements Serializable, Cloneable{
         this.competenze = competenze;
     }
 
-    @Override
+    public String getRuolo() {
+		return ruolo.toString();
+	}
+
+	public void setRuolo(Role ruolo) {
+		this.ruolo = ruolo;
+	}
+
+	@Override
     public String toString(){
         return getClass().getName() + "[ID= " + id + ", userName= " + userName + ", email= " + email + ", password= " + passwd
-                + ", competenze= " + competenze + "]";
+                + ", competenze= " + competenze + ", ruolo= " + ruolo + "]";
     }
 
     @Override
@@ -73,7 +81,8 @@ public class Content_Writer implements Serializable, Cloneable{
         res = 31 * res + email.hashCode();
         res = 31 * res + passwd.hashCode();
         res = 31 * res + competenze.hashCode();
-
+        res = 31 * res + ruolo.hashCode();
+        
         return res;
     }
 
@@ -85,16 +94,17 @@ public class Content_Writer implements Serializable, Cloneable{
         if(getClass() != o.getClass())
             return false;
 
-        Content_Writer altro = (Content_Writer) o;
+        Ham_user altro = (Ham_user) o;
         return( (id == altro.getId()) && (userName.equalsIgnoreCase(altro.getUserName())) && (email.equalsIgnoreCase(altro.getEmail()))
-                && (passwd.equalsIgnoreCase(altro.getPasswd())) && (competenze.equalsIgnoreCase(altro.getCompetenze())) );
+                && (passwd.equalsIgnoreCase(altro.getPasswd())) && (competenze.equalsIgnoreCase(altro.getCompetenze())) 
+                && (ruolo.equals(altro.getRuolo())) );
     }
 
 
     @Override
-    public Content_Writer clone(){
+    public Ham_user clone(){
         try{
-            return (Content_Writer) super.clone();
+            return (Ham_user) super.clone();
         } catch(CloneNotSupportedException e){
             utils.UtilityClass.print(e);
             return null;
