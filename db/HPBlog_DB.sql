@@ -1,59 +1,66 @@
-DROP DATABASE IF EXISTS HPBlog_DB;
-CREATE DATABASE HPBlog_DB;
+DROP DATABASE IF EXISTS freedb_HPBlog_db;
+CREATE DATABASE freedb_HPBlog_db;
+USE freedb_HPBlog_db;
 
-DROP USER IF EXISTS 'HpB_user'@'%';
-CREATE USER 'HpB_user'@'%' IDENTIFIED BY 'Prosciutto_69';
-GRANT ALL PRIVILEGES ON HPBlog_DB.* TO 'HpB_user'@'%';
-
-USE HPBlog_DB;
-
-DROP TABLE IF EXISTS Content_Writer;
-DROP TABLE IF EXISTS Utente;
-DROP TABLE IF EXISTS Post;
+DROP TABLE IF EXISTS Like_;
 DROP TABLE IF EXISTS Commento;
+DROP TABLE IF EXISTS Post;
+DROP TABLE IF EXISTS Tokens;
+DROP TABLE IF EXISTS pending;
+DROP TABLE IF EXISTS Ham_user;
 
-CREATE TABLE Content_Writer
+
+CREATE TABLE Ham_user
 (
     id INT AUTO_INCREMENT,
-    userName VARCHAR(60) NOT NULL,
+    username VARCHAR(60) NOT NULL,
     email VARCHAR(60) NOT NULL,
     passwd VARCHAR(600) NOT NULL,
     competenze TEXT,
+    ruolo enum('supervisore', 'utente', 'content_writer') DEFAULT 'utente',
     PRIMARY KEY(id)
 );
-CREATE TABLE Utente
-(
-    id INT AUTO_INCREMENT,
-    userName VARCHAR(60) NOT NULL,
-    email VARCHAR(60) NOT NULL,
-    passwd VARCHAR(60) NOT NULL,
-    PRIMARY KEY(id)
-);
+
 CREATE TABLE Post
 (
     id INT AUTO_INCREMENT,
     nomePost VARCHAR(200) NOT NULL,
     testo TEXT NOT NULL,
-    img MEDIUMBLOB,
-    numLike INT UNSIGNED DEFAULT 0,
-    idContent_Writer int NOT NULL,
+    idcontent_writer int NOT NULL,
     PRIMARY KEY(id),
-    FOREIGN KEY(idContent_Writer) REFERENCES Content_Writer(id) ON DELETE CASCADE
+    FOREIGN KEY(idcontent_writer) REFERENCES Ham_user(id) ON DELETE CASCADE
+);
+
+CREATE TABLE Like_(
+                      id_user INT NOT NULL,
+                      id_post INT NOT NULL,
+                      PRIMARY KEY(id_user, id_post),
+                      FOREIGN KEY(id_user) REFERENCES Ham_user(id) ON DELETE CASCADE,
+                      FOREIGN KEY(id_post) REFERENCES Post(id) ON DELETE CASCADE
 );
 
 CREATE TABLE Commento
 (
     id INT AUTO_INCREMENT,
-    idPost int NOT NULL,
-    idUtente int DEFAULT NULL, -- chiave opzionale
-    idContent_Writer int DEFAULT NULL, -- chiave opzionale
-    contenutoCommento TEXT NOT NULL,
+    idpost int NOT NULL,
+    iduser int DEFAULT NULL,
+    contenutocommento TEXT NOT NULL,
     PRIMARY KEY(id),
-    FOREIGN KEY (idPost) REFERENCES Post(id) ON DELETE CASCADE,
-    FOREIGN KEY (idUtente) REFERENCES Utente(id) ON DELETE CASCADE,
-    FOREIGN KEY(idContent_Writer) REFERENCES Content_Writer(id) ON DELETE CASCADE,
-    CHECK(
-            (idContent_Writer IS NOT NULL AND idUtente IS NULL) OR
-            (idContent_Writer IS NULL AND idUtente IS NOT NULL)
-        )
+    FOREIGN KEY (idpost) REFERENCES Post(id) ON DELETE CASCADE,
+    FOREIGN KEY (iduser) REFERENCES Ham_user(id) ON DELETE CASCADE
+);
+
+CREATE TABLE Tokens
+(
+    token CHAR(10) PRIMARY KEY,
+    overseer int NULL,
+    FOREIGN KEY (overseer) REFERENCES Ham_user(id) ON DELETE CASCADE
+);
+
+CREATE TABLE pending
+(
+    idContent_writer int NOT NULL,
+    verify enum('verified', 'waiting', 'rejected') DEFAULT 'waiting',
+    PRIMARY KEY (idContent_writer),
+    FOREIGN KEY (idContent_writer) REFERENCES Ham_user(id) ON DELETE CASCADE
 );
