@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import profile.dao.Ham_userDao;
+import utils.CifraPassword;
 
 
 @WebServlet("/LoginCWS")
@@ -38,6 +39,8 @@ public class LoginCWS extends HttpServlet {
 				HttpSession session = request.getSession(false);
 				
 				session.setAttribute("loggato", (boolean) model.login(email, password));
+
+				//CifraPassword.checkPass(password, passwordNelDB);
 				session.setAttribute("cw", model.getByEmail(email));
 				
 				RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/login.jsp");
