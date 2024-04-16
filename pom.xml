@@ -52,6 +52,25 @@
             <version>8.0.28</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>jsp-api</artifactId>
+            <version>6.0.14</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+
+        <!-- argon -->
+        <dependency>
+            <groupId>de.mkammerer</groupId>
+            <artifactId>argon2-jvm</artifactId>
+            <version>2.1</version>
+        </dependency>
+
     </dependencies>
 
     <build>

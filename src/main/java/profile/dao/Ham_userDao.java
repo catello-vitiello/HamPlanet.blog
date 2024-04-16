@@ -1,7 +1,7 @@
-package content_writer.dao;
+package profile.dao;
 
-import content_writer.entity.Ham_user;
-import content_writer.entity.Ham_user.Role;
+import profile.entity.Ham_user;
+import profile.entity.Ham_user.Role;
 import databaseServices.GenericCrudOp;
 import javax.sql.DataSource;
 import java.sql.Connection;

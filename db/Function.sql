@@ -54,7 +54,7 @@ BEGIN
 END;
 //DELIMITER ;
 
--- trigger che elimina il content_writer quando gli viene rifiutato il profilo al momento della verifica
+-- trigger che elimina il profile quando gli viene rifiutato il profilo al momento della verifica
 DROP TRIGGER IF EXISTS after_invalidContentWriter_trigger;
 DELIMITER //
 CREATE TRIGGER after_invalidContentWriter_trigger
@@ -67,14 +67,14 @@ BEGIN
 END;
 //DELIMITER ;
 
--- trigger che ogni volta che viene creato un nuovo profilo content_writer esso viene messo in waiting
+-- trigger che ogni volta che viene creato un nuovo profilo profile esso viene messo in waiting
 DROP TRIGGER IF EXISTS addContentWriterToQueue_trigger;
 DELIMITER //
 CREATE TRIGGER addContentWriterToQueue_trigger
 AFTER INSERT ON Ham_user
 FOR EACH ROW
 BEGIN
-	IF NEW.ruolo = 'content_writer' THEN
+	IF NEW.ruolo = 'profile' THEN
 		INSERT INTO pending(idContent_writer) VALUES (NEW.id);
 	END IF;
 END;

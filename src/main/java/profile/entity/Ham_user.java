@@ -1,4 +1,4 @@
-package content_writer.entity;
+package profile.entity;
 
 import java.io.Serializable;
 

@@ -2,10 +2,10 @@ USE freedb_HPBlog_db;
 
 -- popolamento tabelle Ham_user
 insert into Ham_user(userName, email, passwd, competenze, ruolo) values
-                                                                     ('Nicola_Nappi','n@n.it',sha2('nappi', 512),'so fare i prosciutti affumicati!', 'content_writer'),
-                                                                     ('Catello_Vitiello','c@v.it',sha2('vitiello', 512), 'so fare gli sformati una favola!', 'content_writer'),
-                                                                     ('Vincenzo_Danese','v@d.it',sha2('danese', 512), 'So fare un sacco di cose di prosciuttifici!', 'content_writer'),
-                                                                     ('Giovanni_Russo','g@r.it',sha2('russo', 512), 'so fare le soppressate!', 'content_writer'),
+                                                                     ('Nicola_Nappi','n@n.it',sha2('nappi', 512),'so fare i prosciutti affumicati!', 'profile'),
+                                                                     ('Catello_Vitiello','c@v.it',sha2('vitiello', 512), 'so fare gli sformati una favola!', 'profile'),
+                                                                     ('Vincenzo_Danese','v@d.it',sha2('danese', 512), 'So fare un sacco di cose di prosciuttifici!', 'profile'),
+                                                                     ('Giovanni_Russo','g@r.it',sha2('russo', 512), 'so fare le soppressate!', 'profile'),
 
                                                                      ('Pippo', 'pippo@p.it', sha2('p', 512), NULL, 'utente'),
                                                                      ('Pluto', 'pluto@p.it', sha2('p', 512), NULL, 'utente'),
@@ -13,7 +13,7 @@ insert into Ham_user(userName, email, passwd, competenze, ruolo) values
                                                                      ('Topolino', 'topo@p.it', sha2('p', 512), NULL, 'utente'),
 
                                                                      ('Vegetto', 'sbocciario@hamplanet.blog.it', sha2('Freezer@91', 512), NULL, 'supervisore'),
-                                                                     ('Rosso', 'm.rossi@live.it', sha2('a', 512), 'Sono un esperto nella produzione di insaccati', 'content_writer');
+                                                                     ('Rosso', 'm.rossi@live.it', sha2('a', 512), 'Sono un esperto nella produzione di insaccati', 'profile');
 
 
 -- POPOLAMENTO DELLA TABELLA POST
