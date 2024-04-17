@@ -7,12 +7,18 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.LinkedList;
 import javax.sql.DataSource;
-import post.entity.Post;
+import post.entity.PostEntity;
 import databaseServices.GenericCrudOp;
+import utils.UtilityClass;
 
-public class PostDAO implements GenericCrudOp<Post, Integer, Object> {
-	
+public class PostDAO implements GenericCrudOp<PostEntity, Integer, Object> {
+
+    private static final String POST_TABLE = "Post";
+    private static final String LIKE_TABLE = "Like_";
+
 	private DataSource ds = null;
+
+
 
     /********************************************************/
     /*	            COSTRUTTORE CON DATASOURCE		        */
@@ -21,33 +27,78 @@ public class PostDAO implements GenericCrudOp<Post, Integer, Object> {
         this.ds = ds;
     }
 
+
+    /********************************************************/
+    /*	               	  LIKE POST		               	*/
+    /********************************************************/
+
+    public Collection<PostEntity> getAllByContentWriter(int writerId) throws  SQLException{
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Collection<PostEntity> posts = new LinkedList<>();
+        String sql = "SELECT * FROM " + POST_TABLE + " WHERE idcontent_writer = ?";
+
+        try {
+            connection = ds.getConnection();
+            //INSERT INTO Like_(id_post, id_user) VALUE (?, ?)
+            ps = connection.prepareStatement(sql);
+            ps.setInt(2, writerId);
+
+            UtilityClass.print(">.retrieve contentWriter's posts : " + ps);
+
+            rs = ps.executeQuery();
+            while (rs.next()){
+                PostEntity p = new PostEntity();
+                p.setId(rs.getInt("id"));
+                p.setNomePost(rs.getString("nomePost"));
+                p.setTesto(rs.getString("testo"));
+                p.setIdContent_Writer(writerId);
+
+                posts.add(p);
+            }
+
+
+
+        }finally {
+            if (ps != null)
+                ps.close();
+            if(rs != null)
+                rs.close();
+            if (connection != null)
+                connection.close();
+        }
+
+        return posts;
+    }
+
     /********************************************************/
     /*	                    SELECT ALL              		*/
     /********************************************************/
 	@Override
-	public Collection<Post> getAll(Object filter) throws SQLException {
+	public Collection<PostEntity> getAll(Object filter) throws SQLException {
 		
 		Connection connection = null;
         PreparedStatement preparedStatement = null;
-        String sql = "SELECT * FROM Post";
-        Collection<Post> posts = new LinkedList<Post>();
+        String sql = "SELECT * FROM " + POST_TABLE ;
+        Collection<PostEntity> postEntities = new LinkedList<PostEntity>();
 		
         try {
         	
         	connection = ds.getConnection();
         	preparedStatement = connection.prepareStatement(sql);
-        	utils.UtilityClass.print(">.SELECT ALL SU Post: " + preparedStatement.toString());
+        	utils.UtilityClass.print(">.SELECT ALL SU PostEntity: " + preparedStatement.toString());
         	
         	ResultSet rs = preparedStatement.executeQuery();
         	
         	while(rs.next()) {
-        		Post p = new Post();
+        		PostEntity p = new PostEntity();
         		p.setId(rs.getInt("id"));
         		p.setNomePost(rs.getString("nomePost"));
         		p.setTesto(rs.getString("testo"));
         		p.setIdContent_Writer(rs.getInt("idcontent_writer"));
         		
-        		posts.add(p);
+        		postEntities.add(p);
         	}
         	
         } finally {
@@ -57,26 +108,26 @@ public class PostDAO implements GenericCrudOp<Post, Integer, Object> {
 				connection.close();
 		}
         
-		return posts;
+		return postEntities;
 	}
 
 	/********************************************************/
     /*	                  RICERCA PER ID            		*/
     /********************************************************/
 	@Override
-	public Post getByID(Integer id) throws SQLException {
+	public PostEntity getByID(Integer id) throws SQLException {
 		
-		Post p = new Post();
+		PostEntity p = new PostEntity();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        String sql = "SELECT * FROM Post p WHERE p.id = ?";
+        String sql = "SELECT * FROM " + POST_TABLE + " p WHERE p.id = ?";
 
         try{
             connection = ds.getConnection();
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, id);
 
-            utils.UtilityClass.print(">.RECUPERO Post PER ID: " + preparedStatement.toString());
+            utils.UtilityClass.print(">.RECUPERO PostEntity PER ID: " + preparedStatement.toString());
             ResultSet rs = preparedStatement.executeQuery();
             if(rs.next()){
                 p.setId(rs.getInt("id"));
@@ -99,13 +150,13 @@ public class PostDAO implements GenericCrudOp<Post, Integer, Object> {
     /*	            	 CREATE NEW POST	            	*/
     /********************************************************/
 	@Override
-	public boolean insert(Post entity) throws SQLException {
+	public boolean insert(PostEntity entity) throws SQLException {
 		
 		int res=0;
 		
 		Connection connection = null;
         PreparedStatement preparedStatement = null;
-        String sql = "insert into Post(nomepost, testo, idcontent_writer) values "
+        String sql = "insert into " + POST_TABLE + " (nomepost, testo, idcontent_writer) values "
         		+ "(?, ?, ?)";
 
         try{
@@ -134,13 +185,13 @@ public class PostDAO implements GenericCrudOp<Post, Integer, Object> {
     /*		               DELETE POST		               	*/
     /********************************************************/
 	@Override
-	public boolean delete(Post entity) throws SQLException {
+	public boolean delete(PostEntity entity) throws SQLException {
 		
 		int res = 0;
 		
 		Connection connection = null;
         PreparedStatement preparedStatement = null;
-        String sql = "DELETE FROM Post WHERE id = ?";
+        String sql = "DELETE FROM " + POST_TABLE + " WHERE id = ?";
 
         try{
 
@@ -148,7 +199,7 @@ public class PostDAO implements GenericCrudOp<Post, Integer, Object> {
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, entity.getId());
 
-            utils.UtilityClass.print(">.Eliminazionde Post: " + preparedStatement.toString());
+            utils.UtilityClass.print(">.Eliminazionde PostEntity: " + preparedStatement.toString());
             res = preparedStatement.executeUpdate();
             
         } finally {
@@ -165,22 +216,111 @@ public class PostDAO implements GenericCrudOp<Post, Integer, Object> {
     /*	               	  UPDATE POST		               	*/
     /********************************************************/
 	@Override
-	public boolean update(Post entity) throws SQLException {
+	public boolean update(PostEntity entity) throws SQLException {
 		
-		utils.UtilityClass.print("Sorry!!!\nThe Post modification flow will be add soon!!!");
+		utils.UtilityClass.print("Sorry!!!\nThe PostEntity modification flow will be add soon!!!");
 		
 		return false;
 	}
+
+    /********************************************************/
+    /*	               	  LIKE POST		               	*/
+    /********************************************************/
+
+    public boolean like(int postId, int userId) throws  SQLException{
+        Connection connection = null;
+        PreparedStatement ps = null;
+        boolean result = false;
+        String sql = "INSERT INTO " + LIKE_TABLE + " (id_post, id_user) VALUE (?, ?)";
+
+        try {
+            connection = ds.getConnection();
+            //INSERT INTO Like_(id_post, id_user) VALUE (?, ?)
+            ps = connection.prepareStatement(sql);
+            ps.setInt(1, postId);
+            ps.setInt(2, userId);
+
+            UtilityClass.print(">.Aggiunta Like a LIKE_ : " + ps);
+            if (ps.executeUpdate() > 0)
+                result = true;
+
+
+        }finally {
+            if (ps != null)
+                ps.close();
+            if (connection != null)
+                connection.close();
+        }
+
+        return result;
+    }
+
+
+    /********************************************************/
+    /*	               	  UNLIKE POST		               	*/
+    /********************************************************/
+
+    public boolean unlike(int postId, int userId) throws  SQLException{
+        Connection connection = null;
+        PreparedStatement ps = null;
+        boolean result = false;
+        String sql = "DELETE FROM " + LIKE_TABLE + " WHERE EXISTS (SELECT * FROM Like_ WHERE post_id = ? AND user_id = ?)";
+
+        try {
+            connection = ds.getConnection();
+            //INSERT INTO Like_(id_post, id_user) VALUE (?, ?)
+            ps = connection.prepareStatement(sql);
+            ps.setInt(1, postId);
+            ps.setInt(2, userId);
+
+            UtilityClass.print(">.Rimozione Like a LIKE_ " + ps);
+            if (ps.executeUpdate() > 0)
+                result = true;
+
+
+        }finally {
+            if (ps != null)
+                ps.close();
+            if (connection != null)
+                connection.close();
+        }
+
+        return result;
+    }
 	
 	/********************************************************/
     /*	               	   IS LIKED		 	               	*/
     /********************************************************/
-//	public boolean isLiked(String nomePost, String userName) throws SQLException{
-//		
-//		Connection connection = null;
-//		PreparedStatement preparedStatement = null;
-//		String sql = "";
-//		
-//	}
+	public boolean isLiked(int userId, int postId) throws SQLException{
+
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+        ResultSet rs = null;
+		String sql = "SELECT * FROM " + LIKE_TABLE + " WHERE user_id = ? AND post_id = ?";
+        boolean result = false;
+
+        try {
+            connection = ds.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(2, postId);
+
+            rs = preparedStatement.executeQuery();
+
+            if (rs.next())
+                result = true;
+
+
+        }finally {
+            if (preparedStatement != null)
+                preparedStatement.close();
+            if (rs != null)
+                rs.close();
+            if (connection != null)
+                connection.close();
+        }
+
+        return result;
+	}
 
 }

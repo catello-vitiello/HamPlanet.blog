@@ -11,26 +11,35 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
-import profile.dao.Ham_userDao;
-import profile.entity.Ham_user;
+import profile.dao.ProfileDAO;
+import profile.entity.UtenteEntity;
 
 @WebServlet("/RegistrationS")
 public class RegistrationS extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private ProfileDAO profileDAO;
 
-		Ham_user cw = new Ham_user();
+	@Override
+	public void init() throws ServletException {
+		super.init();
+		DataSource ds = (DataSource) super.getServletContext().getAttribute("DataSource");
+		profileDAO = new ProfileDAO(ds);
 
-		DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
-		Ham_userDao model = new Ham_userDao(ds);
-		
-		//inserimento sicuro almassimo id libero
+		//inserimento sicuro al minimo id libero
 		try {
-			utils.UtilityClass.resetAuto_increment("Ham_user", ds);
+			utils.UtilityClass.resetAuto_increment("UtenteEntity", ds);
 		} catch (SQLException e) {
 			utils.UtilityClass.print(e);
 		}
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		UtenteEntity cw = new UtenteEntity();
+
+
+
 
 		String username, email, passwd, competenze;
 
@@ -46,12 +55,12 @@ public class RegistrationS extends HttpServlet {
 		 */
 		if(competenze.equalsIgnoreCase("") || competenze == null) {
 
-			Ham_user u = new Ham_user();
+			UtenteEntity u = new UtenteEntity();
 			u.setUserName(username);
 			u.setEmail(email);
 			u.setPasswd(passwd);
-			u.setRuolo(Ham_user.Role.utente); //da gestire con i nuovi button
-			
+			u.setRuolo(UtenteEntity.Role.utente); //da gestire con i nuovi button
+			/*
 			try {
 
 				request.setAttribute("email", email);
@@ -70,17 +79,17 @@ public class RegistrationS extends HttpServlet {
 					return;
 				}
 				
-				int freeID = utils.FindFreeID.findFreeID("Ham_user", ds);
+				int freeID = utils.FindFreeID.findFreeID("UtenteEntity", ds);
 				
 				if(freeID != -1) {
 					
 					Connection con = null;
 					PreparedStatement ps = null;
-					String sql = "INSERT INTO Ham_user(id, userName, email, passwd, competenze, ruolo) VALUES (?, ?, ?, ?, ?, ?)";
+					String sql = "INSERT INTO UtenteEntity(id, userName, email, passwd, competenze, ruolo) VALUES (?, ?, ?, ?, ?, ?)";
 					
 					try {
 						
-						con = ds.getConnection();
+						//con = ds.getConnection();
 						ps = con.prepareStatement(sql);
 						ps.setInt(1, freeID);
 						ps.setString(2, username);
@@ -108,7 +117,7 @@ public class RegistrationS extends HttpServlet {
 					utils.UtilityClass.print("###### Inserimento nuovo Utente fallito!"); //da eliminare
 			}catch (SQLException e) {
 				utils.UtilityClass.print(e);
-			}
+			}*/
 			
 			//redirect su homePage
 			
@@ -120,8 +129,8 @@ public class RegistrationS extends HttpServlet {
 			cw.setEmail(email);
 			cw.setPasswd(passwd);
 			cw.setCompetenze(competenze);
-			cw.setRuolo(Ham_user.Role.content_writer); //da gestire con i nuovi button
-
+			cw.setRuolo(UtenteEntity.Role.content_writer); //da gestire con i nuovi button
+			/*
 			try {
 
 				request.setAttribute("email", email);
@@ -140,13 +149,13 @@ public class RegistrationS extends HttpServlet {
 					return;
 				}
 				
-				int freeID = utils.FindFreeID.findFreeID("Ham_user", ds);
+				int freeID = utils.FindFreeID.findFreeID("UtenteEntity", ds);
 				
 				if(freeID != -1) {
 					
 					Connection con = null;
 					PreparedStatement ps = null;
-					String sql = "INSERT INTO Ham_user(id, userName, email, passwd, competenze, ruolo) VALUES (?, ?, ?, ?, ?, ?)";
+					String sql = "INSERT INTO UtenteEntity(id, userName, email, passwd, competenze, ruolo) VALUES (?, ?, ?, ?, ?, ?)";
 					
 					try {
 						
@@ -180,6 +189,8 @@ public class RegistrationS extends HttpServlet {
 			}catch (SQLException e) {
 				utils.UtilityClass.print(e);
 			}
+			*/
+
 
 		//redirect sulla pagina di attessa per la validazione account
 		return;

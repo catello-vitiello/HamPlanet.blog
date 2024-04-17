@@ -9,8 +9,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
-import profile.dao.Ham_userDao;
-import profile.entity.Ham_user;
+
+import org.openqa.selenium.devtools.v85.profiler.model.Profile;
+
+import profile.dao.ProfileDAO;
+
+import profile.entity.UtenteEntity;
 import utils.CifraPassword;
 
 @WebServlet("/UpdateCWS")
@@ -20,10 +24,10 @@ public class UpdateCWS extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
-		Ham_userDao model = new Ham_userDao(ds);
+		ProfileDAO model = new ProfileDAO(ds);
 
-		Ham_user cw = new Ham_user();
-		Ham_user originale = new Ham_user();
+		UtenteEntity cw = new UtenteEntity();
+		UtenteEntity originale = new UtenteEntity();
 		int change = 0;
 		String id = request.getParameter("id");
 		String userName = request.getParameter("userName");

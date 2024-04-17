@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import profile.dao.Ham_userDao;
-import profile.entity.Ham_user;
+import profile.dao.ProfileDAO;
+import profile.entity.UtenteEntity;
 
 @WebServlet("/GetCWListS")
 public class GetCWListS extends HttpServlet {
@@ -23,7 +23,7 @@ public class GetCWListS extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
-		Ham_userDao model = new Ham_userDao(ds);
+		ProfileDAO model = new ProfileDAO(ds);
 		
 		String filtro = request.getParameter("filter");
 		if(filtro != null) {
@@ -32,10 +32,10 @@ public class GetCWListS extends HttpServlet {
 		
 		try {
 			
-			Collection<Ham_user> creator = model.getAll(filtro);
-            Iterator<Ham_user> it = creator.iterator();
+			Collection<UtenteEntity> creator = model.getAll(filtro);
+            Iterator<UtenteEntity> it = creator.iterator();
             while (it.hasNext()) {
-                Ham_user cw = it.next();
+                UtenteEntity cw = it.next();
                 utils.UtilityClass.print(cw.toString()); //da eliminare
             }
 

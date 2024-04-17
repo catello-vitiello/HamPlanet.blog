@@ -10,8 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
-import profile.dao.Ham_userDao;
-import utils.CifraPassword;
+import profile.dao.ProfileDAO;
 
 
 @WebServlet("/LoginCWS")
@@ -21,7 +20,7 @@ public class LoginCWS extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
 		DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
-		Ham_userDao model = new Ham_userDao(ds);
+		ProfileDAO model = new ProfileDAO(ds);
 		
 		String email, password;
 		

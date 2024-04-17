@@ -2,7 +2,7 @@ package profile.entity;
 
 import java.io.Serializable;
 
-public class Ham_user implements Serializable, Cloneable{
+public class UtenteEntity implements Serializable, Cloneable{
     private static final long serialVersionUID = 1L;
     
     public enum Role{
@@ -15,7 +15,7 @@ public class Ham_user implements Serializable, Cloneable{
     private String userName, email, passwd, competenze;
     private Role ruolo;
 
-    public Ham_user(){
+    public UtenteEntity(){
     	
     }
 
@@ -94,7 +94,7 @@ public class Ham_user implements Serializable, Cloneable{
         if(getClass() != o.getClass())
             return false;
 
-        Ham_user altro = (Ham_user) o;
+        UtenteEntity altro = (UtenteEntity) o;
         return( (id == altro.getId()) && (userName.equalsIgnoreCase(altro.getUserName())) && (email.equalsIgnoreCase(altro.getEmail()))
                 && (passwd.equalsIgnoreCase(altro.getPasswd())) && (competenze.equalsIgnoreCase(altro.getCompetenze())) 
                 && (ruolo.equals(altro.getRuolo())) );
@@ -102,9 +102,9 @@ public class Ham_user implements Serializable, Cloneable{
 
 
     @Override
-    public Ham_user clone(){
+    public UtenteEntity clone(){
         try{
-            return (Ham_user) super.clone();
+            return (UtenteEntity) super.clone();
         } catch(CloneNotSupportedException e){
             utils.UtilityClass.print(e);
             return null;

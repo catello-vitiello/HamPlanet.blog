@@ -20,7 +20,7 @@ public class FindFreeID {
 		Connection con = null;
 		PreparedStatement ps = null;
         ResultSet rs = null;
-        String sql = "SELECT id FROM Ham_user";
+        String sql = "SELECT id FROM UtenteEntity";
         
         try {
         	

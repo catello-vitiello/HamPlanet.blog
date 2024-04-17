@@ -2,17 +2,17 @@ package post.entity;
 
 import java.io.Serializable;
 
-public class Post implements Serializable, Cloneable{
+public class PostEntity implements Serializable, Cloneable{
     
     private int id, idContent_Writer;
     private String nomePost, testo;
     private Boolean isLiked=false;
 
-    public Post(){
+    public PostEntity(){
 
     }
 
-    public Post(int id, String nomePost, String testo, boolean isLiked, int idContent_Writer){
+    public PostEntity(int id, String nomePost, String testo, boolean isLiked, int idContent_Writer){
         this.id = id;
         this.nomePost = nomePost;
         this.testo = testo;
@@ -75,7 +75,7 @@ public class Post implements Serializable, Cloneable{
         if(getClass() != o.getClass())
             return false;
 
-        Post altro = (Post) o;
+        PostEntity altro = (PostEntity) o;
 
         return( (id==altro.getId()) && (idContent_Writer==altro.getIdContent_Writer()) && (isLiked==altro.isLiked()))
         && (nomePost.equals(altro.getNomePost())) && (testo.equals(altro.getTesto()) );
@@ -94,9 +94,9 @@ public class Post implements Serializable, Cloneable{
     }
 
     @Override
-    public Post clone(){
+    public PostEntity clone(){
         try {
-            return (Post) super.clone();
+            return (PostEntity) super.clone();
         } catch (CloneNotSupportedException e) {
             utils.UtilityClass.print(e);
             return null;

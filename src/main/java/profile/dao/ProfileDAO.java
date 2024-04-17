@@ -1,8 +1,9 @@
 package profile.dao;
 
-import profile.entity.Ham_user;
-import profile.entity.Ham_user.Role;
+import profile.entity.UtenteEntity;
+import profile.entity.UtenteEntity.Role;
 import databaseServices.GenericCrudOp;
+
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,14 +12,14 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.LinkedList;
 
-public class Ham_userDao implements GenericCrudOp<Ham_user, Integer, String> {
+public class ProfileDAO implements GenericCrudOp<UtenteEntity, Integer, String> {
 
     private DataSource ds = null;
 
     /********************************************************/
     /*	            COSTRUTTORE CON DATASOURCE		        */
     /********************************************************/
-    public Ham_userDao(DataSource ds){
+    public ProfileDAO(DataSource ds){
         this.ds = ds;
     }
 
@@ -26,12 +27,12 @@ public class Ham_userDao implements GenericCrudOp<Ham_user, Integer, String> {
     /*	                    SELECT ALL              		*/
     /********************************************************/
     @Override
-    public Collection<Ham_user> getAll(String filter) throws SQLException {
+    public Collection<UtenteEntity> getAll(String filter) throws SQLException {
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        String sql = "SELECT * FROM Ham_user WHERE ruolo = ?";
-        Collection<Ham_user> creatori = new LinkedList<Ham_user>();
+        String sql = "SELECT * FROM UtenteEntity WHERE ruolo = ?";
+        Collection<UtenteEntity> creatori = new LinkedList<UtenteEntity>();
 
         try{
 
@@ -42,7 +43,7 @@ public class Ham_userDao implements GenericCrudOp<Ham_user, Integer, String> {
 
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()){
-                Ham_user cw = new Ham_user();
+                UtenteEntity cw = new UtenteEntity();
                 cw.setId(rs.getInt("id"));
                 cw.setUserName(rs.getString("userName"));
                 cw.setEmail(rs.getString("email"));
@@ -64,12 +65,12 @@ public class Ham_userDao implements GenericCrudOp<Ham_user, Integer, String> {
     /*	                  RICERCA PER ID            		*/
     /********************************************************/
     @Override
-    public Ham_user getByID(Integer id) throws SQLException {
+    public UtenteEntity getByID(Integer id) throws SQLException {
 
-    	Ham_user cw = new Ham_user();
+    	UtenteEntity cw = new UtenteEntity();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        String sql = "SELECT * FROM Ham_user c WHERE c.id = ?";
+        String sql = "SELECT * FROM UtenteEntity c WHERE c.id = ?";
 
         try{
             connection = ds.getConnection();
@@ -100,12 +101,12 @@ public class Ham_userDao implements GenericCrudOp<Ham_user, Integer, String> {
     /*	           		  INSERT HAM_USER	            	*/
     /********************************************************/
     @Override
-    public boolean insert(Ham_user entity) throws SQLException {
+    public boolean insert(UtenteEntity entity) throws SQLException {
 
         int res=0;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        String sql = "INSERT into Ham_user(userName, email, passwd, competenze, ruolo) VALUES (?,?,?,?,?)";
+        String sql = "INSERT into UtenteEntity(userName, email, passwd, competenze, ruolo) VALUES (?,?,?,?,?)";
 
         try{
 
@@ -118,7 +119,7 @@ public class Ham_userDao implements GenericCrudOp<Ham_user, Integer, String> {
             preparedStatement.setString(4, entity.getCompetenze());
             preparedStatement.setString(5, entity.getRuolo());
 
-            utils.UtilityClass.print(">.Inserimento nuovo Ham_user: " + preparedStatement.toString());
+            utils.UtilityClass.print(">.Inserimento nuovo UtenteEntity: " + preparedStatement.toString());
             res = preparedStatement.executeUpdate();
 
         } finally {
@@ -134,13 +135,13 @@ public class Ham_userDao implements GenericCrudOp<Ham_user, Integer, String> {
     /*	               	 DELETE HAM_USER	               	*/
     /********************************************************/
     @Override
-    public boolean delete(Ham_user user) throws SQLException {
+    public boolean delete(UtenteEntity user) throws SQLException {
 
         int res = 0;
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        String sql = "DELETE FROM Ham_user WHERE email = ?";
+        String sql = "DELETE FROM UtenteEntity WHERE email = ?";
 
         try{
 
@@ -150,7 +151,7 @@ public class Ham_userDao implements GenericCrudOp<Ham_user, Integer, String> {
 
             utils.UtilityClass.print(">.Eliminazionde dell'account: " + preparedStatement.toString());
             res = preparedStatement.executeUpdate();
-            utils.UtilityClass.resetAuto_increment("Ham_user", ds);
+            utils.UtilityClass.resetAuto_increment("UtenteEntity", ds);
 
         } finally {
             if(preparedStatement != null)
@@ -166,12 +167,12 @@ public class Ham_userDao implements GenericCrudOp<Ham_user, Integer, String> {
     /*	                 UPDATE HAM_USER	               	*/
     /********************************************************/
     @Override
-    public boolean update(Ham_user user) throws SQLException {
+    public boolean update(UtenteEntity user) throws SQLException {
 
         int res = 0;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        String sql = "UPDATE Ham_user SET userName = ? , email = ? , passwd = ? , competenze = ? WHERE id = ?";
+        String sql = "UPDATE UtenteEntity SET userName = ? , email = ? , passwd = ? , competenze = ? WHERE id = ?";
 
         try{
 
@@ -206,7 +207,7 @@ public class Ham_userDao implements GenericCrudOp<Ham_user, Integer, String> {
     	 int res = 0; 
          Connection connection = null;
          PreparedStatement preparedStatement = null;
-         String sql = "SELECT 1 as R FROM Ham_user cw WHERE cw.email = ?";
+         String sql = "SELECT 1 as R FROM UtenteEntity cw WHERE cw.email = ?";
 
          try{
 
@@ -241,7 +242,7 @@ public class Ham_userDao implements GenericCrudOp<Ham_user, Integer, String> {
    	 int res = 0; 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        String sql = "SELECT 1 as R FROM Ham_user cw WHERE cw.userName = ?";
+        String sql = "SELECT 1 as R FROM UtenteEntity cw WHERE cw.userName = ?";
 
         try{
 
@@ -275,7 +276,7 @@ public class Ham_userDao implements GenericCrudOp<Ham_user, Integer, String> {
     	ResultSet rs = null;
     	PreparedStatement ps = null;
     	Connection connection = null;
-    	String sql = "SELECT 1 AS L FROM Ham_user cw WHERE cw.email = ? AND cw.passwd = ?";
+    	String sql = "SELECT 1 AS L FROM UtenteEntity cw WHERE cw.email = ? AND cw.passwd = ?";
     	
     	int res = 0;
     	
@@ -307,19 +308,19 @@ public class Ham_userDao implements GenericCrudOp<Ham_user, Integer, String> {
     /********************************************************/
     /*	                  RICERCA PER EMAIL            		*/
     /********************************************************/
-    public Ham_user getByEmail(String email) throws SQLException {
+    public UtenteEntity getByEmail(String email) throws SQLException {
 
-        Ham_user cw = new Ham_user();
+        UtenteEntity cw = new UtenteEntity();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        String sql = "SELECT * FROM Ham_user c WHERE c.email = ?";
+        String sql = "SELECT * FROM UtenteEntity c WHERE c.email = ?";
 
         try{
             connection = ds.getConnection();
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, email);
 
-            utils.UtilityClass.print(">.RECUPERO Ham_user per email: " + preparedStatement.toString());
+            utils.UtilityClass.print(">.RECUPERO UtenteEntity per email: " + preparedStatement.toString());
             
             ResultSet rs = preparedStatement.executeQuery();
             if(rs.next()){
