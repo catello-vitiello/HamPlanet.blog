@@ -43,7 +43,7 @@ public class PostDAO implements GenericCrudOp<PostEntity, Integer, Object> {
             connection = ds.getConnection();
             //INSERT INTO Like_(id_post, id_user) VALUE (?, ?)
             ps = connection.prepareStatement(sql);
-            ps.setInt(2, writerId);
+            ps.setInt(1, writerId);
 
             UtilityClass.print(">.retrieve contentWriter's posts : " + ps);
 

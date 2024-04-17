@@ -26,7 +26,7 @@ public class GetCWListS extends HttpServlet {
 		ProfileDAO model = new ProfileDAO(ds);
 		
 		String filtro = request.getParameter("filter");
-		if(filtro != null) {
+		if(filtro == null) {
 			utils.UtilityClass.print(">. ERRORE NELL'APPLICARE IL FILTRO A MOMENTO DI LISTING");
 		}
 		

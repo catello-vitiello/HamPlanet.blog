@@ -19,16 +19,17 @@ public class RegistrationS extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private ProfileDAO profileDAO;
+	private DataSource ds;
 
 	@Override
 	public void init() throws ServletException {
 		super.init();
-		DataSource ds = (DataSource) super.getServletContext().getAttribute("DataSource");
+		ds = (DataSource) super.getServletContext().getAttribute("DataSource");
 		profileDAO = new ProfileDAO(ds);
 
 		//inserimento sicuro al minimo id libero
 		try {
-			utils.UtilityClass.resetAuto_increment("UtenteEntity", ds);
+			utils.UtilityClass.resetAuto_increment("Ham_user", ds);
 		} catch (SQLException e) {
 			utils.UtilityClass.print(e);
 		}
@@ -37,9 +38,6 @@ public class RegistrationS extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		UtenteEntity cw = new UtenteEntity();
-
-
-
 
 		String username, email, passwd, competenze;
 
@@ -60,7 +58,7 @@ public class RegistrationS extends HttpServlet {
 			u.setEmail(email);
 			u.setPasswd(passwd);
 			u.setRuolo(UtenteEntity.Role.utente); //da gestire con i nuovi button
-			/*
+
 			try {
 
 				request.setAttribute("email", email);
@@ -79,17 +77,17 @@ public class RegistrationS extends HttpServlet {
 					return;
 				}
 				
-				int freeID = utils.FindFreeID.findFreeID("UtenteEntity", ds);
+				int freeID = utils.FindFreeID.findFreeID("Ham_user", ds);
 				
 				if(freeID != -1) {
 					
 					Connection con = null;
 					PreparedStatement ps = null;
-					String sql = "INSERT INTO UtenteEntity(id, userName, email, passwd, competenze, ruolo) VALUES (?, ?, ?, ?, ?, ?)";
+					String sql = "INSERT INTO Ham_user(id, userName, email, passwd, competenze, ruolo) VALUES (?, ?, ?, ?, ?, ?)";
 					
 					try {
 						
-						//con = ds.getConnection();
+						con = ds.getConnection();
 						ps = con.prepareStatement(sql);
 						ps.setInt(1, freeID);
 						ps.setString(2, username);
@@ -111,13 +109,13 @@ public class RegistrationS extends HttpServlet {
 					return;
 				}
 
-				if(model.insert(u))
+				if(profileDAO.insert(u))
 					utils.UtilityClass.print("###### Inserimento nuovo Utente effettuato!"); //da eliminare
 				else
 					utils.UtilityClass.print("###### Inserimento nuovo Utente fallito!"); //da eliminare
 			}catch (SQLException e) {
 				utils.UtilityClass.print(e);
-			}*/
+			}
 			
 			//redirect su homePage
 			
@@ -130,7 +128,7 @@ public class RegistrationS extends HttpServlet {
 			cw.setPasswd(passwd);
 			cw.setCompetenze(competenze);
 			cw.setRuolo(UtenteEntity.Role.content_writer); //da gestire con i nuovi button
-			/*
+
 			try {
 
 				request.setAttribute("email", email);
@@ -149,13 +147,13 @@ public class RegistrationS extends HttpServlet {
 					return;
 				}
 				
-				int freeID = utils.FindFreeID.findFreeID("UtenteEntity", ds);
+				int freeID = utils.FindFreeID.findFreeID("Ham_user", ds);
 				
 				if(freeID != -1) {
 					
 					Connection con = null;
 					PreparedStatement ps = null;
-					String sql = "INSERT INTO UtenteEntity(id, userName, email, passwd, competenze, ruolo) VALUES (?, ?, ?, ?, ?, ?)";
+					String sql = "INSERT INTO Ham_user(id, userName, email, passwd, competenze, ruolo) VALUES (?, ?, ?, ?, ?, ?)";
 					
 					try {
 						
@@ -182,14 +180,14 @@ public class RegistrationS extends HttpServlet {
 				}
 				
 				//inserimento diretto tramite auto-increment
-				if(model.insert(cw))
+				if(profileDAO.insert(cw))
 					utils.UtilityClass.print("###### Inserimento nuovo Content Writer effettuato!"); //da eliminareelse
 				else
 					utils.UtilityClass.print("###### Inserimento nuovo Content Writer fallito!"); //da eliminare
 			}catch (SQLException e) {
 				utils.UtilityClass.print(e);
 			}
-			*/
+
 
 
 		//redirect sulla pagina di attessa per la validazione account

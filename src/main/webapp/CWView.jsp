@@ -1,7 +1,7 @@
-<%@page import="profile.entity.Ham_user"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@page import="java.util.*"%>
+<%@ page import="profile.entity.UtenteEntity" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,7 +31,7 @@
 				if(cw != null && cw.size()>0){
 						Iterator<?> iterator = cw.iterator();
 						while(iterator.hasNext()){
-							Ham_user bean = (Ham_user) iterator.next();
+							UtenteEntity bean = (UtenteEntity) iterator.next();
 				%>
 			
 			<tr>

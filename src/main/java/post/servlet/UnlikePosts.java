@@ -1,10 +1,9 @@
 package post.servlet;
 
-import cn.hutool.json.JSONObject;
+import org.json.JSONObject;
 import post.dao.PostDAO;
 import profile.entity.UtenteEntity;
 import utils.UtilityClass;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -42,7 +41,7 @@ public class UnlikePosts extends HttpServlet {
 
         String idPost = req.getParameter("postId");
         HttpSession session = req.getSession(false);
-        if (session != null && idPost != null && !idPost.isBlank()){
+        if (session != null && idPost != null && !idPost.isEmpty()){
             UtenteEntity user = (UtenteEntity) session.getAttribute("profile");
 
             if (user.getRuolo().equals(UtenteEntity.Role.utente.toString())) {

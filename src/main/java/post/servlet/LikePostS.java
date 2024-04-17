@@ -1,12 +1,9 @@
 package post.servlet;
 
-import cn.hutool.json.JSONObject;
-import netscape.javascript.JSObject;
-import org.openqa.selenium.json.Json;
+import org.json.JSONObject;
 import post.dao.PostDAO;
 import profile.entity.UtenteEntity;
 import utils.UtilityClass;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -42,7 +39,7 @@ public class LikePostS extends HttpServlet {
 
         String idPost = req.getParameter("postId");
         HttpSession session = req.getSession(false);
-        if (session != null && idPost != null && !idPost.isBlank()){
+        if (session != null && idPost != null && !idPost.isEmpty()){
             UtenteEntity user = (UtenteEntity) session.getAttribute("profile");
 
             if (user.getRuolo().equals(UtenteEntity.Role.utente.toString())) {

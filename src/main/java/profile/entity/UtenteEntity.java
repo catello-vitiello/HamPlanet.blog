@@ -63,9 +63,13 @@ public class UtenteEntity implements Serializable, Cloneable{
 		return ruolo.toString();
 	}
 
-	public void setRuolo(Role ruolo) {
-		this.ruolo = ruolo;
+	public void setRuolo(String ruolo) {
+		this.ruolo = Role.valueOf(ruolo);
 	}
+
+    public void setRuolo(Role ruolo) {
+        this.ruolo = ruolo;
+    }
 
 	@Override
     public String toString(){

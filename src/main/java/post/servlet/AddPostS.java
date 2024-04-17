@@ -43,7 +43,7 @@ public class AddPostS extends HttpServlet {
         UtenteEntity user = (UtenteEntity) session.getAttribute("profile");
 
         if (title != null && plainText != null && user != null) {
-            if (!title.isBlank() && !plainText.isBlank() && user.getRuolo().equals(UtenteEntity.Role.content_writer.toString())) {
+            if (!title.isEmpty() && !plainText.isEmpty() && user.getRuolo().equals(UtenteEntity.Role.content_writer.toString())) {
                 PostEntity post = new PostEntity();
                 post.setNomePost(title);
                 post.setTesto(plainText);

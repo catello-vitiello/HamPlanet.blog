@@ -20,7 +20,7 @@ public class FindFreeID {
 		Connection con = null;
 		PreparedStatement ps = null;
         ResultSet rs = null;
-        String sql = "SELECT id FROM UtenteEntity";
+        String sql = "SELECT id FROM " + tabella;
         
         try {
         	
@@ -31,8 +31,6 @@ public class FindFreeID {
             while(rs.next())
                 list.add(rs.getInt("id"));
 
-            
-        	
         } finally {
         	if(rs != null)
 				rs.close();

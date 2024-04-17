@@ -1,18 +1,15 @@
 package post.servlet;
 
-import cn.hutool.json.JSONObject;
-import com.mysql.cj.xdevapi.JsonParser;
+
+import org.json.JSONObject;
 import post.dao.PostDAO;
 import post.entity.PostEntity;
-import profile.entity.UtenteEntity;
 import utils.UtilityClass;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -44,14 +41,14 @@ public class PostS extends HttpServlet {
 
 
 
-        if (postId != null && !postId.isBlank()){
+        if (postId != null && !postId.isEmpty()){
 
             try {
                 PostEntity post = postDAO.getByID(Integer.parseInt(postId));
-                jsonObject.set("id", post.getId());
-                jsonObject.set("title", post.getNomePost());
-                jsonObject.set("text", post.getTesto());
-                jsonObject.set("writerId", post.getIdContent_Writer());
+                jsonObject.put("id", post.getId());
+                jsonObject.put("title", post.getNomePost());
+                jsonObject.put("text", post.getTesto());
+                jsonObject.put("writerId", post.getIdContent_Writer());
 
 
             } catch (SQLException e) {

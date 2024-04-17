@@ -3,7 +3,6 @@ package profile.dao;
 import profile.entity.UtenteEntity;
 import profile.entity.UtenteEntity.Role;
 import databaseServices.GenericCrudOp;
-
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -31,7 +30,7 @@ public class ProfileDAO implements GenericCrudOp<UtenteEntity, Integer, String> 
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        String sql = "SELECT * FROM UtenteEntity WHERE ruolo = ?";
+        String sql = "SELECT * FROM Ham_user WHERE ruolo = ?";
         Collection<UtenteEntity> creatori = new LinkedList<UtenteEntity>();
 
         try{
@@ -70,7 +69,7 @@ public class ProfileDAO implements GenericCrudOp<UtenteEntity, Integer, String> 
     	UtenteEntity cw = new UtenteEntity();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        String sql = "SELECT * FROM UtenteEntity c WHERE c.id = ?";
+        String sql = "SELECT * FROM Ham_user c WHERE c.id = ?";
 
         try{
             connection = ds.getConnection();
@@ -85,7 +84,7 @@ public class ProfileDAO implements GenericCrudOp<UtenteEntity, Integer, String> 
                 cw.setEmail(rs.getString("email"));
                 cw.setPasswd(rs.getString("passwd"));
                 cw.setCompetenze(rs.getString("competenze"));
-                cw.setRuolo((Role) rs.getObject("Ruolo"));
+                cw.setRuolo(rs.getString("ruolo"));
             }
 
         } finally {
@@ -106,7 +105,7 @@ public class ProfileDAO implements GenericCrudOp<UtenteEntity, Integer, String> 
         int res=0;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        String sql = "INSERT into UtenteEntity(userName, email, passwd, competenze, ruolo) VALUES (?,?,?,?,?)";
+        String sql = "INSERT into Ham_user(userName, email, passwd, competenze, ruolo) VALUES (?,?,?,?,?)";
 
         try{
 
@@ -141,7 +140,7 @@ public class ProfileDAO implements GenericCrudOp<UtenteEntity, Integer, String> 
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        String sql = "DELETE FROM UtenteEntity WHERE email = ?";
+        String sql = "DELETE FROM Ham_user WHERE email = ?";
 
         try{
 
@@ -151,7 +150,7 @@ public class ProfileDAO implements GenericCrudOp<UtenteEntity, Integer, String> 
 
             utils.UtilityClass.print(">.Eliminazionde dell'account: " + preparedStatement.toString());
             res = preparedStatement.executeUpdate();
-            utils.UtilityClass.resetAuto_increment("UtenteEntity", ds);
+            utils.UtilityClass.resetAuto_increment("Ham_user", ds);
 
         } finally {
             if(preparedStatement != null)
@@ -172,7 +171,7 @@ public class ProfileDAO implements GenericCrudOp<UtenteEntity, Integer, String> 
         int res = 0;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        String sql = "UPDATE UtenteEntity SET userName = ? , email = ? , passwd = ? , competenze = ? WHERE id = ?";
+        String sql = "UPDATE Ham_user SET userName = ? , email = ? , passwd = ? , competenze = ? WHERE id = ?";
 
         try{
 
@@ -207,7 +206,7 @@ public class ProfileDAO implements GenericCrudOp<UtenteEntity, Integer, String> 
     	 int res = 0; 
          Connection connection = null;
          PreparedStatement preparedStatement = null;
-         String sql = "SELECT 1 as R FROM UtenteEntity cw WHERE cw.email = ?";
+         String sql = "SELECT 1 as R FROM Ham_user cw WHERE cw.email = ?";
 
          try{
 
@@ -242,7 +241,7 @@ public class ProfileDAO implements GenericCrudOp<UtenteEntity, Integer, String> 
    	 int res = 0; 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        String sql = "SELECT 1 as R FROM UtenteEntity cw WHERE cw.userName = ?";
+        String sql = "SELECT 1 as R FROM Ham_user cw WHERE cw.userName = ?";
 
         try{
 
@@ -276,7 +275,7 @@ public class ProfileDAO implements GenericCrudOp<UtenteEntity, Integer, String> 
     	ResultSet rs = null;
     	PreparedStatement ps = null;
     	Connection connection = null;
-    	String sql = "SELECT 1 AS L FROM UtenteEntity cw WHERE cw.email = ? AND cw.passwd = ?";
+    	String sql = "SELECT 1 AS L FROM Ham_user cw WHERE cw.email = ? AND cw.passwd = ?";
     	
     	int res = 0;
     	
@@ -313,7 +312,7 @@ public class ProfileDAO implements GenericCrudOp<UtenteEntity, Integer, String> 
         UtenteEntity cw = new UtenteEntity();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        String sql = "SELECT * FROM UtenteEntity c WHERE c.email = ?";
+        String sql = "SELECT * FROM Ham_user c WHERE c.email = ?";
 
         try{
             connection = ds.getConnection();
