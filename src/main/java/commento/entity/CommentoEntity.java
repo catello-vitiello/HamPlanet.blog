@@ -2,7 +2,7 @@ package commento.entity;
 
 import java.io.Serializable;
 
-public class Commento implements Serializable, Cloneable{
+public class CommentoEntity implements Serializable, Cloneable{
 
     private int id, idPost, idUtente, idContent_Writer;
     private String contenutoCommento;
@@ -21,11 +21,11 @@ public class Commento implements Serializable, Cloneable{
 
     }
 
-    public Commento(){
+    public CommentoEntity(){
 
     }
 
-    public Commento(int id, int idPost, int idUtente, int idContent_Writer, String contenutoCommento){
+    public CommentoEntity(int id, int idPost, int idUtente, int idContent_Writer, String contenutoCommento){
 
         this.id = id;
         this.idPost = idPost;
@@ -97,7 +97,7 @@ public class Commento implements Serializable, Cloneable{
         if(getClass() != o.getClass())
             return false;
 
-        Commento altro = (Commento) o;
+        CommentoEntity altro = (CommentoEntity) o;
 
         return( (id == altro.getId()) && (idPost == altro.getIdPost()) && (idUtente == altro.getIdUtente())
                 && (idContent_Writer == altro.getIdContent_Writer()) && (contenutoCommento.equals(altro.getContenutoCommento())) );
@@ -119,10 +119,10 @@ public class Commento implements Serializable, Cloneable{
     }
 
     @Override
-    public Commento clone(){
+    public CommentoEntity clone(){
 
         try{
-            return (Commento) super.clone();
+            return (CommentoEntity) super.clone();
         }catch(CloneNotSupportedException e){
             utils.UtilityClass.print(e);
             return null;

@@ -5,6 +5,7 @@ import post.dao.PostDAO;
 import profile.entity.UtenteEntity;
 import utils.UtilityClass;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +14,7 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
 
+@WebServlet("/LikePostS")
 public class LikePostS extends HttpServlet {
 
     private static final long serialVersionUID = 871483285L;
