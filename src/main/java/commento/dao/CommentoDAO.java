@@ -63,7 +63,7 @@ public class CommentoDAO implements GenericCrudOp<CommentoEntity, Integer, Objec
     }
 
     /********************************************************/
-    /*	               	  GET ALL COMMENTO		               	*/
+    /*	               	  GET ALL COMMENTO BY POST		               	*/
     /********************************************************/
     public Collection<CommentoEntity> getAllByPost(int postId) throws SQLException {
         Connection connection = null;
@@ -77,8 +77,10 @@ public class CommentoDAO implements GenericCrudOp<CommentoEntity, Integer, Objec
         try {
             connection = ds.getConnection();
             ps = connection.prepareStatement(sql);
-            utils.UtilityClass.print(">.GET ALL By POST SU CommentoEntity: " + ps.toString());
+
             ps.setInt(1, postId);
+
+            utils.UtilityClass.print(">.GET ALL By POST SU CommentoEntity: " + ps.toString());
 
             rs = ps.executeQuery();
             while (rs.next()){
