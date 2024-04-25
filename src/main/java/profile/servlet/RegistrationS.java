@@ -1,8 +1,6 @@
 package profile.servlet;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -76,39 +74,23 @@ public class RegistrationS extends HttpServlet {
 					utils.UtilityClass.print("###### UserName gia in uso!"); //da eliminare
 					return;
 				}
-				
+
+				//controllo se esiste un buco tra gli ID
 				int freeID = utils.FindFreeID.findFreeID("Ham_user", ds);
-				
+
+				//se esiste
 				if(freeID != -1) {
-					
-					Connection con = null;
-					PreparedStatement ps = null;
-					String sql = "INSERT INTO Ham_user(id, userName, email, passwd, competenze, ruolo) VALUES (?, ?, ?, ?, ?, ?)";
-					
-					try {
-						
-						con = ds.getConnection();
-						ps = con.prepareStatement(sql);
-						ps.setInt(1, freeID);
-						ps.setString(2, username);
-						ps.setString(3, email);
-						ps.setString(4, utils.CifraPassword.toHash(passwd));
-						ps.setString(5, competenze);
-						ps.setString(6, "utente");
-						
-						utils.UtilityClass.print("INSERIMENTO ID CUSTOM UTENTE: " + ps.toString());
-						ps.executeUpdate();
-						
-					}finally {
-						if(ps != null)
-							ps.close();
-						if(con != null)
-							con.close();
-					}
-					
+
+					//Inserisco il nuovo record nell primo slot ID libero
+					if(profileDAO.insertWithID(u, freeID))
+						utils.UtilityClass.print("###### Inserimento nuovo Utente effettuato!"); //da eliminare
+					else
+						utils.UtilityClass.print("###### Inserimento nuovo Utente fallito!"); //da eliminare
+
 					return;
 				}
 
+				//Inserisco il nuovo record nell primo slot ID libero in coda a quelli esistenti
 				if(profileDAO.insert(u))
 					utils.UtilityClass.print("###### Inserimento nuovo Utente effettuato!"); //da eliminare
 				else
@@ -118,10 +100,9 @@ public class RegistrationS extends HttpServlet {
 			}
 			
 			//redirect su homePage
-			
-			return;
 /*********************************************************************************************************/
-		} else { //parte la gestione per la registrazione Content Writer
+//parte la gestione per la registrazione Content Writer
+		} else {
 
 			cw.setUserName(username);
 			cw.setEmail(email);
@@ -146,37 +127,21 @@ public class RegistrationS extends HttpServlet {
 					utils.UtilityClass.print("###### UserName gia in uso!"); //da eliminare
 					return;
 				}
-				
+
+				//controllo se esiste un buco tra gli ID
 				int freeID = utils.FindFreeID.findFreeID("Ham_user", ds);
-				
+
+				//se esiste
 				if(freeID != -1) {
-					
-					Connection con = null;
-					PreparedStatement ps = null;
-					String sql = "INSERT INTO Ham_user(id, userName, email, passwd, competenze, ruolo) VALUES (?, ?, ?, ?, ?, ?)";
-					
-					try {
-						
-						con = ds.getConnection();
-						ps = con.prepareStatement(sql);
-						ps.setInt(1, freeID);
-						ps.setString(2, username);
-						ps.setString(3, email);
-						ps.setString(4, utils.CifraPassword.toHash(passwd));
-						ps.setString(5, competenze);
-						ps.setString(6, "content_writer");
-						
-						utils.UtilityClass.print("INSERIMENTO ID CUSTOM CONTEN_WRITER: " + ps.toString());
-						ps.executeUpdate();
-						
-					}finally {
-						if(ps != null)
-							ps.close();
-						if(con != null)
-							con.close();
-					}
-					
+
+					//Inserisco il nuovo record nell primo slot ID libero
+					if(profileDAO.insertWithID(cw, freeID))
+						utils.UtilityClass.print("###### Inserimento nuovo Content Writer effettuato!"); //da eliminare
+					else
+						utils.UtilityClass.print("###### Inserimento nuovo Content Writer fallito!"); //da eliminare
+
 					return;
+
 				}
 				
 				//inserimento diretto tramite auto-increment
@@ -188,11 +153,7 @@ public class RegistrationS extends HttpServlet {
 				utils.UtilityClass.print(e);
 			}
 
-
-
 		//redirect sulla pagina di attessa per la validazione account
-		return;
-		
 		}
 	}
 

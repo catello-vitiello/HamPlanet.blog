@@ -131,6 +131,41 @@ public class ProfileDAO implements GenericCrudOp<UtenteEntity, Integer, String> 
     }
 
     /********************************************************/
+    /*	           	INSERT HAM_USER WITH ID	            	*/
+    /********************************************************/
+    public boolean insertWithID(UtenteEntity entity , int id) throws SQLException{
+
+        int res=0;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        String sql = "INSERT INTO Ham_user(id, userName, email, passwd, competenze, ruolo) VALUES (?, ?, ?, ?, ?, ?)";
+
+        try{
+
+            connection = ds.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setInt(1, id);
+            preparedStatement.setString(2, entity.getUserName());
+            preparedStatement.setString(3, entity.getEmail());
+            preparedStatement.setString(4, entity.getPasswd());
+            preparedStatement.setString(5, entity.getCompetenze());
+            preparedStatement.setString(6, entity.getRuolo());
+
+            utils.UtilityClass.print(">.Inserimento nuovo UtenteEntity con ID: " + preparedStatement.toString());
+            res = preparedStatement.executeUpdate();
+
+        } finally {
+            if(preparedStatement != null)
+                preparedStatement.close();
+            if(connection != null)
+                connection.close();
+        }
+
+        return res == 1;
+    }
+
+    /********************************************************/
     /*	               	 DELETE HAM_USER	               	*/
     /********************************************************/
     @Override
