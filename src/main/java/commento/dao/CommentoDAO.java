@@ -29,7 +29,7 @@ public class CommentoDAO implements GenericCrudOp<CommentoEntity, Integer, Objec
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String sql = "SELECT * FROM CommentoEntity ";
+        String sql = "SELECT * FROM Commento";
         Collection<CommentoEntity> commentoCollection = new LinkedList<>();
 
 
@@ -37,7 +37,7 @@ public class CommentoDAO implements GenericCrudOp<CommentoEntity, Integer, Objec
         try {
             connection = ds.getConnection();
             ps = connection.prepareStatement(sql);
-            utils.UtilityClass.print(">.GET ALL SU CommentoEntity: " + ps.toString());
+            utils.UtilityClass.print(">.GET ALL SU Commento: " + ps.toString());
 
 
             rs = ps.executeQuery();
@@ -69,7 +69,7 @@ public class CommentoDAO implements GenericCrudOp<CommentoEntity, Integer, Objec
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String sql = "SELECT * FROM CommentoEntity WHERE idpost = ?";
+        String sql = "SELECT * FROM Commento WHERE idpost = ?";
         Collection<CommentoEntity> commentoCollection = new LinkedList<>();
 
 
@@ -110,7 +110,7 @@ public class CommentoDAO implements GenericCrudOp<CommentoEntity, Integer, Objec
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String sql = "SELECT * FROM CommentoEntity WHERE id = ?";
+        String sql = "SELECT * FROM Commento WHERE id = ?";
         CommentoEntity commento = null;
 
         try {
@@ -148,7 +148,7 @@ public class CommentoDAO implements GenericCrudOp<CommentoEntity, Integer, Objec
     public boolean update(CommentoEntity entity) throws SQLException {
         Connection connection = null;
         PreparedStatement ps = null;
-        String sql = "UPDATE CommentoEntity SET contenutocommento = ? WHERE id = ?";
+        String sql = "UPDATE Commento SET contenutocommento = ? WHERE id = ?";
         boolean result = false;
 
         try {
@@ -180,13 +180,13 @@ public class CommentoDAO implements GenericCrudOp<CommentoEntity, Integer, Objec
     public boolean delete(CommentoEntity entity) throws SQLException {
         Connection connection = null;
         PreparedStatement ps = null;
-        String sql = "DELETE FROM CommentoEntity WHERE id = ?";
+        String sql = "DELETE FROM Commento WHERE id = ?";
         boolean result = false;
 
         try {
             connection = ds.getConnection();
             ps = connection.prepareStatement(sql);
-            ps.setInt(2, entity.getId());
+            ps.setInt(1, entity.getId());
             utils.UtilityClass.print(">.DELETE SU CommentoEntity: " + ps.toString());
 
 
@@ -212,7 +212,7 @@ public class CommentoDAO implements GenericCrudOp<CommentoEntity, Integer, Objec
     public boolean insert(CommentoEntity entity) throws SQLException {
         Connection connection = null;
         PreparedStatement ps = null;
-        String sql = "INSERT INTO CommentoEntity(idpost, iduser, contenutocommento) VALUE (?, ?, ?)";
+        String sql = "INSERT INTO Commento(idpost, iduser, contenutocommento) VALUE (?, ?, ?)";
         boolean result = false;
 
         try {
