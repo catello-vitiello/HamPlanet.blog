@@ -3,6 +3,8 @@ package profile.dao;
 import profile.entity.UtenteEntity;
 import profile.entity.UtenteEntity.Role;
 import databaseServices.GenericCrudOp;
+import utils.CifraPassword;
+
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -310,23 +312,31 @@ public class ProfileDAO implements GenericCrudOp<UtenteEntity, Integer, String> 
     	ResultSet rs = null;
     	PreparedStatement ps = null;
     	Connection connection = null;
-    	String sql = "SELECT 1 AS L FROM Ham_user cw WHERE cw.email = ? AND cw.passwd = ?";
+
+
+
+    	String sql = "SELECT passwd FROM Ham_user cw WHERE cw.email = ?";
     	
     	int res = 0;
     	
     	try {
     		
     		connection = ds.getConnection();
+
     		ps = connection.prepareStatement(sql);
     		
     		ps.setString(1, email);
-    		ps.setString(2, password);
+
     		
     		utils.UtilityClass.print(">.Try to login: " + ps.toString());
             rs = ps.executeQuery();
     		
-            while(rs.next())
-            	res = rs.getInt("L");
+            if(rs.next()) {
+                String pass = rs.getString(1);
+                if (CifraPassword.checkPass(pass, password))
+                    res = 1;
+            }
+
             
     	} finally {
     		if(ps != null)
