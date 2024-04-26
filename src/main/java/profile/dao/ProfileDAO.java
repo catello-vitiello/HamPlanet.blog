@@ -104,38 +104,44 @@ public class ProfileDAO implements GenericCrudOp<UtenteEntity, Integer, String> 
     @Override
     public boolean insert(UtenteEntity entity) throws SQLException {
 
-        int res=0;
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        String sql = "INSERT into Ham_user(userName, email, passwd, competenze, ruolo) VALUES (?,?,?,?,?)";
+        //se mi arriva un ID diverso da 0 allora vuol dire che sto inserendo con ID specifico
+        if(entity.getId() != 0){
+            return insertWithID(entity, entity.getId());
+        } else {
 
-        try{
+            int res = 0;
+            Connection connection = null;
+            PreparedStatement preparedStatement = null;
+            String sql = "INSERT into Ham_user(userName, email, passwd, competenze, ruolo) VALUES (?,?,?,?,?)";
 
-            connection = ds.getConnection();
-            preparedStatement = connection.prepareStatement(sql);
+            try {
 
-            preparedStatement.setString(1, entity.getUserName());
-            preparedStatement.setString(2, entity.getEmail());
-            preparedStatement.setString(3, entity.getPasswd());
-            preparedStatement.setString(4, entity.getCompetenze());
-            preparedStatement.setString(5, entity.getRuolo());
+                connection = ds.getConnection();
+                preparedStatement = connection.prepareStatement(sql);
 
-            utils.UtilityClass.print(">.Inserimento nuovo UtenteEntity: " + preparedStatement.toString());
-            res = preparedStatement.executeUpdate();
+                preparedStatement.setString(1, entity.getUserName());
+                preparedStatement.setString(2, entity.getEmail());
+                preparedStatement.setString(3, entity.getPasswd());
+                preparedStatement.setString(4, entity.getCompetenze());
+                preparedStatement.setString(5, entity.getRuolo());
 
-        } finally {
-            if(preparedStatement != null)
-                preparedStatement.close();
-            if(connection != null)
-                connection.close();
+                utils.UtilityClass.print(">.Inserimento nuovo UtenteEntity: " + preparedStatement.toString());
+                res = preparedStatement.executeUpdate();
+
+            } finally {
+                if (preparedStatement != null)
+                    preparedStatement.close();
+                if (connection != null)
+                    connection.close();
+            }
+            return res == 1;
         }
-        return res == 1;
     }
 
     /********************************************************/
     /*	           	INSERT HAM_USER WITH ID	            	*/
     /********************************************************/
-    public boolean insertWithID(UtenteEntity entity , int id) throws SQLException{
+    private boolean insertWithID(UtenteEntity entity , int id) throws SQLException{
 
         int res=0;
         Connection connection = null;

@@ -81,16 +81,19 @@ public class RegistrationS extends HttpServlet {
 				//se esiste
 				if(freeID != -1) {
 
-					//Inserisco il nuovo record nell primo slot ID libero
-					if(profileDAO.insertWithID(u, freeID))
-						utils.UtilityClass.print("###### Inserimento nuovo Utente effettuato!"); //da eliminare
+					//setto su quale ID deve essere inserito il nuovo record
+					u.setId(freeID);
+					//Inserisco il nuovo record nel primo slot ID libero (definito dal campo <freeID>)
+					if(profileDAO.insert(u))
+						utils.UtilityClass.print("###### Inserimento nuovo Utente effettuato con ID: " + freeID +"!"); //da eliminare
 					else
-						utils.UtilityClass.print("###### Inserimento nuovo Utente fallito!"); //da eliminare
+						utils.UtilityClass.print("###### Inserimento nuovo Utente con ID: " + freeID +"fallito!"); //da eliminare
 
 					return;
 				}
 
 				//Inserisco il nuovo record nell primo slot ID libero in coda a quelli esistenti
+				u.setId(0);
 				if(profileDAO.insert(u))
 					utils.UtilityClass.print("###### Inserimento nuovo Utente effettuato!"); //da eliminare
 				else
@@ -134,11 +137,13 @@ public class RegistrationS extends HttpServlet {
 				//se esiste
 				if(freeID != -1) {
 
-					//Inserisco il nuovo record nell primo slot ID libero
-					if(profileDAO.insertWithID(cw, freeID))
-						utils.UtilityClass.print("###### Inserimento nuovo Content Writer effettuato!"); //da eliminare
+					//setto su quale ID deve essere inserito il nuovo record
+					cw.setId(freeID);
+					//Inserisco il nuovo record nel primo slot ID libero (definito dal campo <freeID>)
+					if(profileDAO.insert(cw))
+						utils.UtilityClass.print("###### Inserimento nuovo Content Writer con ID: " + freeID +" effettuato!"); //da eliminare
 					else
-						utils.UtilityClass.print("###### Inserimento nuovo Content Writer fallito!"); //da eliminare
+						utils.UtilityClass.print("###### Inserimento nuovo Content Writer con ID: " + freeID + " fallito!"); //da eliminare
 
 					return;
 
