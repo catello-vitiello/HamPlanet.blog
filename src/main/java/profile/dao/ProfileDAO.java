@@ -1,10 +1,9 @@
 package profile.dao;
 
+import org.json.JSONObject;
 import profile.entity.UtenteEntity;
-import profile.entity.UtenteEntity.Role;
 import databaseServices.GenericCrudOp;
 import utils.CifraPassword;
-
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -376,6 +375,7 @@ public class ProfileDAO implements GenericCrudOp<UtenteEntity, Integer, String> 
             if(rs.next()){
                 cw.setId(rs.getInt("id"));
                 cw.setUserName(rs.getString("userName"));
+                cw.setRuolo(rs.getString("ruolo"));
                 cw.setEmail(rs.getString("email"));
                 cw.setPasswd(rs.getString("passwd"));
                 cw.setCompetenze(rs.getString("competenze"));
@@ -389,7 +389,81 @@ public class ProfileDAO implements GenericCrudOp<UtenteEntity, Integer, String> 
         }
         return cw;
     }
-    
-    
+
+    /********************************************************/
+    /*	                   CHECK STATUS             		*/
+    /********************************************************/
+    public String status(UtenteEntity user) throws SQLException{
+
+        String status = "";
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        String sql = "SELECT p.verify AS status FROM pending p " +
+                "JOIN Ham_user h ON h.id = p.idContent_writer AND h.email = ?";
+
+        try{
+
+            connection = ds.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, user.getEmail());
+
+            utils.UtilityClass.print(">.Status del CW con email: " + user.getEmail() + " ---> " + preparedStatement.toString());
+
+            ResultSet rs = preparedStatement.executeQuery();
+            if(rs.next()){
+                status = rs.getString("status");
+            }
+
+        }finally {
+            if(preparedStatement != null)
+                preparedStatement.close();
+            if(connection != null)
+                connection.close();
+        }
+
+        return status;
+    }
+
+    /********************************************************/
+    /*	                  COMMENTS HYSTORY             		*/
+    /********************************************************/
+    public Collection<JSONObject> getHistoryComments(UtenteEntity user) throws SQLException{
+
+        Collection<JSONObject> commenti = new LinkedList<>();
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        String sql = "SELECT c.contenutoCommento, p.nomePost " +
+                "FROM Commento c " +
+                "JOIN Post p ON p.id = c.idpost " +
+                "JOIN Ham_user h ON h.id = c.iduser AND h.username = ?";
+
+        try{
+
+            connection = ds.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, user.getUserName());
+
+            utils.UtilityClass.print(">.Recupero dei commenti: " + preparedStatement.toString());
+
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()){
+                JSONObject j = new JSONObject();
+                j.put("contenutoCommento", rs.getString("contenutoCommento"));
+                j.put("nomePost", rs.getString("nomePost"));
+
+                commenti.add(j);
+            }
+
+        }finally {
+            if(preparedStatement != null)
+                preparedStatement.close();
+            if(connection != null)
+                connection.close();
+        }
+
+        return commenti;
+    }
     
 }
