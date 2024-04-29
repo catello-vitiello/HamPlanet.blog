@@ -13,14 +13,25 @@ import javax.sql.DataSource;
 import profile.dao.ProfileDAO;
 
 
-@WebServlet("/LoginCWS")
-public class LoginCWS extends HttpServlet {
+@WebServlet("/Login")
+public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+
+	private ProfileDAO profileDAO;
+
+	@Override
+	public void init() throws ServletException {
+		super.init();
+		DataSource ds = (DataSource) super.getServletContext().getAttribute("DataSource");
+		profileDAO = new ProfileDAO(ds);
+
+
+	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
-		DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
-		ProfileDAO model = new ProfileDAO(ds);
+		//DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
+		//ProfileDAO model = new ProfileDAO(ds);
 		
 		String email, password;
 		
@@ -36,11 +47,14 @@ public class LoginCWS extends HttpServlet {
 			try {
 				
 				HttpSession session = request.getSession(false);
-				
-				session.setAttribute("loggato", (boolean) model.login(email, password));
+
+				if (profileDAO.login(email, password)) {
+					session.setAttribute("profile", profileDAO.getByEmail(email));
+				}
+				//session.setAttribute("loggato", (boolean) profileDAO.login(email, password));
 
 				//CifraPassword.checkPass(password, passwordNelDB);
-				session.setAttribute("cw", model.getByEmail(email));
+				//session.setAttribute("cw", profileDAO.getByEmail(email));
 				
 				RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/login.jsp");
 				requestDispatcher.forward(request, response);
@@ -57,8 +71,8 @@ public class LoginCWS extends HttpServlet {
 			
 			HttpSession session = request.getSession(true);
 			
-			session.setAttribute("loggato", (boolean) model.login(email, utils.CifraPassword.toHash(password)));
-			session.setAttribute("cw", model.getByEmail(email));
+			session.setAttribute("loggato", (boolean) profileDAO.login(email, utils.CifraPassword.toHash(password)));
+			session.setAttribute("cw", profileDAO.getByEmail(email));
 			
 			RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/login.jsp");
 			requestDispatcher.forward(request, response);

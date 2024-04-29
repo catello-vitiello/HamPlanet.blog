@@ -10,6 +10,9 @@ public class MockDataSource {
         dataSource.setUrl("jdbc:mysql://sql.freedb.tech:3306/freedb_HPBlog_db");
         dataSource.setUsername("freedb_user_");
         dataSource.setPassword("zf&P@Euaz4cn$yS");
+        dataSource.setDefaultAutoCommit(false);
+        dataSource.setAutoCommitOnReturn(false);
+        dataSource.setRollbackOnReturn(true);
         return dataSource;
     }
 

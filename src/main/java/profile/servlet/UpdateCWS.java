@@ -81,7 +81,7 @@ public class UpdateCWS extends HttpServlet {
 				else
 					utils.UtilityClass.print("###### Aggiornamento Ham_user fallito!"); //da eliminare
 				
-				RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/LoginCWS");
+				RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Login");
 				
 				request.setAttribute("email", cw.getEmail());
 				request.setAttribute("password", cw.getPasswd());
