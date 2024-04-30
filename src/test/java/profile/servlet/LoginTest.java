@@ -51,7 +51,7 @@ class LoginTest {
         when(response.getWriter()).thenReturn(writer);
 
 
-        Login login = mock(Login.class);
+        LoginS login = mock(LoginS.class);
 
         login.doPost(request, response);
 

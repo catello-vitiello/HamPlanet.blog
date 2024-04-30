@@ -10,15 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import org.openqa.selenium.devtools.v85.profiler.model.Profile;
-
 import profile.dao.ProfileDAO;
 
 import profile.entity.UtenteEntity;
 import utils.CifraPassword;
 
-@WebServlet("/UpdateCWS")
-public class UpdateCWS extends HttpServlet {
+@WebServlet("/UpdateProfile")
+public class UpdateProfileS extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -81,7 +79,7 @@ public class UpdateCWS extends HttpServlet {
 				else
 					utils.UtilityClass.print("###### Aggiornamento Ham_user fallito!"); //da eliminare
 				
-				RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Login");
+				RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/LoginS");
 				
 				request.setAttribute("email", cw.getEmail());
 				request.setAttribute("password", cw.getPasswd());

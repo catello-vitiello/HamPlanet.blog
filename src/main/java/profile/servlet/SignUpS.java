@@ -12,8 +12,8 @@ import javax.sql.DataSource;
 import profile.dao.ProfileDAO;
 import profile.entity.UtenteEntity;
 
-@WebServlet("/RegistrationS")
-public class RegistrationS extends HttpServlet {
+@WebServlet("/SignUp")
+public class SignUpS extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private ProfileDAO profileDAO;

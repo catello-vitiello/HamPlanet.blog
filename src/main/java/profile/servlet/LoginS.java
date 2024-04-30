@@ -13,8 +13,8 @@ import javax.sql.DataSource;
 import profile.dao.ProfileDAO;
 
 
-@WebServlet("/Login")
-public class Login extends HttpServlet {
+@WebServlet("/LoginS")
+public class LoginS extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private ProfileDAO profileDAO;
