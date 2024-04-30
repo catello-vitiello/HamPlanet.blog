@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
+
+import navigation.Navigator;
+import navigation.Page;
 import profile.dao.ProfileDAO;
 
 
@@ -71,11 +74,18 @@ public class LoginS extends HttpServlet {
 			
 			HttpSession session = request.getSession(true);
 			
-			session.setAttribute("loggato", (boolean) profileDAO.login(email, utils.CifraPassword.toHash(password)));
-			session.setAttribute("cw", profileDAO.getByEmail(email));
-			
-			RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/login.jsp");
-			requestDispatcher.forward(request, response);
+			 if(profileDAO.login(email, password)) {
+				 session.setAttribute("profile", profileDAO.getByEmail(email));
+
+				 //NAVIGATOR
+				 Navigator navigator = new Navigator();
+				 navigator.setCurrent(new Page(0, Page.Type.HOME));
+				 session.setAttribute("Navigator", navigator);
+
+
+				 RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/index.jsp");
+				 requestDispatcher.forward(request, response);
+			 }
 			
 		}catch (SQLException e) {
 			utils.UtilityClass.print(e);

@@ -1,5 +1,7 @@
 package profile.servlet;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,13 +16,19 @@ public class LogoutS extends HttpServlet {
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		response.setContentType("application/json");
+
+		JSONObject jsonObject = new JSONObject();
+
+
 		HttpSession session = request.getSession(false);
 		
 		if(session != null)
 			session.invalidate();
-		
+
+		response.getWriter().print(jsonObject);
 		response.sendRedirect("login.jsp");
+
 		
 	}
 

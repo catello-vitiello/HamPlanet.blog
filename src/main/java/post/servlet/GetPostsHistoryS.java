@@ -54,6 +54,6 @@ public class GetPostsHistoryS extends HttpServlet {
         }
         resp.getWriter().print(jsonObject);
 
-      
+
     }
 }

@@ -1,6 +1,8 @@
 package post.servlet;
 
 
+import navigation.Navigator;
+import navigation.Page;
 import org.json.JSONObject;
 import post.dao.PostDAO;
 import post.entity.PostEntity;
@@ -10,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -38,6 +41,8 @@ public class PostS extends HttpServlet {
         resp.setContentType("application/json");
         JSONObject jsonObject = new JSONObject();
         String postId = req.getParameter("postId");
+        int id = Integer.parseInt(req.getParameter("pageId"));
+        boolean new_page = Boolean.parseBoolean(req.getParameter("new_page"));
 
 
 
@@ -58,7 +63,17 @@ public class PostS extends HttpServlet {
 
         }
 
+        //NAVIGATION
+        HttpSession session = req.getSession(false);
+        if (session != null) {
+            Navigator navigator = (Navigator) session.getAttribute("Navigator");
+            if (new_page)
+                navigator.save();
+            navigator.setCurrent(new Page(id, Page.Type.POST));
+        }
+
         resp.getWriter().print(jsonObject);
+
 
 
     }

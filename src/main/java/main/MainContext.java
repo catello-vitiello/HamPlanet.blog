@@ -1,4 +1,6 @@
-package utils;
+package main;
+
+import utils.UtilityClass;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -51,6 +53,10 @@ public class MainContext implements ServletContextListener {
 		}
 
 		context.setAttribute("DataSource", ds);
+
+		//set Navigator
+
+
 		UtilityClass.print("Creazione DataSource: "+ ds.toString());
 	}
 
