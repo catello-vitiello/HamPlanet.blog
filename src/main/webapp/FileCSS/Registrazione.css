@@ -1,0 +1,420 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins');
+
+*{
+    margin: 0;
+	padding: 0;
+    font-family: 'Poppins';
+}
+
+
+/*############### POSIZIONE E GRANDEZZA DELLA PAGINA ###############*/
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    overflow-y: scroll;
+}
+
+
+
+/*############### SCROLL BAR LATERALE ###############*/
+::-webkit-scrollbar{
+    width: 10px;
+}
+
+::-webkit-scrollbar-track{
+    background: #b0b0b0;
+}
+
+::-webkit-scrollbar-thumb{
+    background: #b04646;
+    border-radius: 25px;
+}
+
+/*############### POSIZIONE GRANDEZZA FORM ###############*/
+.form-box{
+    position: relative;
+    min-height: 550px;
+    min-width: 450px;
+    max-width: 550px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    background: rgba(255, 0, 0, 0.226);
+    margin: 80px;
+}
+
+
+.form-box::before{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    content: '';
+    z-index: -1;
+    filter: blur(20px);
+    background-color: #d44d46;
+    background-image:  
+        radial-gradient(at 47% 69%, #f7b538 0px, transparent 50%),
+        radial-gradient(at 9% 32%, #db7c26 0px, transparent 50%);
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    max-height: 80%;
+    max-width: 85%;
+    align-items: center;
+    justify-content: center;
+    margin: 10% 5%;
+}
+
+
+
+
+/*############### LOGO ###############*/
+
+/*############### TITOLO ###############*/
+#titolo{
+    color: black;
+    font-size: 36px;
+    text-align: center;
+    
+}
+
+/*############### INFO ###############*/
+#info{
+    color: black;
+    font-size: 20px;
+    text-align: center;
+}
+
+
+/*############### LINK TO LOGIN ###############*/
+.forLog{
+    margin: 10px 0 25px 0;
+}
+
+.forLog p{
+    color: black;
+}
+
+.forLog a{
+    text-decoration: none;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(to right, black, black);
+    background-size: 0 0;
+    background-position: 50% 100%;
+    background-repeat: no-repeat;
+    transition: all .4s;
+}
+
+.forLog a:hover{
+    background-size: 100% 2px;
+}
+
+/*############### INPUTBOX ###############*/
+.inputbox{
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 35px;
+    margin: 20px 0;
+
+}
+
+.inputbox input{
+    width: 100%;
+    height: 100%;
+    outline: none;
+    border: none;
+    border-radius: 25px;
+    background: white;
+    caret-color: #7d1e11;
+    transition: all .3s;
+    padding: 0 45px 0 10px;
+}
+
+/*####  TESTO  ####*/
+.testo{
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    pointer-events: none;
+}
+
+.testo label{
+    transition: all .4s;
+}
+
+/*####  PASSO SOPRA IL MOUSE  ####*/
+.inputbox input:hover{  /*sfondo, quando passo sopra*/
+    background: black;
+}
+
+.inputbox input:hover + .testo label{ /*testo, quando scrivo*/
+    color: white;
+}
+
+/*####  SCRIVO INPUT  ####*/
+.inputbox input:focus{  /*sfondo, quando passo sopra*/
+    background: black;
+    color: white;
+}
+
+.inputbox input:focus + .testo label{  /*testo, quando scrivo*/
+    color: black;
+}
+
+.inputbox input:focus ~ .testo .uno,
+.inputbox input:valid ~ .testo .uno {transform: translateY(-35px);transition-delay: 0ms;}
+.inputbox input:focus ~ .testo .due, 
+.inputbox input:valid ~ .testo .due {transform: translateY(-35px);transition-delay: 50ms;}
+.inputbox input:focus ~ .testo .tre, 
+.inputbox input:valid ~ .testo .tre{transform: translateY(-35px);transition-delay: 100ms;}
+.inputbox input:focus ~ .testo .quattro, 
+.inputbox input:valid ~ .testo .quattro{transform: translateY(-35px);transition-delay: 150ms;}
+.inputbox input:focus ~ .testo .cinque, 
+.inputbox input:valid ~ .testo .cinque{transform: translateY(-35px);transition-delay: 200ms;}
+.inputbox input:focus ~ .testo .sei, 
+.inputbox input:valid ~ .testo .sei{transform: translateY(-35px);transition-delay: 250ms;}
+.inputbox input:focus ~ .testo .sette, 
+.inputbox input:valid ~ .testo .sette{transform: translateY(-35px);transition-delay: 300ms;}
+.inputbox input:focus ~ .testo .otto,
+.inputbox input:valid ~ .testo .otto {transform: translateY(-35px);transition-delay: 350ms;}
+.inputbox input:focus ~ .testo .nove,
+.inputbox input:valid ~ .testo .nove {transform: translateY(-35px);transition-delay: 400ms;}
+.inputbox input:focus ~ .testo .dieci,
+.inputbox input:valid ~ .testo .dieci {transform: translateY(-35px);transition-delay: 450ms;}
+.inputbox input:focus ~ .testo .undici,
+.inputbox input:valid ~ .testo .undici {transform: translateY(-35px);transition-delay: 500ms;}
+.inputbox input:focus ~ .testo .dodici,
+.inputbox input:valid ~ .testo .dodici {transform: translateY(-35px);transition-delay: 550ms;}
+.inputbox input:focus ~ .testo .tredici,
+.inputbox input:valid ~ .testo .tredici {transform: translateY(-35px);transition-delay: 600ms;}
+.inputbox input:focus ~ .testo .quattordici,
+.inputbox input:valid ~ .testo .quattordici {transform: translateY(-35px);transition-delay: 650ms;}
+.inputbox input:focus ~ .testo .quindici,
+.inputbox input:valid ~ .testo .quindici {transform: translateY(-35px);transition-delay: 700ms;}
+.inputbox input:focus ~ .testo .sedici,
+.inputbox input:valid ~ .testo .sedici {transform: translateY(-35px);transition-delay: 750ms;}
+
+
+.inputbox input:valid{   /*sfondo, dopo aver scritto*/
+    background: black;
+    color: white;
+}
+
+.inputbox input:valid + .testo label{  /*testo, dopo aver scritto*/
+    color: black;
+}
+
+
+
+
+/*############### EMAIL ###############*/
+#img_email,
+#img_tel,
+#img_pos,
+#img_username{
+    position: absolute;
+    height: 50px;
+    top: -8px;
+    right: -2px;
+    pointer-events: none;
+}
+
+
+/*############### PASSWORD ###############*/
+#img_pass,
+#img_confPass{
+    position: absolute;
+    height: 30px;
+    top: 4%;
+    right: 2%;
+    cursor: pointer;
+}
+
+
+/*############### CONFERMA PASSWORD ###############*/
+
+
+
+/*############### HR ###############*/
+hr{
+    border: 1px dotted  #888888;
+    border-radius: 10px;
+    width: 100%;
+}
+
+
+
+
+/*############### BUTTON ###############*/
+#buttonReg{
+    width: 100%;
+    height: 50px;
+    background: transparent;
+    border: 2px solid #7d1e11;
+    border-radius: 25px;
+    font-size: 19px;
+    font-weight: bold;
+    margin: 20px 0 0;
+    transition: all .4s;
+}
+
+#buttonReg:hover{  /*quando ci passo con il mouse sopra*/
+    background: white;
+    box-shadow: 0 0 5px #fff, 0 0 25px #fff;
+    border: none;
+    transform: scale(1.025);
+}
+
+
+#buttonReg:focus{  /*quando premo il bottone*/    
+    background: #fff;
+    border: 2px solid white;
+}
+
+
+
+
+/*############### BOTTONE CHECK BOX ##################*/
+.toggler {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 20px 0 0;
+}
+
+.toggler p{
+    font-size: 90%;
+    margin: 0 0 0 2.5%;
+}
+
+.toggler input {
+  display: none;
+}
+
+.toggler label {
+  display: block;
+  position: relative;
+  width: 15%;
+  height: 36px;
+  border: 1px solid #d6d6d6;
+  border-radius: 36px;
+  background: #e4e8e8;
+  cursor: pointer;
+}
+
+.toggler label::after {
+  display: block;
+  border-radius: 100%;
+  background-color: #d7062a;
+  content: '';
+  animation-name: toggler-size;
+  animation-duration: 0.15s;
+  animation-timing-function: ease-out;
+  animation-direction: forwards;
+  animation-iteration-count: 1;
+  animation-play-state: running;
+}
+
+.toggler label::after, .toggler label .toggler-on, .toggler label .toggler-off {
+  position: absolute;
+  top: 50%;
+  left: 25%;
+  width: 26px;
+  height: 26px;
+  transform: translateY(-50%) translateX(-50%);
+  transition: left 0.15s ease-in-out, background-color 0.2s ease-out, width 0.15s ease-in-out, height 0.15s ease-in-out, opacity 0.15s ease-in-out;
+}
+
+.toggler input:checked + label::after, .toggler input:checked + label .toggler-on, .toggler input:checked + label .toggler-off {
+  left: 75%;
+}
+
+.toggler input:checked + label::after {
+  background-color: #50ac5d;
+  animation-name: toggler-size2;
+}
+
+.toggler .toggler-on, .toggler .toggler-off {
+  opacity: 1;
+  z-index: 2;
+}
+
+.toggler input:checked + label .toggler-off, .toggler input:not(:checked) + label .toggler-on {
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+
+.toggler .path {
+  fill: none;
+  stroke: #fefefe;
+  stroke-width: 7px;
+  stroke-linecap: round;
+  stroke-miterlimit: 10;
+}
+
+@keyframes toggler-size {
+  0%, 100% {
+    width: 26px;
+    height: 26px;
+  }
+
+  50% {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@keyframes toggler-size2 {
+  0%, 100% {
+    width: 26px;
+    height: 26px;
+  }
+
+  50% {
+    width: 20px;
+    height: 20px;
+  }
+}
+ 
+
+/*####################   CAMPO DI TESTO   ##########################*/
+#textBox{
+    height: 0px;
+    width: 100%;
+    display: flex;
+
+
+    transition: .5s all;
+    margin: 20px 0;
+}
+
+
+#descriptionCW{
+    height: 100%;
+    width: calc(100% - 10px);  
+    background: white; 
+    padding: 5px;  
+    resize: none; 
+    display: none;
+
+    border: none;
+    border-radius: 10px;
+}
+
+
+#descriptionCW:focus{
+    outline: none;
+}

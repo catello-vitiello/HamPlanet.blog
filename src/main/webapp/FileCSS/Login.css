@@ -1,0 +1,251 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins');
+
+*{  
+    margin: 0;
+	padding: 0;
+    font-family: 'Poppins';
+}
+
+
+/*############### POSIZIONE E GRANDEZZA DELLA PAGINA ###############*/
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: white;
+}
+
+
+/*############### POSIZIONE E GRANDEZZA DELLA FORM ###############*/
+.form-box{
+    position: relative;
+    display: flex;
+    min-width: 450px;
+    min-height: 550px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    background: rgba(255, 0, 0, 0.226);
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 80%;
+    max-height: 80%;
+    margin: 10% 0;
+}
+
+.form-box::before{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    content: "";
+    filter: blur(20px);
+    z-index: -1;
+    background-color: #d44d46;
+    background-image:  
+        radial-gradient(at 47% 69%, #f7b538 0px, transparent 50%),
+        radial-gradient(at 9% 32%, #db7c26 0px, transparent 50%);
+    /*background-color: #d44d46;
+    background-image:  
+        radial-gradient(at 47% 69%, #f7b538 0px, transparent 50%),
+        radial-gradient(at 9% 32%, #db7c26 0px, transparent 50%);*/
+}
+
+
+/*##############   LOGO EMAIL   ##############*/
+#img_email{
+    position: absolute;
+    height: 50px;
+    top: -8px;
+    right: -2px;
+    pointer-events: none;
+}
+
+/*##############   LOGO OCCHIO   ##############*/
+#img_pass{
+    position: absolute;
+    height: 30px;
+    top: 4%;
+    right: 2%;
+    cursor: pointer;
+}
+
+
+/*###############   LOGO   ###############*/
+#logo{
+    height: 250px;
+    margin: -60px;
+    margin-bottom: -40px;
+}
+
+
+
+/*############### TITOLO ###############*/
+#titolo{
+    color: black;
+    font-size: 36px;
+}
+
+
+/*############### TESTO SOTTO IL TITOLO ###############*/
+#sott{
+    color: black;
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+
+/*############### EMAIL E PASSWORD ###############*/
+.inputbox{
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 35px;
+    margin: 20px 0;
+}
+
+.inputbox input{
+    width: 100%;
+    height: 35px;
+    outline: none;
+    border: none;
+    background: white;
+    border-radius: 20px;
+    padding: 0 45px 0 10px;
+    caret-color: #7d1e11;
+    transition: all .3s;
+    
+}
+
+/*####  TESTO  ####*/
+.testo{
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    pointer-events: none;
+}
+
+.testo label{
+    transition: all .4s;
+}
+
+/*####  PASSO SOPRA IL MOUSE  ####*/
+.inputbox input:hover{  /*sfondo, quando passo sopra*/
+    background: black;
+}
+
+.inputbox input:hover + .testo label{ /*testo, quando scrivo*/
+    color: white;
+}
+
+/*####  SCRIVO INPUT  ####*/
+.inputbox input:focus{  /*sfondo, quando passo sopra*/
+    background: black;
+    color: white;
+}
+
+.inputbox input:focus + .testo label{  /*testo, quando scrivo*/
+    color: black;
+}
+
+.inputbox input:focus ~ .testo .uno,
+.inputbox input:valid ~ .testo .uno {transform: translateY(-35px);transition-delay: 0ms;}
+.inputbox input:focus ~ .testo .due, 
+.inputbox input:valid ~ .testo .due {transform: translateY(-35px);transition-delay: 50ms;}
+.inputbox input:focus ~ .testo .tre, 
+.inputbox input:valid ~ .testo .tre{transform: translateY(-35px);transition-delay: 100ms;}
+.inputbox input:focus ~ .testo .quattro, 
+.inputbox input:valid ~ .testo .quattro{transform: translateY(-35px);transition-delay: 150ms;}
+.inputbox input:focus ~ .testo .cinque, 
+.inputbox input:valid ~ .testo .cinque{transform: translateY(-35px);transition-delay: 200ms;}
+.inputbox input:focus ~ .testo .sei, 
+.inputbox input:valid ~ .testo .sei{transform: translateY(-35px);transition-delay: 250ms;}
+.inputbox input:focus ~ .testo .sette, 
+.inputbox input:valid ~ .testo .sette{transform: translateY(-35px);transition-delay: 300ms;}
+.inputbox input:focus ~ .testo .otto,
+.inputbox input:valid ~ .testo .otto {transform: translateY(-35px);transition-delay: 350ms;}
+
+
+.inputbox input:valid{   /*sfondo, dopo aver scritto*/
+    background: black;
+    color: white;
+}
+
+.inputbox input:valid + .testo label{  /*testo, dopo aver scritto*/
+    color: black;
+}
+
+
+
+
+/*############### PASSWORD DIMENTICA ###############*/
+.forgotPass a{
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    background: linear-gradient(to right, black, black);
+    background-size: 0 0;
+    background-repeat: no-repeat;
+    background-position: 50% 100%;    
+    transition: all .4s;
+}
+
+.forgotPass a:hover{
+    background-size: 100% 2px;
+}
+
+
+/*############### BOTTONE ###############*/
+#buttonLogin{
+    width: 100%;
+    height: 50px;
+    background: transparent;
+    border: 2px solid #7d1e11;
+    border-radius: 25px;
+    font-size: 19px;
+    font-weight: bold;
+    margin: 15px 0;
+    transition: all .4s;
+}
+
+#buttonLogin:hover{  /*quando ci passo con il mouse sopra*/
+    background: white;
+    box-shadow: 0 0 5px #fff, 0 0 25px #fff;
+    border: none;
+}
+
+
+#buttonLogin:focus{  /*quando premo il bottone*/    
+    background: #fff;
+    border: 2px solid white;
+}
+
+
+/*############### LINK CREAZIONE ACCOUNT ###############*/
+.forReg p{
+    color: black;
+}
+
+.forReg a{
+    text-decoration: none;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(to right, black, black);
+    background-size: 0 0;
+    background-position: 50% 100%;
+    background-repeat: no-repeat;
+    transition: all .4s;
+}
+
+.forReg a:hover{
+    background-size: 100% 2px ;
+}
+
+

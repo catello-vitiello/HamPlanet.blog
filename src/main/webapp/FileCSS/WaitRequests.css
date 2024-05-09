@@ -1,0 +1,348 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins');
+
+*{
+    margin: 0;
+	padding: 0;
+    font-family: 'Poppins';
+}
+
+:root{
+    /*COLORI SFONDI*/
+    /*--color_sfondo: #1b1b1b;*/
+    --color_sfondo: #202020;
+    --color_backLeftRight: #333;
+
+    --color_testo: #fff;
+}
+
+
+/*############### POSIZIONE E GRANDEZZA DELLA PAGINA ###############*/
+body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: end;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+
+    background: var(--color_sfondo);
+}
+
+
+
+/*############### SCROLL BAR LATERALE ###############*/
+::-webkit-scrollbar{
+    width: 10px;
+}
+
+
+::-webkit-scrollbar-thumb{
+    background: rgb(76, 76, 76);
+    border-radius: 25px;
+}
+
+
+
+/*############### CONTENITORE PAGINA ###############*/
+#boxComponent{
+    width: 100%;
+    min-height: calc(99% - 40px);
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/*############### PARTE SINISTRA ###############*/
+#left{
+    height: calc(100% - 40px);
+    width: calc(50% - 30px);
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    bottom: 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 20px;
+    
+    background: var(--color_backLeftRight);
+
+}
+
+
+
+/*############### PARTE DESTRA ###############*/
+#right{
+    height: calc(100% - 40px);
+    width: calc(50% - 35px);
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    bottom: 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+    border-radius: 20px;
+
+    background: var(--color_backLeftRight);
+}
+
+
+/*BOX TITOLO*/
+.title{
+    height: 5%;
+    width: 90%;
+    display: flex;
+    align-items: center;
+}
+
+.title p{
+    font-size: 120%;
+    font-weight: 600;
+    color: rgb(242, 216, 184);
+    letter-spacing: 1px;
+}
+
+
+
+/*CONTENITORE DI TUTTE LE RICHIESTE*/
+.boxElement{
+    position: relative;
+    height: 85%;
+    width: 90%;
+
+    display: block;
+    flex-direction: column;
+
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+}
+
+
+.requestBox{
+    height: 10%;
+    width: 99%;
+    margin: 2% 0 4%;
+
+    display: flex;
+
+    transition: all .4s;
+}
+
+
+
+/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  DETTAGLI DELL'USER   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+.userInfo{
+    height: 100%;
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    border: 2px solid white;
+    border-radius: 50px;
+    transition: all .4s;
+}
+
+.userInfo hr{
+    width: calc(100% - 4vh);
+    border: 1px solid  rgb(106, 106, 106);
+    border-radius: 20px;
+}
+
+
+.titInfo{
+    width: calc(100% - 4vh);
+    margin-top: 1%;
+    color: #E92323;
+    display: flex;
+    transition: all .4s;
+}
+
+.userInfo:hover .titInfo{
+    margin-top: 4%;
+    justify-content: center;
+}
+
+
+.desInfo{
+    width: calc(100% - 4vh);
+    color: rgba(143, 143, 143, 0.81);
+}
+
+@keyframes textBig{
+    100%{   
+        white-space: inherit;
+    }
+}
+
+.userInfo:hover .desInfo{ 
+    animation: textBig  ease-in-out 0.3s forwards;
+}
+
+
+.userInfo p{
+    margin-left: 2vh;
+    margin-right: 2vh;   
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+
+
+
+.buttonRequest{
+    height: 8vh;
+    width: 8vh;
+    position: absolute;
+
+    border-radius: 50px;
+    background: #333;
+    background-size: 50px;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    cursor: pointer;
+
+    transition: all .4s ease;
+    margin: 0 0 0 1vh;
+    z-index: 0;
+
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.164);
+}
+
+
+.buttonA{
+    right: 10vh;
+    border: 3px solid #4AC347;
+
+    background-image: url("D:\\Document\\catello\\icon\\email_letter\\accept3_GREEN.svg");
+}
+
+
+.buttonR{
+    right: 1vh;
+    border: 3px solid #E92323;
+
+    background-image: url("D:\\Document\\catello\\icon\\email_letter\\reject3_RED.svg");
+}
+
+
+
+
+
+
+
+
+/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  SEZIONE POST   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+.boxPost{
+    width: 99%;
+    height: 10%;
+
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+
+    margin: 2% 0 4%;
+}
+
+
+.post{
+    width: calc(98% - 8vh);
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+
+    border: 2px solid white;
+    border-radius: 50px;
+    transition: all .3s;
+}
+
+.post p{
+
+    font-weight: 600;
+    color: #E92323;
+    margin-left: 2%;
+}
+
+
+
+
+
+
+/*BOTTONE CESTINO*/
+.button {
+    width: 8vh;
+    height: 8vh;
+    border-radius: 50px;
+    background-color: rgb(20, 20, 20);
+    border: none;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.164);
+    cursor: pointer;
+    transition-duration: .3s;
+    overflow: hidden;
+    position: relative;
+
+    
+}
+  
+.svgIcon {
+    width: 20%;
+    transition-duration: .3s;
+}
+  
+.svgIcon path {
+    fill: white;
+}
+  
+.button:hover {
+    width: 20%;
+    border-radius: 100px;
+    transition-duration: .3s;
+    background-color: rgb(255, 69, 69);
+    align-items: center;
+}
+
+.button:hover + .post{
+    width: 78%;
+}
+  
+.button:hover .svgIcon {
+    width: 50px;
+    transition-duration: .3s;
+    transform: translateY(60%);
+  }
+  
+.button::before {
+    position: absolute;
+    top: -20px;
+    content: "Delete";
+    color: white;
+    transition-duration: .3s;
+    font-size: 2px;
+}
+  
+.button:hover::before {
+    font-size: 13px;
+    opacity: 1;
+    transform: translateY(30px);
+    transition-duration: .3s;
+}
