@@ -65,8 +65,8 @@ public class CifraPassword {
 		generator.generateBytes(toCheck.toCharArray(), result);
 		String passwordHashed = Base64.getEncoder().encodeToString(result);
 
-		System.out.println(hashedPassword);
-		System.out.println(passwordHashed);
+		//System.out.println(hashedPassword);
+		//System.out.println(passwordHashed);
 		return hashedPassword.equals(passwordHashed);
 
 

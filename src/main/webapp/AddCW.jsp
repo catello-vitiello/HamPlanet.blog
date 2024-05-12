@@ -9,7 +9,7 @@
     
     <div>Per registrazione utente basta non compilare il campo relativo alle competenze<br></div>
 
-    <form action="RegistrationS" method="post">
+    <form action="SignUp" method="post">
         <br><br>
         <h3>NUOVO CONTENT_WRITER</h3>
         <br>
