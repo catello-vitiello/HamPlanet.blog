@@ -264,7 +264,7 @@ public class PostDAO implements GenericCrudOp<PostEntity, Integer, Object> {
         Connection connection = null;
         PreparedStatement ps = null;
         boolean result = false;
-        String sql = "DELETE FROM " + LIKE_TABLE + " WHERE EXISTS (SELECT * FROM Like_ WHERE post_id = ? AND user_id = ?)";
+        String sql = "DELETE FROM " + LIKE_TABLE + " l WHERE l.id_post = ? AND l.id_user = ?";
 
         try {
             connection = ds.getConnection();
@@ -296,7 +296,7 @@ public class PostDAO implements GenericCrudOp<PostEntity, Integer, Object> {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
         ResultSet rs = null;
-		String sql = "SELECT * FROM " + LIKE_TABLE + " WHERE user_id = ? AND post_id = ?";
+		String sql = "SELECT * FROM " + LIKE_TABLE + " WHERE id_user = ? AND id_post = ?";
         boolean result = false;
 
         try {
