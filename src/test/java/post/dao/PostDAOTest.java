@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import post.entity.PostEntity;
-import profile.dao.ProfileDAO;
 
 import java.sql.SQLException;
 

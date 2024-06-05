@@ -59,7 +59,7 @@ public class LoginS extends HttpServlet {
 				//CifraPassword.checkPass(password, passwordNelDB);
 				//session.setAttribute("cw", profileDAO.getByEmail(email));
 				
-				RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/login.jsp");
+				RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("./WaitPage.html"); //area utente
 				requestDispatcher.forward(request, response);
 				
 				return;
