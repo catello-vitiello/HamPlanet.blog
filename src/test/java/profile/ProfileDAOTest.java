@@ -101,7 +101,7 @@ public class ProfileDAOTest {
     public void insertUtenteID() throws SQLException{
 
         UtenteEntity u = new UtenteEntity();
-        u.setId(100);
+        u.setId(1000);
         u.setUserName("Uname");
         u.setEmail("email");
         u.setPasswd("passwd");
@@ -116,7 +116,7 @@ public class ProfileDAOTest {
     public void insertContentWriterID() throws SQLException{
 
         UtenteEntity u = new UtenteEntity();
-        u.setId(100);
+        u.setId(1000);
         u.setUserName("Uname");
         u.setEmail("email");
         u.setPasswd("passwd");
@@ -132,7 +132,7 @@ public class ProfileDAOTest {
     public void insertSupervisoreID() throws SQLException{
 
         UtenteEntity u = new UtenteEntity();
-        u.setId(100);
+        u.setId(1000);
         u.setUserName("Uname");
         u.setEmail("email");
         u.setPasswd("passwd");

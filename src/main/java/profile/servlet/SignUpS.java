@@ -1,6 +1,7 @@
 package profile.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
+
+import org.json.JSONObject;
 import profile.dao.ProfileDAO;
 import profile.entity.UtenteEntity;
 
@@ -34,6 +37,9 @@ public class SignUpS extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		JSONObject obj = new JSONObject();
+		PrintWriter out = response.getWriter();
 
 		UtenteEntity cw = new UtenteEntity();
 
@@ -67,11 +73,27 @@ public class SignUpS extends HttpServlet {
 
 				if((boolean) request.getAttribute("rispostaEmail")) {
 					utils.UtilityClass.print("###### Email gia in uso!"); //da eliminare
+
+					obj.put("username", username);
+					obj.put("email", email);
+					obj.put("ruolo", UtenteEntity.Role.utente);
+					obj.put("errore", "Email gia in uso");
+
+					out.print(obj);
+
 					return;
 				}
 
 				if((boolean) request.getAttribute("rispostaUserName")) {
 					utils.UtilityClass.print("###### UserName gia in uso!"); //da eliminare
+
+					obj.put("username", username);
+					obj.put("email", email);
+					obj.put("ruolo", UtenteEntity.Role.utente);
+					obj.put("errore", "Username gia in uso");
+
+					out.print(obj);
+
 					return;
 				}
 
@@ -84,24 +106,55 @@ public class SignUpS extends HttpServlet {
 					//setto su quale ID deve essere inserito il nuovo record
 					u.setId(freeID);
 					//Inserisco il nuovo record nel primo slot ID libero (definito dal campo <freeID>)
-					if(profileDAO.insert(u))
-						utils.UtilityClass.print("###### Inserimento nuovo Utente effettuato con ID: " + freeID +"!"); //da eliminare
-					else
+					if(profileDAO.insert(u)) {
+						utils.UtilityClass.print("###### Inserimento nuovo Utente effettuato con ID: " + freeID + "!"); //da eliminare
+
+						obj.put("username", username);
+						obj.put("email", email);
+						obj.put("ruolo", UtenteEntity.Role.utente);
+
+						out.print(obj);
+
+					} else {
 						utils.UtilityClass.print("###### Inserimento nuovo Utente con ID: " + freeID +"fallito!"); //da eliminare
 
+					obj.put("username", username);
+					obj.put("email", email);
+					obj.put("ruolo", UtenteEntity.Role.utente);
+					obj.put("errore", "###### Inserimento nuovo Utente con ID: " + freeID + "fallito!");
+
+					out.print(obj);
+
 					return;
+					}
 				}
 
 				//Inserisco il nuovo record nell primo slot ID libero in coda a quelli esistenti
 				u.setId(0);
-				if(profileDAO.insert(u))
+				if(profileDAO.insert(u)) {
 					utils.UtilityClass.print("###### Inserimento nuovo Utente effettuato!"); //da eliminare
-				else
+
+					obj.put("username", username);
+					obj.put("email", email);
+					obj.put("ruolo", UtenteEntity.Role.utente);
+
+					out.print(obj);
+
+				}else {
 					utils.UtilityClass.print("###### Inserimento nuovo Utente fallito!"); //da eliminare
+
+					obj.put("username", username);
+					obj.put("email", email);
+					obj.put("ruolo", UtenteEntity.Role.utente);
+					obj.put("errore", "###### Inserimento nuovo Utente fallito!");
+
+					out.print(obj);
+
+				}
 			}catch (SQLException e) {
 				utils.UtilityClass.print(e);
 			}
-			
+
 			//redirect su homePage
 /*********************************************************************************************************/
 //parte la gestione per la registrazione Content Writer
@@ -123,11 +176,26 @@ public class SignUpS extends HttpServlet {
 
 				if((boolean) request.getAttribute("rispostaEmail")) {
 					utils.UtilityClass.print("###### Email gia in uso!"); //da eliminare
+
+					obj.put("username", username);
+					obj.put("email", email);
+					obj.put("ruolo", UtenteEntity.Role.content_writer);
+					obj.put("errore", "Email gia in uso");
+
+					out.print(obj);
+
 					return;
 				}
 
 				if((boolean) request.getAttribute("rispostaUserName")) {
 					utils.UtilityClass.print("###### UserName gia in uso!"); //da eliminare
+
+					obj.put("username", username);
+					obj.put("email", email);
+					obj.put("ruolo", UtenteEntity.Role.content_writer);
+					obj.put("errore", "Username gia in uso");
+					out.print(obj);
+
 					return;
 				}
 
@@ -145,14 +213,28 @@ public class SignUpS extends HttpServlet {
 					else
 						utils.UtilityClass.print("###### Inserimento nuovo Content Writer con ID: " + freeID + " fallito!"); //da eliminare
 
+					obj.put("username", username);
+					obj.put("email", email);
+					obj.put("competenze", competenze);
+					obj.put("ruolo", UtenteEntity.Role.content_writer);
+
+					out.print(obj);
+
 					return;
 
 				}
 				
 				//inserimento diretto tramite auto-increment
-				if(profileDAO.insert(cw))
+				if(profileDAO.insert(cw)) {
 					utils.UtilityClass.print("###### Inserimento nuovo Content Writer effettuato!"); //da eliminareelse
-				else
+					obj.put("username", username);
+					obj.put("email", email);
+					obj.put("competenze", competenze);
+					obj.put("ruolo", UtenteEntity.Role.content_writer);
+
+					out.print(obj);
+
+				} else
 					utils.UtilityClass.print("###### Inserimento nuovo Content Writer fallito!"); //da eliminare
 			}catch (SQLException e) {
 				utils.UtilityClass.print(e);
