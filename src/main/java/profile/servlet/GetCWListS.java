@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import org.json.JSONObject;
 import profile.dao.ProfileDAO;
 import profile.entity.UtenteEntity;
 
@@ -31,12 +34,21 @@ public class GetCWListS extends HttpServlet {
 		}
 		
 		try {
-			
+
 			Collection<UtenteEntity> creator = model.getAll(filtro);
             Iterator<UtenteEntity> it = creator.iterator();
             while (it.hasNext()) {
                 UtenteEntity cw = it.next();
-                utils.UtilityClass.print(cw.toString()); //da eliminare
+
+				JSONObject obj = new JSONObject();
+				obj.put("ID", cw.getId());
+				obj.put("username", cw.getUserName());
+				if(filtro.equalsIgnoreCase("content_writer"))
+					obj.put("competences", cw.getCompetenze());
+				obj.put("role", cw.getRuolo());
+
+				response.getWriter().print(obj);
+
             }
 
             request.setAttribute("CW", model.getAll(filtro));

@@ -38,6 +38,7 @@ public class SignUpS extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		response.setContentType("application/json");
 		JSONObject obj = new JSONObject();
 		PrintWriter out = response.getWriter();
 

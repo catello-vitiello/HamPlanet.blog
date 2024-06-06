@@ -8,10 +8,11 @@ import java.util.Collection;
 
 public class ProfileDAOTest {
 
-    static ProfileDAO profileDAO;
+    static ProfileDAO profileDAO, pDao;
     @BeforeAll
     static void setUp() {
         profileDAO = new ProfileDAO(utils.MockDataSource.createDataSource());
+        pDao = new ProfileDAO(utils.MockDataSourceReal.createDataSource());
     }
 
     //Test retrive all  user with content writer role
@@ -145,10 +146,12 @@ public class ProfileDAOTest {
     @Test
     public void deleteHamUser() throws SQLException{
 
+        UtenteEntity original = pDao.getByID(100);
         UtenteEntity u = new UtenteEntity();
-        u.setEmail("?");
+        u.setEmail("rgb@outlook.it");
 
-        Assertions.assertTrue(profileDAO.delete(u));
+        Assertions.assertTrue(pDao.delete(u));
+        pDao.insert(original);
 
     }
 
