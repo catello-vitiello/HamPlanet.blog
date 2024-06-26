@@ -45,6 +45,7 @@ public class GetCWListS extends HttpServlet {
 				obj.put("username", cw.getUserName());
 				if(filtro.equalsIgnoreCase("content_writer"))
 					obj.put("competences", cw.getCompetenze());
+
 				obj.put("role", cw.getRuolo());
 
 				response.getWriter().print(obj);
@@ -53,7 +54,7 @@ public class GetCWListS extends HttpServlet {
 
             request.setAttribute("CW", model.getAll(filtro));
             RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/CWView.jsp");
-			requestDispatcher.forward(request, response);
+			//requestDispatcher.forward(request, response);
 			return;
             
 		} catch (SQLException e) {

@@ -47,7 +47,7 @@ public class PostDAOTest {
         PostEntity p = new PostEntity();
         p.setNomePost("POST_TEST");
         p.setTesto("POST_TESTO_TEST");
-        p.setIdContent_Writer(11);
+        p.setIdContent_Writer(10);
 
         Assertions.assertTrue(postDAO.insert(p));
 

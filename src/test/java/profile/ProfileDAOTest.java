@@ -148,7 +148,7 @@ public class ProfileDAOTest {
 
         UtenteEntity original = pDao.getByID(100);
         UtenteEntity u = new UtenteEntity();
-        u.setEmail("rgb@outlook.it");
+        u.setEmail("NN@n.it");
 
         Assertions.assertTrue(pDao.delete(u));
         pDao.insert(original);
@@ -205,7 +205,7 @@ public class ProfileDAOTest {
     @Test
     public void checkCredentials() throws SQLException{
 
-        Assertions.assertTrue(profileDAO.login("m.rossi@live.it1", "a"));
+        Assertions.assertTrue(profileDAO.login("NN@n.it", "a"));
 
     }
 

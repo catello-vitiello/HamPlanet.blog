@@ -40,7 +40,6 @@ public class SignUpS extends HttpServlet {
 
 		response.setContentType("application/json");
 		JSONObject obj = new JSONObject();
-		PrintWriter out = response.getWriter();
 
 		UtenteEntity cw = new UtenteEntity();
 
@@ -80,7 +79,7 @@ public class SignUpS extends HttpServlet {
 					obj.put("ruolo", UtenteEntity.Role.utente);
 					obj.put("errore", "Email gia in uso");
 
-					out.print(obj);
+					response.getWriter().print(obj);
 
 					return;
 				}
@@ -93,7 +92,7 @@ public class SignUpS extends HttpServlet {
 					obj.put("ruolo", UtenteEntity.Role.utente);
 					obj.put("errore", "Username gia in uso");
 
-					out.print(obj);
+					response.getWriter().print(obj);
 
 					return;
 				}
@@ -105,7 +104,7 @@ public class SignUpS extends HttpServlet {
 				if(freeID != -1) {
 
 					//setto su quale ID deve essere inserito il nuovo record
-					u.setId(freeID);
+					u.setId(freeID+1);
 					//Inserisco il nuovo record nel primo slot ID libero (definito dal campo <freeID>)
 					if(profileDAO.insert(u)) {
 						utils.UtilityClass.print("###### Inserimento nuovo Utente effettuato con ID: " + freeID + "!"); //da eliminare
@@ -114,7 +113,7 @@ public class SignUpS extends HttpServlet {
 						obj.put("email", email);
 						obj.put("ruolo", UtenteEntity.Role.utente);
 
-						out.print(obj);
+						response.getWriter().print(obj);
 
 					} else {
 						utils.UtilityClass.print("###### Inserimento nuovo Utente con ID: " + freeID +"fallito!"); //da eliminare
@@ -124,7 +123,7 @@ public class SignUpS extends HttpServlet {
 					obj.put("ruolo", UtenteEntity.Role.utente);
 					obj.put("errore", "###### Inserimento nuovo Utente con ID: " + freeID + "fallito!");
 
-					out.print(obj);
+						response.getWriter().print(obj);
 
 					return;
 					}
@@ -139,7 +138,7 @@ public class SignUpS extends HttpServlet {
 					obj.put("email", email);
 					obj.put("ruolo", UtenteEntity.Role.utente);
 
-					out.print(obj);
+					response.getWriter().print(obj);
 
 				}else {
 					utils.UtilityClass.print("###### Inserimento nuovo Utente fallito!"); //da eliminare
@@ -149,7 +148,7 @@ public class SignUpS extends HttpServlet {
 					obj.put("ruolo", UtenteEntity.Role.utente);
 					obj.put("errore", "###### Inserimento nuovo Utente fallito!");
 
-					out.print(obj);
+					response.getWriter().print(obj);
 
 				}
 			}catch (SQLException e) {
@@ -183,7 +182,7 @@ public class SignUpS extends HttpServlet {
 					obj.put("ruolo", UtenteEntity.Role.content_writer);
 					obj.put("errore", "Email gia in uso");
 
-					out.print(obj);
+					response.getWriter().print(obj);
 
 					return;
 				}
@@ -195,7 +194,7 @@ public class SignUpS extends HttpServlet {
 					obj.put("email", email);
 					obj.put("ruolo", UtenteEntity.Role.content_writer);
 					obj.put("errore", "Username gia in uso");
-					out.print(obj);
+					response.getWriter().print(obj);
 
 					return;
 				}
@@ -219,7 +218,7 @@ public class SignUpS extends HttpServlet {
 					obj.put("competenze", competenze);
 					obj.put("ruolo", UtenteEntity.Role.content_writer);
 
-					out.print(obj);
+					response.getWriter().print(obj);
 
 					return;
 
@@ -233,7 +232,7 @@ public class SignUpS extends HttpServlet {
 					obj.put("competenze", competenze);
 					obj.put("ruolo", UtenteEntity.Role.content_writer);
 
-					out.print(obj);
+					response.getWriter().print(obj);
 
 				} else
 					utils.UtilityClass.print("###### Inserimento nuovo Content Writer fallito!"); //da eliminare

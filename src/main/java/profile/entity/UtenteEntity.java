@@ -60,7 +60,7 @@ public class UtenteEntity implements Serializable, Cloneable{
     }
 
     public String getRuolo() {
-		return ruolo.toString();
+		return String.valueOf(ruolo);
 	}
 
 	public void setRuolo(String ruolo) {
