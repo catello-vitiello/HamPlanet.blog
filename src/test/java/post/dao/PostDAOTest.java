@@ -1,18 +1,24 @@
 package post.dao;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 import post.entity.PostEntity;
-
 import java.sql.SQLException;
 
 public class PostDAOTest {
 
+    @AfterClass
+    public static void end(){
+        System.out.println("\nEnd of the Functional Test on Post!\n\n");
+    }
+
     static PostDAO postDAO;
 
-    @BeforeAll
-    static void setUp() {
+    @BeforeClass
+    public static void setUp() {
+        System.out.println("Start of the Functional Test on Post!\n");
         postDAO = new PostDAO(utils.MockDataSource.createDataSource());
     }
 

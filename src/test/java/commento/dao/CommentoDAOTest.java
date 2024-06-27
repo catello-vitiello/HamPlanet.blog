@@ -1,48 +1,50 @@
 package commento.dao;
 
 import commento.entity.CommentoEntity;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-
-import javax.sql.DataSource;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import java.util.Collection;
-
 import static org.junit.jupiter.api.Assertions.*;
 
-import static org.mockito.Mockito.*;
 
-class CommentoDAOTest {
+public class CommentoDAOTest {
+
+    @AfterClass
+    public static void end(){
+        System.out.println("\nEnd of the Functional Test on Commento!\n\n");
+    }
 
     static CommentoDAO dao;
-    @BeforeAll
-    static void setUpBeforeClass() throws Exception {
+    @BeforeClass
+    public static void setUpBeforeClass() {
+        System.out.println("Start of the Functional Test on Commento!\n");
         dao = new CommentoDAO(utils.MockDataSource.createDataSource());
 
     }
 
     @Test
-    void getAll() throws Exception {
+    public void getAll() throws Exception {
         Collection<CommentoEntity> collection = dao.getAll("");
         assertNotNull(collection);
     }
 
     @Test
-    void getAllByPost() throws Exception{
+    public void getAllByPost() throws Exception{
         int id = 1;
         Collection<CommentoEntity> collection = dao.getAllByPost(id);
         assertNotNull(collection);
     }
 
     @Test
-    void getByID() throws Exception{
+    public void getByID() throws Exception{
         int id = 1;
         CommentoEntity commento = dao.getByID(id);
         assertNotNull(commento);
     }
 
     @Test
-    void update() throws Exception{
+    public void update() throws Exception{
         CommentoEntity commento = new CommentoEntity();
         commento.setIdUtente(5);
         commento.setContenutoCommento("commento test update");
@@ -55,7 +57,7 @@ class CommentoDAOTest {
     }
 
     @Test
-    void delete() throws Exception{
+    public void delete() throws Exception{
         CommentoEntity commento = new CommentoEntity();
         commento.setId(2);
         dao.delete(commento);
@@ -66,7 +68,7 @@ class CommentoDAOTest {
     }
 
     @Test
-    void insert() throws Exception{
+    public void insert() throws Exception{
         CommentoEntity commento = new CommentoEntity();
         commento.setIdUtente(5);
         commento.setContenutoCommento("commento test insert");

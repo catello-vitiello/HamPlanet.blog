@@ -1,5 +1,7 @@
 package main;
 
+import utils.CifraPassword;
+
 import java.sql.*;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -39,7 +41,7 @@ public class EntryPointFAT {
             return -1;
         }
 
-    public static void main(String[] args){
+    public static void mainFreeID(){
 
         HashSet<Integer> set = new HashSet<>();
 
@@ -71,6 +73,19 @@ public class EntryPointFAT {
         }
 
         System.out.println(findFreeID(set));
+
+    }
+
+    public static String toHahPswd(String pass){
+            return CifraPassword.toHash(pass);
+    }
+
+    /****************************************************************************/
+
+    public static void main(String[] args){
+
+        System.out.println(toHahPswd("test"));
+//        mainFreeID();
 
     }
 

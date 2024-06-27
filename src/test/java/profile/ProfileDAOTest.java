@@ -1,5 +1,9 @@
 package profile;
 
+
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.AfterClass;
 import org.junit.jupiter.api.*;
 import profile.dao.ProfileDAO;
 import profile.entity.UtenteEntity;
@@ -8,9 +12,15 @@ import java.util.Collection;
 
 public class ProfileDAOTest {
 
+    @AfterClass
+    public static void end(){
+        System.out.println("\nEnd of the Functional Test on Profile!\n\n");
+    }
+
     static ProfileDAO profileDAO, pDao;
-    @BeforeAll
-    static void setUp() {
+    @BeforeClass
+    public static void setUp() {
+        System.out.println("Start of the Functional Test on Profile!\n");
         profileDAO = new ProfileDAO(utils.MockDataSource.createDataSource());
         pDao = new ProfileDAO(utils.MockDataSourceReal.createDataSource());
     }
@@ -205,7 +215,7 @@ public class ProfileDAOTest {
     @Test
     public void checkCredentials() throws SQLException{
 
-        Assertions.assertTrue(profileDAO.login("NN@n.it", "a"));
+        Assertions.assertTrue(profileDAO.login("NN@n.it", "test"));
 
     }
 
