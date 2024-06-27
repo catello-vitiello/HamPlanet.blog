@@ -55,13 +55,7 @@ public class SignUpS extends HttpServlet {
 		Controllo se il campo competenze è nullo o vuoto, in questo caso vuol dire che l'user
 		che vuole registrarsi è un utente
 		 */
-		if(competenze.equalsIgnoreCase("") || competenze == null) {
-
-			UtenteEntity u = new UtenteEntity();
-			u.setUserName(username);
-			u.setEmail(email);
-			u.setPasswd(passwd);
-			u.setRuolo(UtenteEntity.Role.utente); //da gestire con i nuovi button
+		if (competenze.equalsIgnoreCase("") || competenze == null) {
 
 			try {
 
@@ -71,7 +65,8 @@ public class SignUpS extends HttpServlet {
 				RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/GetEmailS");
 				requestDispatcher.forward(request, response);
 
-				if((boolean) request.getAttribute("rispostaEmail")) {
+				//check sull'email
+				if ((boolean) request.getAttribute("rispostaEmail")) {
 					utils.UtilityClass.print("###### Email gia in uso!"); //da eliminare
 
 					obj.put("username", username);
@@ -84,7 +79,8 @@ public class SignUpS extends HttpServlet {
 					return;
 				}
 
-				if((boolean) request.getAttribute("rispostaUserName")) {
+				//check sull'userName
+				if ((boolean) request.getAttribute("rispostaUserName")) {
 					utils.UtilityClass.print("###### UserName gia in uso!"); //da eliminare
 
 					obj.put("username", username);
@@ -100,71 +96,45 @@ public class SignUpS extends HttpServlet {
 				//controllo se esiste un buco tra gli ID
 				int freeID = utils.FindFreeID.findFreeID("Ham_user", ds);
 
-				//se esiste
-				if(freeID != -1) {
+				cw.setUserName(username);
+				cw.setEmail(email);
+				cw.setPasswd(passwd);
+				cw.setRuolo(UtenteEntity.Role.utente); //da gestire con i nuovi button
 
-					//setto su quale ID deve essere inserito il nuovo record
-					u.setId(freeID+1);
-					//Inserisco il nuovo record nel primo slot ID libero (definito dal campo <freeID>)
-					if(profileDAO.insert(u)) {
-						utils.UtilityClass.print("###### Inserimento nuovo Utente effettuato con ID: " + freeID + "!"); //da eliminare
+				if(freeID != -1){
 
+					cw.setId(freeID+1);
+					//inserimento diretto tramite auto-increment
+					if (profileDAO.insert(cw)) {
+						utils.UtilityClass.print("###### Inserimento nuovo Utente effettuato tramite ID: " + cw.getId() +"!"); //da eliminareelse
 						obj.put("username", username);
 						obj.put("email", email);
 						obj.put("ruolo", UtenteEntity.Role.utente);
 
 						response.getWriter().print(obj);
 
-					} else {
-						utils.UtilityClass.print("###### Inserimento nuovo Utente con ID: " + freeID +"fallito!"); //da eliminare
+					} else
+						utils.UtilityClass.print("###### Inserimento nuovo Utente fallito tramite ID" + cw.getId() + "!"); //da eliminare
 
-					obj.put("username", username);
-					obj.put("email", email);
-					obj.put("ruolo", UtenteEntity.Role.utente);
-					obj.put("errore", "###### Inserimento nuovo Utente con ID: " + freeID + "fallito!");
+				} else {
+					//inserimento diretto tramite auto-increment
+					if (profileDAO.insert(cw)) {
+						utils.UtilityClass.print("###### Inserimento nuovo Utente effettuato!"); //da eliminareelse
+						obj.put("username", username);
+						obj.put("email", email);
+						obj.put("ruolo", UtenteEntity.Role.utente);
 
 						response.getWriter().print(obj);
 
-					return;
-					}
+					} else
+						utils.UtilityClass.print("###### Inserimento nuovo Utente fallito!"); //da eliminare
 				}
 
-				//Inserisco il nuovo record nell primo slot ID libero in coda a quelli esistenti
-				u.setId(0);
-				if(profileDAO.insert(u)) {
-					utils.UtilityClass.print("###### Inserimento nuovo Utente effettuato!"); //da eliminare
-
-					obj.put("username", username);
-					obj.put("email", email);
-					obj.put("ruolo", UtenteEntity.Role.utente);
-
-					response.getWriter().print(obj);
-
-				}else {
-					utils.UtilityClass.print("###### Inserimento nuovo Utente fallito!"); //da eliminare
-
-					obj.put("username", username);
-					obj.put("email", email);
-					obj.put("ruolo", UtenteEntity.Role.utente);
-					obj.put("errore", "###### Inserimento nuovo Utente fallito!");
-
-					response.getWriter().print(obj);
-
-				}
-			}catch (SQLException e) {
+			} catch (SQLException e) {
 				utils.UtilityClass.print(e);
 			}
 
-			//redirect su homePage
-/*********************************************************************************************************/
-//parte la gestione per la registrazione Content Writer
-		} else {
-
-			cw.setUserName(username);
-			cw.setEmail(email);
-			cw.setPasswd(passwd);
-			cw.setCompetenze(competenze);
-			cw.setRuolo(UtenteEntity.Role.content_writer); //da gestire con i nuovi button
+		} else { //Inserimento Content Writer
 
 			try {
 
@@ -174,7 +144,8 @@ public class SignUpS extends HttpServlet {
 				RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/GetEmailS");
 				requestDispatcher.forward(request, response);
 
-				if((boolean) request.getAttribute("rispostaEmail")) {
+				//check sull'email
+				if ((boolean) request.getAttribute("rispostaEmail")) {
 					utils.UtilityClass.print("###### Email gia in uso!"); //da eliminare
 
 					obj.put("username", username);
@@ -187,13 +158,15 @@ public class SignUpS extends HttpServlet {
 					return;
 				}
 
-				if((boolean) request.getAttribute("rispostaUserName")) {
+				//check sull'userName
+				if ((boolean) request.getAttribute("rispostaUserName")) {
 					utils.UtilityClass.print("###### UserName gia in uso!"); //da eliminare
 
 					obj.put("username", username);
 					obj.put("email", email);
 					obj.put("ruolo", UtenteEntity.Role.content_writer);
 					obj.put("errore", "Username gia in uso");
+
 					response.getWriter().print(obj);
 
 					return;
@@ -202,46 +175,47 @@ public class SignUpS extends HttpServlet {
 				//controllo se esiste un buco tra gli ID
 				int freeID = utils.FindFreeID.findFreeID("Ham_user", ds);
 
-				//se esiste
-				if(freeID != -1) {
+				cw.setUserName(username);
+				cw.setEmail(email);
+				cw.setPasswd(passwd);
+				cw.setCompetenze(competenze);
+				cw.setRuolo(UtenteEntity.Role.content_writer); //da gestire con i nuovi button
 
-					//setto su quale ID deve essere inserito il nuovo record
-					cw.setId(freeID);
-					//Inserisco il nuovo record nel primo slot ID libero (definito dal campo <freeID>)
-					if(profileDAO.insert(cw))
-						utils.UtilityClass.print("###### Inserimento nuovo Content Writer con ID: " + freeID +" effettuato!"); //da eliminare
-					else
-						utils.UtilityClass.print("###### Inserimento nuovo Content Writer con ID: " + freeID + " fallito!"); //da eliminare
+				if(freeID != -1){
 
-					obj.put("username", username);
-					obj.put("email", email);
-					obj.put("competenze", competenze);
-					obj.put("ruolo", UtenteEntity.Role.content_writer);
+					cw.setId(freeID+1);
+					//inserimento diretto tramite auto-increment
+					if (profileDAO.insert(cw)) {
+						utils.UtilityClass.print("###### Inserimento nuovo Content Writer effettuato tramite ID: " + cw.getId() +"!"); //da eliminareelse
+						obj.put("username", username);
+						obj.put("email", email);
+						obj.put("competenze", competenze);
+						obj.put("ruolo", UtenteEntity.Role.content_writer);
 
-					response.getWriter().print(obj);
+						response.getWriter().print(obj);
 
-					return;
+					} else
+						utils.UtilityClass.print("###### Inserimento nuovo Content Writer fallito tramite ID" + cw.getId() + "!"); //da eliminare
 
+				} else {
+					//inserimento diretto tramite auto-increment
+					if (profileDAO.insert(cw)) {
+						utils.UtilityClass.print("###### Inserimento nuovo Utente effettuato!"); //da eliminareelse
+						obj.put("username", username);
+						obj.put("email", email);
+						obj.put("competenze", competenze);
+						obj.put("ruolo", UtenteEntity.Role.content_writer);
+
+						response.getWriter().print(obj);
+
+					} else
+						utils.UtilityClass.print("###### Inserimento nuovo Content Writer fallito!"); //da eliminare
 				}
-				
-				//inserimento diretto tramite auto-increment
-				if(profileDAO.insert(cw)) {
-					utils.UtilityClass.print("###### Inserimento nuovo Content Writer effettuato!"); //da eliminareelse
-					obj.put("username", username);
-					obj.put("email", email);
-					obj.put("competenze", competenze);
-					obj.put("ruolo", UtenteEntity.Role.content_writer);
 
-					response.getWriter().print(obj);
-
-				} else
-					utils.UtilityClass.print("###### Inserimento nuovo Content Writer fallito!"); //da eliminare
-			}catch (SQLException e) {
+			} catch (SQLException e) {
 				utils.UtilityClass.print(e);
 			}
 
-		//redirect sulla pagina di attessa per la validazione account
 		}
 	}
-
 }
