@@ -74,7 +74,7 @@ CREATE TRIGGER addContentWriterToQueue_trigger
 AFTER INSERT ON Ham_user
 FOR EACH ROW
 BEGIN
-	IF NEW.ruolo = 'profile' THEN
+	IF NEW.ruolo = 'content_writer' THEN
 		INSERT INTO pending(idContent_writer) VALUES (NEW.id);
 	END IF;
 END;

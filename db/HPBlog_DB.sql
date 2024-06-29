@@ -17,7 +17,7 @@ CREATE TABLE Ham_user
     email VARCHAR(60) NOT NULL,
     passwd VARCHAR(600) NOT NULL,
     competenze TEXT,
-    ruolo enum('supervisore', 'utente', 'profile') DEFAULT 'utente',
+    ruolo enum('supervisore', 'utente', 'content_writer') DEFAULT 'utente',
     PRIMARY KEY(id)
 );
 
