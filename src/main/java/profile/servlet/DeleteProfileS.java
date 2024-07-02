@@ -2,11 +2,13 @@ package profile.servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
 import org.json.JSONObject;
@@ -18,50 +20,54 @@ import profile.entity.UtenteEntity;
 public class DeleteProfileS extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        response.setContentType("application/json");
-        JSONObject obj = new JSONObject();
+    private ProfileDAO profileDAO;
 
-		DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
-        ProfileDAO model = new ProfileDAO(ds);
-		
-        UtenteEntity cw = new UtenteEntity();
-        
-        String id = request.getParameter("email");
-        if(id == null || id.equalsIgnoreCase("")){
-            utils.UtilityClass.print("###### Errore con l'email Ham_user in fase di eliminazione!"); //da eliminare
-            //mandare su una pagina di errore
-            return;
-        }
-        
-        try {
 
-            cw.setEmail(id);
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        DataSource ds = (DataSource) config.getServletContext().getAttribute("DataSource");
+        profileDAO = new ProfileDAO(ds);
+    }
 
-            UtenteEntity entry = model.getByEmail(id);
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doPost(req, resp);
+    }
 
-            if (model.delete(cw)){
-                utils.UtilityClass.print("###### Eliminazione Ham_user effettuata!"); //da eliminare
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-                obj.put("username", entry.getUserName());
-                obj.put("email", entry.getEmail());
-                obj.put("ruolo", entry.getRuolo());
-                obj.put("competenze", entry.getCompetenze()!=null ? entry.getCompetenze() : "null");
-                obj.put("result", "Delete successfully done!");
-                response.getWriter().print(obj);
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            UtenteEntity user = (UtenteEntity) session.getAttribute("profile");
 
-        } else {
-                utils.UtilityClass.print("###### Eliminazione Ham_user fallita!"); //da eliminare
-                obj.put("email", id);
-                obj.put("result", "Delete error!");
-                response.getWriter().print(obj);
 
+            if (user == null ) {
+                utils.UtilityClass.print("###### Errore con l'email Ham_user in fase di eliminazione!"); //da eliminare
+                //mandare su una pagina di errore
+                return;
             }
 
-        } catch (SQLException e){
-            utils.UtilityClass.print(e);
+            try {
+                if (user.getRuolo().equals(UtenteEntity.Role.supervisore.toString())){
+                    String id = request.getParameter("id");
+                    if (id != null && !id.isEmpty()) {
+                        UtenteEntity delete = new UtenteEntity();
+                        delete.setId(Integer.parseInt(id));
+                        profileDAO.delete(delete);
+
+                    }
+                }else {
+
+                    if (profileDAO.delete(user))
+                        utils.UtilityClass.print("###### Eliminazione Ham_user effettuata!"); //da eliminare
+                    else
+                        utils.UtilityClass.print("###### Eliminazione Ham_user fallita!"); //da eliminare
+                }
+            } catch (SQLException e) {
+                utils.UtilityClass.print(e);
+            }
         }
         		
 	}
