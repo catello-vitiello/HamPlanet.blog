@@ -1,6 +1,5 @@
 package suiteclass;
 
-
 import commento.dao.CommentoDAOTest;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizza Post</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            padding-top: 20px;
+        }
+        .post-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+        }
+        .post-image {
+            width: 100%;
+            border-radius: 10px;
+        }
+        .post-content {
+            padding: 10px 0;
+        }
+        .post-title {
+            font-size: 1.5em;
+            margin: 0;
+        }
+        .post-body {
+            font-size: 1em;
+            margin: 10px 0;
+            color: #666;
+        }
+        .like-section {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .like-button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            font-size: 1em;
+            color: #007BFF;
+        }
+        .like-button span {
+            margin-left: 5px;
+        }
+        .comments-section {
+            margin-top: 20px;
+        }
+        .comment {
+            margin-bottom: 15px;
+        }
+        .comment-author {
+            font-weight: bold;
+        }
+        .comment-body {
+            margin: 5px 0;
+        }
+        .comment-form {
+            display: flex;
+            flex-direction: column;
+        }
+        .comment-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+            margin-bottom: 10px;
+        }
+        .comment-form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .comment-form button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="post-container">
+        <img src="https://via.placeholder.com/600x400" alt="Post Image" class="post-image">
+        <div class="post-content">
+            <h2 class="post-title">Titolo del Post</h2>
+            <p class="post-body">Questo è il corpo del post. Aggiungi qui il contenuto del tuo post.</p>
+        </div>
+        <div class="like-section">
+            <button class="like-button" onclick="toggleLike()">
+                <span id="like-icon">❤️</span>
+                <span id="like-count">0</span> Mi piace
+            </button>
+        </div>
+        <div class="comments-section">
+            <h3>Commenti</h3>
+            <div id="comments-list">
+                <!-- I commenti verranno aggiunti qui -->
+            </div>
+            <form class="comment-form" onsubmit="addComment(event)">
+                <textarea id="comment-text" rows="3" placeholder="Aggiungi un commento..." required></textarea>
+                <button type="submit">Pubblica</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let likeCount = 0;
+        let isLiked = false;
+
+        function toggleLike() {
+            isLiked = !isLiked;
+            likeCount += isLiked ? 1 : -1;
+
+            document.getElementById('like-icon').textContent = isLiked ? '❤️' : '♡';
+            document.getElementById('like-count').textContent = likeCount;
+        }
+
+        function addComment(event) {
+            event.preventDefault();
+
+            const commentText = document.getElementById('comment-text').value;
+            const commentList = document.getElementById('comments-list');
+
+            const commentDiv = document.createElement('div');
+            commentDiv.className = 'comment';
+
+            const authorP = document.createElement('p');
+            authorP.className = 'comment-author';
+            authorP.textContent = 'Utente Anonimo';
+
+            const bodyP = document.createElement('p');
+            bodyP.className = 'comment-body';
+            bodyP.textContent = commentText;
+
+            commentDiv.appendChild(authorP);
+            commentDiv.appendChild(bodyP);
+
+            commentList.appendChild(commentDiv);
+
+            document.getElementById('comment-text').value = '';
+        }
+    </script>
+</body>
+</html>
