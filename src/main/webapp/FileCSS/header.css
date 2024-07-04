@@ -1,0 +1,81 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+header {
+    background-color: #1e428a; /* Colore blu di MSC Crociere */
+    color: white;
+    padding: 10px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.container {
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.logo {
+    font-size: 1.8em;
+    font-weight: bold;
+}
+nav {
+    display: flex;
+    gap: 15px;
+}
+nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1em;
+    padding: 5px 10px;
+    transition: background-color 0.3s;
+    border-radius: 5px;
+}
+nav a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+.search-bar {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 5px;
+    overflow: hidden;
+}
+.search-bar input {
+    border: none;
+    padding: 10px;
+    font-size: 1em;
+    outline: none;
+    width: 200px;
+}
+.search-bar button {
+    background-color: #1e428a; /* Colore blu di MSC Crociere */
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+}
+.search-bar button:hover {
+    background-color: #15316b; /* Tonalità più scura per hover */
+}
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        gap: 10px;
+    }
+    nav {
+        flex-direction: column;
+        align-items: center;
+    }
+    .search-bar {
+        width: 100%;
+        justify-content: center;
+    }
+    .search-bar input {
+        width: 100%;
+    }
+}

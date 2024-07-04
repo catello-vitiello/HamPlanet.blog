@@ -32,7 +32,7 @@ public class PostS extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doPost(req, resp);
+//        doPost(req, resp);
     }
 
 
@@ -41,7 +41,7 @@ public class PostS extends HttpServlet {
         resp.setContentType("application/json");
         JSONObject jsonObject = new JSONObject();
         String postId = req.getParameter("postId");
-        int id = Integer.parseInt(req.getParameter("pageId"));
+        //int id = Integer.parseInt(req.getParameter("pageId"));
         boolean new_page = Boolean.parseBoolean(req.getParameter("new_page"));
 
 
@@ -69,7 +69,7 @@ public class PostS extends HttpServlet {
             Navigator navigator = (Navigator) session.getAttribute("Navigator");
             if (new_page)
                 navigator.save();
-            navigator.setCurrent(new Page(id, Page.Type.POST));
+          //  navigator.setCurrent(new Page(id, Page.Type.POST));
         }
 
         resp.getWriter().print(jsonObject);
