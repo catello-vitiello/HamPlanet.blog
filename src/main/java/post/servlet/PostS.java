@@ -1,12 +1,16 @@
 package post.servlet;
 
 
+import commento.dao.CommentoDAO;
+import commento.entity.CommentoEntity;
 import navigation.Navigator;
 import navigation.Page;
 import org.json.JSONObject;
 import post.dao.PostDAO;
 import post.entity.PostEntity;
 import utils.UtilityClass;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,18 +20,22 @@ import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Collection;
+import java.util.LinkedList;
 
 @WebServlet("/Post")
 public class PostS extends HttpServlet {
 
     private static final long serialVersionUID = 871483285L;
     private PostDAO postDAO;
+    private CommentoDAO commentoDAO;
 
     @Override
     public void init() throws ServletException {
         super.init();
         DataSource ds = (DataSource) super.getServletContext().getAttribute("DataSource");
         postDAO = new PostDAO(ds);
+        commentoDAO = new CommentoDAO(ds);
     }
 
     @Override
@@ -55,6 +63,15 @@ public class PostS extends HttpServlet {
                 jsonObject.put("text", post.getTesto());
                 jsonObject.put("writerId", post.getIdContent_Writer());
 
+                LinkedList<String> commenti =  new LinkedList<>();
+                        commentoDAO.getAllByPost(post.getId()).forEach(
+                        x ->{
+                            commenti.add(x.getContenutoCommento());
+                        }
+                );
+
+                jsonObject.put("commenti", commenti);
+
 
             } catch (SQLException e) {
                 UtilityClass.print(e);
@@ -72,8 +89,9 @@ public class PostS extends HttpServlet {
           //  navigator.setCurrent(new Page(id, Page.Type.POST));
         }
 
-        resp.getWriter().print(jsonObject);
-
+        RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/post.jsp");
+        req.setAttribute("post", jsonObject);
+        requestDispatcher.forward(req, resp);
 
 
     }

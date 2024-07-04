@@ -13,11 +13,11 @@
         <nav>
             <a href="index.jsp">Home</a>
             <a href="#">Categorie</a>
-            <a href="Login.jsp">Login/Registrazione</a>
+            <a href="Login.jsp">Login/Registrati</a>
         </nav>
         <div class="search-bar">
             <input type="text" placeholder="Cerca...">
-            <button type="button">🔍</button>
+            <button type="button"></button>
         </div>
     </div>
 </header>

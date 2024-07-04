@@ -1,6 +1,5 @@
 <%@ page import="java.util.Collection" %>
 <%@ page import="org.json.JSONObject" %>
-<%@ page import="post.servlet.RetrievePost" %>
 <%@ page import="java.util.Iterator" %>
 <!DOCTYPE html>
 <html lang="it">
