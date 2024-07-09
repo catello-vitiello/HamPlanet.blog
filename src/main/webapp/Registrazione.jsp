@@ -1,10 +1,13 @@
+<%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
     <head>
         <title>Registrazione</title> <!--Crea il tuo account HamPlanet-->    
-        <link rel="stylesheet" href="Registrazione.css">
-        <link rel="shortcut icon" href="#">           <!--AGGIUNGERE PATH ICONA SOPRA-->
-        <script type="text/javascript" src="LogReg.js"></script>
+        <link rel="stylesheet" href="./FileCSS/Registrazione.css">
+        <link rel="shortcut icon" href="./Icon/OnlyLogo_RED.svg">
+        <script type="text/javascript" src="./FileJavaScript/LogReg.js"></script>
+
+        <meta charset="UTF-8">
     </head>
     
     <body>
@@ -41,7 +44,7 @@
                         <label class="sette">m</label>
                         <label class="otto">e</label>
                     </div>
-                    <img id="img_username" src="userReg_BLACK.png" alt="show" height="40px">
+                    <img id="img_username" src="./Icon/userReg_BLACK.png" alt="show" height="40px">
                 </div>
                 
 
@@ -64,7 +67,7 @@
                         <label class="quattro">i</label>
                         <label class="cinque">l</label>
                     </div>
-                    <img id="img_email" src="email_default_BLACK.png" alt="show" height="40px">
+                    <img id="img_email" src="./Icon/email_default_BLACK.png" alt="show" height="40px">
                 </div>
                 
 
@@ -85,7 +88,7 @@
                         <label class="sette">r</label>
                         <label class="otto">d</label>
                     </div>
-                    <img id="img_pass" src="eyes_show_BLACK.png" alt="show" onclick="showPwd(1)">
+                    <img id="img_pass" src="./Icon/eyes_show_BLACK.png" alt="show" onclick="showPwd(1)">
                 </div>
 
             
@@ -117,7 +120,7 @@
                         <label class="quindici">r</label>
                         <label class="sedici">d</label>
                     </div>
-                    <img id="img_confPass" src="eyes_show_BLACK.png" alt="show" onclick="showPwd(2)">
+                    <img id="img_confPass" src="./Icon/eyes_show_BLACK.png" alt="show" onclick="showPwd(2)">
                 </div>
 
                 
