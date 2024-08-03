@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <Context>
-    <Resource name="jdbc/freedb_HPBlog_db"
+    <Resource name="jdbc/freedb_hpblog_db"
               auth="Container"
               driverClassName="com.mysql.cj.jdbc.Driver"
               type="javax.sql.DataSource"
-              username="root"
-              password="Niky-1904"
-              url="jdbc:mysql://localhost:3306/freedb_HPBlog_db?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;autoReconnect=true&amp;serverTimezone=UTC&amp;useSSL=false&amp;allowPublicKeyRetrieval=true"
+              username="HPBlog.admin"
+              password="admin-1234"
+              url="jdbc:mysql://192.168.1.9:3306/freedb_hpblog_db?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;autoReconnect=true&amp;serverTimezone=UTC&amp;useSSL=false&amp;allowPublicKeyRetrieval=true"
     />
 </Context>

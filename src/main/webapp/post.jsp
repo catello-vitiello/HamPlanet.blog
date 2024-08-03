@@ -62,7 +62,7 @@
                     }
                 %>
             </div>
-            <form class="comment-form" onsubmit="addComment(event)">
+            <form class="comment-form">
                 <textarea id="comment-text" rows="3" placeholder="Aggiungi un commento..." required></textarea>
                 <button type="submit">Pubblica</button>
             </form>
