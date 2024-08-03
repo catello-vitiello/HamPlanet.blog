@@ -4,7 +4,7 @@
         <title>Gestisci il tuo ID HamPlanet</title>
         <link rel="stylesheet" href="./FileCSS/Login.css">
         <script type="text/javascript" src="FileJavaScript/LogReg.js"></script>
-        <link rel="shortcut icon" href="Icon/1_Logo_Red.png">
+        <link rel="shortcut icon" href="./Icon/OnlyLogo_RED.svg">
     </head>
 
 <!-- ##############   BODY   ##############-->
@@ -14,7 +14,7 @@
 
                 <!--LOGO-->
                 <!--<img id="logo" src="D:\Document\catello\HamPlanet\Logo\Logo_v3.1_Black.png" alt="Ham Planet" height="130x">-->
-                <img id="logo" src="D:\Document\catello\HamPlanet\Logo\logo_v3.1_BLACK.svg" alt="HamPlanet">
+                <img id="logo" src="./Icon/OnlyLogo_BLACK.svg" alt="HamPlanet">
                 
                 <!--TITOLO-->
                 <h2 id="titolo">Accedi</h2>
@@ -37,7 +37,7 @@
                         <label class="quattro">i</label>
                         <label class="cinque">l</label>
                     </div>
-                    <img id="img_email" src="email_default_BLACK.png" alt="show" height="40px">
+                    <img id="img_email" src="./Icon/email_default_BLACK.png" alt="show" height="40px">
                 </div>
 
                 <!--PASSWORD-->
@@ -57,7 +57,7 @@
                         <label class="sette">r</label>
                         <label class="otto">d</label>
                     </div>
-                    <img id="img_pass" src="eyes_show_BLACK.png" alt="show" onclick="showPwd(1)" height="10px">
+                    <img id="img_pass" src="./Icon/eyes_show_BLACK.png" alt="show" onclick="showPwd(1)" height="10px">
                 </div>
 
 
