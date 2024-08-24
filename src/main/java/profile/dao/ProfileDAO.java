@@ -192,7 +192,7 @@ public class ProfileDAO implements GenericCrudOp<UtenteEntity, Integer, String> 
 
             utils.UtilityClass.print(">.Eliminazionde dell'account: " + preparedStatement.toString());
             res = preparedStatement.executeUpdate();
-            utils.UtilityClass.resetAuto_increment("Ham_user", ds);
+            //utils.UtilityClass.resetAuto_increment("Ham_user", ds);
 
         } finally {
             if(preparedStatement != null)

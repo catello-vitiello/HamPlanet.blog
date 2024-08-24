@@ -27,6 +27,10 @@ public class LikePostS extends HttpServlet {
         postDAO = new PostDAO(ds);
     }
 
+    void setPostDAO(PostDAO postDAO) {
+        this.postDAO = postDAO;
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doPost(req, resp);

@@ -29,6 +29,10 @@ public class DeletePostS extends HttpServlet {
         postDAO = new PostDAO(ds);
     }
 
+    void setPostDAO(PostDAO postDAO) {
+        this.postDAO = postDAO;
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doPost(req, resp);
@@ -46,7 +50,7 @@ public class DeletePostS extends HttpServlet {
         if (session != null && idPost != null && !idPost.isEmpty()){
             UtenteEntity user = (UtenteEntity) session.getAttribute("profile");
 
-            if (!user.getRuolo().equals(UtenteEntity.Role.utente.toString())) {
+            if (user.getRuolo().equals(UtenteEntity.Role.supervisore.toString())) {
                 try {
                     PostEntity post = new PostEntity();
                     post.setId(Integer.parseInt(idPost));
@@ -55,6 +59,19 @@ public class DeletePostS extends HttpServlet {
                 } catch (SQLException e) {
                     UtilityClass.print(e);
                 }
+            } else if (user.getRuolo().equals(UtenteEntity.Role.content_writer.toString())){
+                try {
+                    if (postDAO.isCwOwnPost(Integer.parseInt(idPost), user.getId())){
+                        PostEntity post = new PostEntity();
+                        post.setId(Integer.parseInt(idPost));
+                        postDAO.delete(post);
+                        result = true;
+                    }
+                } catch (SQLException e) {
+                    UtilityClass.print(e);
+                }
+
+
             }
 
         }

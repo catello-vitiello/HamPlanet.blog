@@ -32,6 +32,10 @@ public class GetProfileS extends HttpServlet {
 		profileDAO = new ProfileDAO(dataSource);
 	}
 
+	void setProfileDAO(ProfileDAO profileDAO) {
+		this.profileDAO = profileDAO;
+	}
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		doPost(req, resp);

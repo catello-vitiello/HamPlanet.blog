@@ -87,7 +87,7 @@ public class ProfileDAOTest {
         u.setUserName("Uname");
         u.setEmail("email");
         u.setPasswd("passwd");
-        u.setRuolo("content_writer"); //insert content writer
+        u.setRuolo(UtenteEntity.Role.content_writer); //insert content writer
         u.setCompetenze("competenze");
 
         Assertions.assertTrue(profileDAO.insert(u));
@@ -127,11 +127,10 @@ public class ProfileDAOTest {
     public void insertContentWriterID() throws SQLException{
 
         UtenteEntity u = new UtenteEntity();
-        u.setId(1000);
         u.setUserName("Uname");
         u.setEmail("email");
-        u.setPasswd("passwd");
-        u.setRuolo("content_writer"); //insert content writer
+        u.setPasswd(utils.CifraPassword.toHash("password"));
+        u.setRuolo(UtenteEntity.Role.content_writer); //insert content writer
         u.setCompetenze("competenze");
 
         Assertions.assertTrue(profileDAO.insert(u));
@@ -156,12 +155,10 @@ public class ProfileDAOTest {
     @Test
     public void deleteHamUser() throws SQLException{
 
-        UtenteEntity original = pDao.getByID(100);
-        UtenteEntity u = new UtenteEntity();
-        u.setEmail("NN@n.it");
 
-        Assertions.assertTrue(pDao.delete(u));
-        pDao.insert(original);
+        UtenteEntity u = new UtenteEntity();
+        u.setEmail("n@n.it");
+        Assertions.assertTrue(profileDAO.delete(u));
 
     }
 
@@ -169,12 +166,12 @@ public class ProfileDAOTest {
     @Test
     public void updateHamUser() throws SQLException{
         UtenteEntity u = new UtenteEntity();
-        u.setId(100);
-        u.setUserName("Uname");
-        u.setEmail("email");
+        u.setId(1);
+        u.setUserName("Nicola_Nappi");
+        u.setEmail("n@n123.it");
         u.setPasswd("passwd");
         u.setRuolo("content_writer");
-        u.setCompetenze("competenze");
+        u.setCompetenze("so fare i prosciutti affumicati!");
 
         Assertions.assertTrue(profileDAO.update(u));
     }
@@ -215,7 +212,7 @@ public class ProfileDAOTest {
     @Test
     public void checkCredentials() throws SQLException{
 
-        Assertions.assertTrue(profileDAO.login("NN@n.it", "test"));
+        Assertions.assertTrue(profileDAO.login("n@n.it", "test"));
 
     }
 

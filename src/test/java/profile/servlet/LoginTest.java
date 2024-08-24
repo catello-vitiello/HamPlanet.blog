@@ -1,62 +1,89 @@
 package profile.servlet;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import profile.dao.ProfileDAO;
-import profile.entity.UtenteEntity;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.sql.DataSource;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import profile.dao.ProfileDAO;
+import profile.entity.UtenteEntity;
+import profile.servlet.LoginS;
+import utils.MockDataSource;
+
+import java.lang.reflect.Field;
 
 import static org.mockito.Mockito.*;
 
-class LoginTest {
+public class LoginTest {
 
+    @Mock
+    private ProfileDAO mockProfileDAO;
+
+    @Mock
+    private HttpServletRequest request;
+
+    @Mock
+    private HttpServletResponse response;
+
+    @Mock
+    private HttpSession session;
+
+    @Mock
+    private ServletContext servletContext;
+
+    @Mock
+    private ServletConfig servletConfig;
+
+    @Mock
+    private RequestDispatcher requestDispatcher;
+
+    private LoginS loginServlet;
+
+    @BeforeEach
+    void setUp() throws Exception {
+        MockitoAnnotations.openMocks(this);
+
+        // Inizializza la servlet
+        loginServlet = new LoginS();
+
+        // Configura il mock di ServletConfig e ServletContext
+        when(servletConfig.getServletContext()).thenReturn(servletContext);
+        when(request.getServletContext()).thenReturn(servletContext);
+        when(servletContext.getRequestDispatcher(anyString())).thenReturn(requestDispatcher);
+
+        loginServlet.init(servletConfig);
+        loginServlet.setProfileDAO(mockProfileDAO);
+
+
+        when(request.getSession(anyBoolean())).thenReturn(session);
+    }
 
     @Test
-    public void testLogin() throws Exception {
-        //DAO
-        ProfileDAO dao = mock(ProfileDAO.class);
+    void testDoPostWithValidCredentials() throws Exception {
+        // Configura il comportamento del mock del DAO
+        when(request.getParameter("email")).thenReturn("n@n.it");
+        when(request.getParameter("pass")).thenReturn("test");
+        when(mockProfileDAO.login("n@n.it", "test")).thenReturn(true);
+        when(mockProfileDAO.getByEmail("n@n.it")).thenReturn(new UtenteEntity()); // Usa un oggetto fittizio
 
-        //REQUEST & RESPONSE
-        HttpServletRequest request = mock(HttpServletRequest.class);
-        HttpServletResponse response = mock(HttpServletResponse.class);
+        // Esegui il metodo doPost
+        loginServlet.doPost(request, response);
 
-        when(request.getParameter("email")).thenReturn("email");
-        when(request.getParameter("password")).thenReturn("password");
+        // Verifica che la sessione sia aggiornata con il profilo
+        verify(session).setAttribute(eq("profile"), any());
+        verify(session).setAttribute(eq("Navigator"), any());
 
-
-        //SESSION
-        HttpSession session = mock(HttpSession.class);
-        when(request.getSession(false)).thenReturn(session);
-
-        RequestDispatcher dispatcher = mock(RequestDispatcher.class);
-        when(request.getRequestDispatcher("home.jsp")).thenReturn(dispatcher);
-
-
-        //ENTITY
-        UtenteEntity utente = new UtenteEntity();
-        utente.setId(1);
-        when(dao.login("email", "password")).thenReturn(true);
-        when(dao.getByEmail("email")).thenReturn(utente);
-
-
-        //WRITER
-        StringWriter stringWriter = new StringWriter();
-        PrintWriter writer = new PrintWriter(stringWriter);
-        when(response.getWriter()).thenReturn(writer);
-
-
-        LoginS login = mock(LoginS.class);
-
-        login.doPost(request, response);
-
-        writer.flush();
-
+        // Verifica che la servlet faccia il forward all'index.jsp
+        verify(requestDispatcher).forward(request, response);
     }
+
 
 }

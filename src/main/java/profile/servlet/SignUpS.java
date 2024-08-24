@@ -36,6 +36,10 @@ public class SignUpS extends HttpServlet {
 		}
 	}
 
+	void setProfileDAO(ProfileDAO profileDAO) {
+		this.profileDAO = profileDAO;
+	}
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		response.setContentType("application/json");

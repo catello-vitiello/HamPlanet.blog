@@ -223,6 +223,41 @@ public class PostDAO implements GenericCrudOp<PostEntity, Integer, Object> {
 		return false;
 	}
 
+    public boolean isCwOwnPost(int postId, int CwId)throws SQLException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet rs = null;
+        boolean result = false;
+
+        String sql = "SELECT * FROM " + POST_TABLE + " WHERE id = ? AND idcontent_writer = ?";
+
+        try{
+            connection = ds.getConnection();
+
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, postId);
+            preparedStatement.setInt(2, CwId);
+            rs = preparedStatement.executeQuery();
+
+            UtilityClass.print(">.Check se il post appartiena al creator : " + preparedStatement);
+            if(rs.next()){
+                result = true;
+                rs.close();
+            }
+        }
+        finally {
+            if (preparedStatement != null)
+                preparedStatement.close();
+            if (connection != null)
+                connection.close();
+            if (rs != null)
+                rs.close();
+        }
+
+        return result;
+    }
+
+
     /********************************************************/
     /*	               	  LIKE POST		               	*/
     /********************************************************/

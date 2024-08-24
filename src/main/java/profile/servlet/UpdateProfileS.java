@@ -3,6 +3,7 @@ package profile.servlet;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,10 +20,22 @@ import utils.CifraPassword;
 public class UpdateProfileS extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+	private ProfileDAO profileDAO;
+
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+		DataSource ds = (DataSource) config.getServletContext().getAttribute("dataSource");
+		 profileDAO = new ProfileDAO(ds);
+	}
+
+	void setProfileDAO(ProfileDAO profileDAO){
+		this.profileDAO = profileDAO;
+	}
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
-		ProfileDAO model = new ProfileDAO(ds);
+
 
 		UtenteEntity cw = new UtenteEntity();
 		UtenteEntity originale = new UtenteEntity();
@@ -40,7 +53,7 @@ public class UpdateProfileS extends HttpServlet {
 		}
 
 		try {
-			originale = model.getByID(Integer.parseInt(id));
+			originale = profileDAO.getByID(Integer.parseInt(id));
 
 		} catch (SQLException e){
 			utils.UtilityClass.print(e);
@@ -74,7 +87,7 @@ public class UpdateProfileS extends HttpServlet {
 		if(change != 0){
 			try{
 
-				if(model.update(cw))
+				if(profileDAO.update(cw))
 					utils.UtilityClass.print("###### Aggiornamento Ham_user effettuato!"); //da eliminare
 				else
 					utils.UtilityClass.print("###### Aggiornamento Ham_user fallito!"); //da eliminare

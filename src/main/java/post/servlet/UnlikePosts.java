@@ -27,6 +27,10 @@ public class UnlikePosts extends HttpServlet {
         postDAO = new PostDAO(ds);
     }
 
+    void setPostDAO(PostDAO postDAO) {
+        this.postDAO = postDAO;
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doPost(req, resp);
@@ -46,8 +50,8 @@ public class UnlikePosts extends HttpServlet {
 
             if (user.getRuolo().equals(UtenteEntity.Role.utente.toString())) {
                 try {
-                    postDAO.unlike(Integer.parseInt(idPost), user.getId());
-                    result = true;
+                    result = postDAO.unlike(Integer.parseInt(idPost), user.getId());
+
                 } catch (SQLException e) {
                     UtilityClass.print(e);
                 }

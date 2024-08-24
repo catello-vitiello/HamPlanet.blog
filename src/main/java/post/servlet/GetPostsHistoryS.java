@@ -27,6 +27,10 @@ public class GetPostsHistoryS extends HttpServlet {
 
     }
 
+    void setPostDAO(PostDAO postDAO) {
+        this.postDAO = postDAO;
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doPost(req,resp);
@@ -44,7 +48,7 @@ public class GetPostsHistoryS extends HttpServlet {
 
             if (u != null && u.getRuolo().equals(UtenteEntity.Role.content_writer.toString())) {
                 try {
-                    jsonObject.put("commenti", postDAO.getAllByContentWriter(u.getId()));
+                    jsonObject.put("posts", postDAO.getAllByContentWriter(u.getId()));
                 } catch (SQLException e) {
                     utils.UtilityClass.print(e);
                 }

@@ -31,6 +31,10 @@ public class DeleteProfileS extends HttpServlet {
         profileDAO = new ProfileDAO(ds);
     }
 
+    void setProfileDAO(ProfileDAO profileDAO) {
+        this.profileDAO = profileDAO;
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doPost(req, resp);
@@ -53,8 +57,8 @@ public class DeleteProfileS extends HttpServlet {
                 if (user.getRuolo().equals(UtenteEntity.Role.supervisore.toString())){
                     String id = request.getParameter("id");
                     if (id != null && !id.isEmpty()) {
-                        UtenteEntity delete = new UtenteEntity();
-                        delete.setId(Integer.parseInt(id));
+                        UtenteEntity delete = profileDAO.getByID(Integer.parseInt(id));
+
                         profileDAO.delete(delete);
 
                     }

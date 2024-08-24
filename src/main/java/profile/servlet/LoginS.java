@@ -22,6 +22,7 @@ public class LoginS extends HttpServlet {
 
 	private ProfileDAO profileDAO;
 
+
 	@Override
 	public void init() throws ServletException {
 		super.init();
@@ -29,6 +30,11 @@ public class LoginS extends HttpServlet {
 		profileDAO = new ProfileDAO(ds);
 
 
+	}
+
+	// Setter per scopi di testing
+	void setProfileDAO(ProfileDAO profileDAO) {
+		this.profileDAO = profileDAO;
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

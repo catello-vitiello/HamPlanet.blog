@@ -78,6 +78,16 @@ public class PostDAOTest {
 
     }
 
+    @Test
+    public void isCwOwnPost() throws SQLException{
+        Assertions.assertTrue(postDAO.isCwOwnPost(4, 4));
+    }
+
+    @Test
+    public void failIsCwOwnPost() throws SQLException{
+        Assertions.assertFalse(postDAO.isCwOwnPost(1, 6));
+    }
+
     //unlike to post
     @Test
     public void unLikeToPost() throws SQLException{
