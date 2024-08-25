@@ -83,7 +83,6 @@ public class ProfileDAO implements GenericCrudOp<UtenteEntity, Integer, String> 
                 cw.setId(rs.getInt("id"));
                 cw.setUserName(rs.getString("userName"));
                 cw.setEmail(rs.getString("email"));
-                cw.setPasswd(rs.getString("passwd"));
                 cw.setCompetenze(rs.getString("competenze"));
                 cw.setRuolo(rs.getString("ruolo"));
             }
@@ -377,7 +376,6 @@ public class ProfileDAO implements GenericCrudOp<UtenteEntity, Integer, String> 
                 cw.setUserName(rs.getString("userName"));
                 cw.setRuolo(rs.getString("ruolo"));
                 cw.setEmail(rs.getString("email"));
-                cw.setPasswd(rs.getString("passwd"));
                 cw.setCompetenze(rs.getString("competenze"));
             }
 

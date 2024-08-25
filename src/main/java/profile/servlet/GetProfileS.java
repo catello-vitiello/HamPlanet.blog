@@ -22,19 +22,6 @@ import profile.entity.UtenteEntity;
 public class GetProfileS extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private ProfileDAO profileDAO;
-
-
-	@Override
-	public void init(ServletConfig config) throws ServletException {
-		super.init(config);
-		DataSource dataSource = (DataSource) config.getServletContext().getAttribute("dataSource");
-		profileDAO = new ProfileDAO(dataSource);
-	}
-
-	void setProfileDAO(ProfileDAO profileDAO) {
-		this.profileDAO = profileDAO;
-	}
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -58,26 +45,23 @@ public class GetProfileS extends HttpServlet {
 
 
 
-			try {
-				if (utente== null) {
-					utils.UtilityClass.print("##### Errore nel recuperare il ID del Ham_user");
-					//mandare su una pagina di errore
-					return;
-				}
 
-				UtenteEntity user = profileDAO.getByID(utente.getId());
-				json.put("user", user);
-				utils.UtilityClass.print(user.toString()); //da eliminare
-			} catch (SQLException e) {
-				utils.UtilityClass.print(e);
+			if (utente== null) {
+				utils.UtilityClass.print("##### Errore nel recuperare il ID del Ham_user");
+				//mandare su una pagina di errore
+				return;
 			}
+
+			json.put("user", utente);
+			utils.UtilityClass.print(utente.toString()); //da eliminare
+
 
 
 			//NAVIGATION
 			Navigator navigator = (Navigator) session.getAttribute("Navigator");
 			if (new_page)
 				navigator.save();
-			navigator.setCurrent(new Page(id, Page.Type.POST));
+			navigator.setCurrent(new Page(id, Page.Type.PROFILE));
 
 		}
 		response.getWriter().print(json);

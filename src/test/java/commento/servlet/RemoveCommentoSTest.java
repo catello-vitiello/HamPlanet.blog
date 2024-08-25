@@ -87,19 +87,14 @@ class RemoveCommentoSTest {
         when(mockCommentoDAO.isOwnComment(5, 6)).thenReturn(true);
         when(mockCommentoDAO.delete(commento_test)).thenReturn(true);
 
-
         //Writer
         StringWriter stringWriter = new StringWriter();
         PrintWriter printWriter = new PrintWriter(stringWriter);
         when(response.getWriter()).thenReturn(printWriter);
 
-
         removeCommentoS.doPost(request, response);
 
-
         assert (stringWriter).toString().contains("true");
-
-
     }
 
 
@@ -117,15 +112,12 @@ class RemoveCommentoSTest {
 
         when(mockCommentoDAO.delete(commento_test)).thenReturn(true);
 
-
         //Writer
         StringWriter stringWriter = new StringWriter();
         PrintWriter printWriter = new PrintWriter(stringWriter);
         when(response.getWriter()).thenReturn(printWriter);
 
-
         removeCommentoS.doPost(request, response);
-
 
         assert (stringWriter).toString().contains("true");
     }
