@@ -57,6 +57,15 @@ public class CommentoDAOTest {
     }
 
     @Test
+    public void isOwnComment()throws Exception{
+
+
+        boolean result = dao.isOwnComment(1, 5);
+
+        assertTrue(result);
+    }
+
+    @Test
     public void delete() throws Exception{
         CommentoEntity commento = new CommentoEntity();
         commento.setId(2);

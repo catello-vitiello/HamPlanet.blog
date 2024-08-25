@@ -66,7 +66,6 @@ public class PostS extends HttpServlet {
                 jsonObject.put("id", post.getId());
                 jsonObject.put("title", post.getNomePost());
                 jsonObject.put("text", post.getTesto());
-                jsonObject.put("writerId", post.getIdContent_Writer());
 
                 LinkedList<String> commenti =  new LinkedList<>();
                         commentoDAO.getAllByPost(post.getId()).forEach(

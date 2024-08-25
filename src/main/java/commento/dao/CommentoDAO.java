@@ -105,6 +105,43 @@ public class CommentoDAO implements GenericCrudOp<CommentoEntity, Integer, Objec
     }
 
     /********************************************************/
+    /*	               	  CHECK ITS OWN COMMENT		               	*/
+    /********************************************************/
+    public boolean isOwnComment(int commentId, int userId) throws SQLException {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String sql = "SELECT * FROM Commento WHERE id = ? AND iduser = ?";
+        boolean isOwn = false;
+
+
+        try {
+            connection = ds.getConnection();
+            ps = connection.prepareStatement(sql);
+
+            ps.setInt(1, commentId);
+            ps.setInt(2, userId);
+
+            utils.UtilityClass.print(">. CHECK ITS OWN COMMENT SU CommentoEntity: " + ps.toString());
+
+            rs = ps.executeQuery();
+           if (rs.next()){
+               isOwn = true;
+           }
+
+        }finally {
+            if (ps != null)
+                ps.close();
+            if(rs != null)
+                rs.close();
+            if (connection != null)
+                connection.close();
+        }
+
+        return isOwn;
+    }
+
+    /********************************************************/
     /*	               	  GET COMMENTO	BY ID	               	*/
     /********************************************************/
     @Override
@@ -182,7 +219,7 @@ public class CommentoDAO implements GenericCrudOp<CommentoEntity, Integer, Objec
     public boolean delete(CommentoEntity entity) throws SQLException {
         Connection connection = null;
         PreparedStatement ps = null;
-        String sql = "DELETE FROM Commento WHERE id = ?";
+        String sql = "DELETE FROM commento WHERE id = ?";
         boolean result = false;
 
         try {

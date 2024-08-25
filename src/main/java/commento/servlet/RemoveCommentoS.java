@@ -32,6 +32,10 @@ public class RemoveCommentoS extends HttpServlet {
         commentoDAO = new CommentoDAO(dataSource);
     }
 
+    void setCommentoDAO(CommentoDAO commentoDAO) {
+        this.commentoDAO = commentoDAO;
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doPost(req, resp);
@@ -43,30 +47,47 @@ public class RemoveCommentoS extends HttpServlet {
         resp.setContentType("application/json");
         JSONObject jsonObject = new JSONObject();
 
-        String commentoStr = req.getParameter("commentoID");
+        String commentoId = req.getParameter("commentoID");
         String postId = req.getParameter("postID");
 
         HttpSession session = req.getSession(false);
 
         UtenteEntity user = (UtenteEntity) session.getAttribute("profile");
-        if (user.getRuolo().equals(UtenteEntity.Role.utente.toString()) && user.getRuolo().equals(UtenteEntity.Role.supervisore.toString())) {
-
-            if (postId != null && commentoStr != null) {
-                CommentoEntity commento = new CommentoEntity();
-                commento.setIdPost(Integer.parseInt(commentoStr));
+        if (postId != null && commentoId != null) {
+            if (user.getRuolo().equals(UtenteEntity.Role.utente.toString())) {
 
                 try {
-                    commentoDAO.delete(commento);
+                        int commId = Integer.parseInt(commentoId);
+                        int user_id = user.getId();
+                    if (commentoDAO.isOwnComment(commId, user_id)) {
 
-                    jsonObject.put("outcome", true);
+                        CommentoEntity commento = new CommentoEntity();
+                        commento.setId(commId);
+
+
+                        jsonObject.put("outcome",
+                                commentoDAO.delete(commento));
+                    }
                 } catch (SQLException e) {
                     UtilityClass.print(e);
                 }
+
+
+            } else if (user.getRuolo().equals(UtenteEntity.Role.supervisore.toString())) {
+                try {
+                    CommentoEntity commento = new CommentoEntity();
+                    commento.setId(Integer.parseInt(commentoId));
+
+                    jsonObject.put("outcome",
+                            commentoDAO.delete(commento));
+
+                } catch (SQLException e) {
+                UtilityClass.print(e);
             }
-
-            resp.getWriter().print(jsonObject);
-
+            }
         }
+
+        resp.getWriter().print(jsonObject);
     }
 
 

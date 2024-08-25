@@ -16,7 +16,7 @@ public class UtenteEntity implements Serializable, Cloneable{
     private Role ruolo;
 
     public UtenteEntity(){
-    	
+    	this.ruolo = Role.utente;
     }
 
     public int getId() {

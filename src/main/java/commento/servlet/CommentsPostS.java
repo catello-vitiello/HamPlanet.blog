@@ -35,6 +35,11 @@ public class CommentsPostS extends HttpServlet {
         commentoDAO = new CommentoDAO(dataSource);
     }
 
+    void setCommentoDAO(CommentoDAO commentoDAO) {
+        this.commentoDAO = commentoDAO;
+    }
+
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doPost(req, resp);

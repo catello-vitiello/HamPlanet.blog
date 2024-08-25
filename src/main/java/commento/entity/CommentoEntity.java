@@ -4,34 +4,20 @@ import java.io.Serializable;
 
 public class CommentoEntity implements Serializable, Cloneable{
 
-    private int id, idPost, idUtente, idContent_Writer;
+    private int id, idPost, idUtente;
     private String contenutoCommento;
 
-    private void setCorrectID(int Utente, int Content_Writer){
-
-        if(Utente == 0){
-            this.idContent_Writer = Content_Writer;
-            this.idUtente = 0;
-        }
-
-        if(Content_Writer == 0){
-            this.idUtente = Utente;
-            idContent_Writer = 0;
-        }
-
-    }
 
     public CommentoEntity(){
 
     }
 
-    public CommentoEntity(int id, int idPost, int idUtente, int idContent_Writer, String contenutoCommento){
+    public CommentoEntity(int id, int idPost, int idUtente, String contenutoCommento){
 
         this.id = id;
         this.idPost = idPost;
-
-        setCorrectID(idUtente, idContent_Writer);
         this.contenutoCommento = contenutoCommento;
+        this.idUtente = idUtente;
 
     }
 
@@ -59,13 +45,6 @@ public class CommentoEntity implements Serializable, Cloneable{
         this.idUtente = idUtente;
     }
 
-    public int getIdContent_Writer() {
-        return idContent_Writer;
-    }
-
-    public void setIdContent_Writer(int idContent_Writer) {
-        this.idContent_Writer = idContent_Writer;
-    }
 
     public String getContenutoCommento() {
         return contenutoCommento;
@@ -80,11 +59,7 @@ public class CommentoEntity implements Serializable, Cloneable{
 
         String s = "";
 
-        if(this.idContent_Writer == 0)
-            s = getClass().getName() + "[ID= " + id + ", idPost= " + idPost + ", idUtente= " + idUtente + ", commento= " + contenutoCommento + "]";
-
-        if(this.idUtente == 0)
-            s = getClass().getName() + "[ID= " + id + ", idPost= " + idPost + ", idContent_Writer= " + idContent_Writer + ", commento= " + contenutoCommento + "]";
+            s = getClass().getName() + "[ID= " + id + ", idPost= " + idPost + ", idUser= " + idUtente + ", commento= " + contenutoCommento + "]";
 
         return s;
     }
@@ -92,31 +67,29 @@ public class CommentoEntity implements Serializable, Cloneable{
     @Override
     public boolean equals(Object o){
 
-        if(o == null)
-            return false;
-        if(getClass() != o.getClass())
-            return false;
+
+        if (this == o) return true; // Controllo se si tratta dello stesso riferimento
+        if (o == null || getClass() != o.getClass()) return false;
 
         CommentoEntity altro = (CommentoEntity) o;
 
-        return( (id == altro.getId()) && (idPost == altro.getIdPost()) && (idUtente == altro.getIdUtente())
-                && (idContent_Writer == altro.getIdContent_Writer()) && (contenutoCommento.equals(altro.getContenutoCommento())) );
+        return id == altro.id &&
+                idPost == altro.idPost &&
+                idUtente == altro.idUtente &&
+                (contenutoCommento != null ? contenutoCommento.equals(altro.contenutoCommento) : altro.contenutoCommento == null);
 
     }
 
     @Override
-    public int hashCode(){
-
+    public int hashCode() {
         int res = 17;
         res = 31 * res + id;
         res = 31 * res + idPost;
         res = 31 * res + idUtente;
-        res = 31 * res + idContent_Writer;
-        res = 31 * res + contenutoCommento.hashCode();
-
+        res = 31 * res + (contenutoCommento != null ? contenutoCommento.hashCode() : 0);
         return res;
-
     }
+
 
     @Override
     public CommentoEntity clone(){

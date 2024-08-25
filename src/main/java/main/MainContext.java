@@ -30,6 +30,7 @@ public class MainContext implements ServletContextListener {
 
 			ds = (DataSource) envContext.lookup("jdbc/freedb_hpblog_db");
 
+
 			try {
 				Connection con = null;
 				try {

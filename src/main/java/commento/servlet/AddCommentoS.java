@@ -32,6 +32,10 @@ public class AddCommentoS extends HttpServlet {
         commentoDAO = new CommentoDAO(dataSource);
     }
 
+    void setCommentoDAO(CommentoDAO commentoDAO) {
+        this.commentoDAO = commentoDAO;
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doPost(req, resp);
@@ -57,9 +61,8 @@ public class AddCommentoS extends HttpServlet {
             commento.setIdPost(Integer.parseInt(postId));
 
             try {
-                commentoDAO.insert(commento);
-
-                jsonObject.put("outcome", true);
+                jsonObject.put("outcome",
+                        commentoDAO.insert(commento));
             } catch (SQLException e) {
                 UtilityClass.print(e);
             }

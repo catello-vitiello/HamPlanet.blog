@@ -79,7 +79,7 @@ class PostSTest {
         commentoTest.setIdPost(1);
         commentoTest.setContenutoCommento("test commento");
         commentoTest.setIdUtente(5);
-        commentoTest.setIdContent_Writer(4);
+
 
         Collection<CommentoEntity> commentoTestCollection = new ArrayList<>();
         commentoTestCollection.add(commentoTest);
