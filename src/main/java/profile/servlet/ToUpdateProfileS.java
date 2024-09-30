@@ -21,7 +21,7 @@ public class ToUpdateProfileS extends HttpServlet {
 		RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/UpdateCW.jsp");
 		requestDispatcher.forward(request, response);
 		
-		return;
+
 	}
 
 }

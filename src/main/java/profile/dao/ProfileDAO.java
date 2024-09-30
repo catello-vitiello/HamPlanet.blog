@@ -102,74 +102,38 @@ public class ProfileDAO implements GenericCrudOp<UtenteEntity, Integer, String> 
     @Override
     public boolean insert(UtenteEntity entity) throws SQLException {
 
-        //se mi arriva un ID diverso da 0 allora vuol dire che sto inserendo con ID specifico
-        if(entity.getId() != 0){
-            return insertWithID(entity, entity.getId());
-        } else {
 
-            int res = 0;
-            Connection connection = null;
-            PreparedStatement preparedStatement = null;
-            String sql = "INSERT into Ham_user(userName, email, passwd, competenze, ruolo) VALUES (?,?,?,?,?)";
 
-            try {
-
-                connection = ds.getConnection();
-                preparedStatement = connection.prepareStatement(sql);
-
-                preparedStatement.setString(1, entity.getUserName());
-                preparedStatement.setString(2, entity.getEmail());
-                preparedStatement.setString(3, entity.getPasswd());
-                preparedStatement.setString(4, entity.getCompetenze());
-                preparedStatement.setString(5, entity.getRuolo());
-
-                utils.UtilityClass.print(">.Inserimento nuovo UtenteEntity: " + preparedStatement.toString());
-                res = preparedStatement.executeUpdate();
-
-            } finally {
-                if (preparedStatement != null)
-                    preparedStatement.close();
-                if (connection != null)
-                    connection.close();
-            }
-            return res == 1;
-        }
-    }
-
-    /********************************************************/
-    /*	           	INSERT HAM_USER WITH ID	            	*/
-    /********************************************************/
-    private boolean insertWithID(UtenteEntity entity , int id) throws SQLException{
-
-        int res=0;
+        int res = 0;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        String sql = "INSERT INTO Ham_user(id, userName, email, passwd, competenze, ruolo) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT into Ham_user(userName, email, passwd, competenze, ruolo) VALUES (?,?,?,?,?)";
 
-        try{
+        try {
 
             connection = ds.getConnection();
             preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setInt(1, id);
-            preparedStatement.setString(2, entity.getUserName());
-            preparedStatement.setString(3, entity.getEmail());
-            preparedStatement.setString(4, entity.getPasswd());
-            preparedStatement.setString(5, entity.getCompetenze());
-            preparedStatement.setString(6, entity.getRuolo());
+            preparedStatement.setString(1, entity.getUserName());
+            preparedStatement.setString(2, entity.getEmail());
+            preparedStatement.setString(3, entity.getPasswd());
+            preparedStatement.setString(4, entity.getCompetenze());
+            preparedStatement.setString(5, entity.getRuolo());
 
-            utils.UtilityClass.print(">.Inserimento nuovo UtenteEntity con ID: " + preparedStatement.toString());
+            utils.UtilityClass.print(">.Inserimento nuovo UtenteEntity: " + preparedStatement.toString());
             res = preparedStatement.executeUpdate();
 
         } finally {
-            if(preparedStatement != null)
+            if (preparedStatement != null)
                 preparedStatement.close();
-            if(connection != null)
+            if (connection != null)
                 connection.close();
         }
-
         return res == 1;
+
     }
+
+
 
     /********************************************************/
     /*	               	 DELETE HAM_USER	               	*/
@@ -212,7 +176,7 @@ public class ProfileDAO implements GenericCrudOp<UtenteEntity, Integer, String> 
         int res = 0;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        String sql = "UPDATE Ham_user SET userName = ? , email = ? , passwd = ? , competenze = ? WHERE id = ?";
+        String sql = "UPDATE Ham_user SET userName = ? , passwd = ? WHERE id = ?";
 
         try{
 
@@ -220,10 +184,7 @@ public class ProfileDAO implements GenericCrudOp<UtenteEntity, Integer, String> 
             preparedStatement = connection.prepareStatement(sql);
 
             preparedStatement.setString(1, user.getUserName());
-            preparedStatement.setString(2, user.getEmail());
-            preparedStatement.setString(3, utils.CifraPassword.toHash(user.getPasswd()));
-            preparedStatement.setString(4, user.getCompetenze());
-            preparedStatement.setInt(5, user.getId());
+            preparedStatement.setString(2, utils.CifraPassword.toHash(user.getPasswd()));
 
             utils.UtilityClass.print(">.Update su Content_Writer: " + preparedStatement.toString());
             res = preparedStatement.executeUpdate();

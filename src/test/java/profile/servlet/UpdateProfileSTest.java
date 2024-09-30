@@ -57,13 +57,10 @@ class UpdateProfileSTest {
 
         when(request.getParameter("id")).thenReturn("1");
         when(request.getParameter("userName")).thenReturn("pino");
-        when(request.getParameter("email")).thenReturn("pino@gmail.com");
         when(request.getParameter("password")).thenReturn("pino");
-        when(request.getParameter("comp")).thenReturn("comp");
 
         UtenteEntity original = new UtenteEntity();
         original.setId(1);
-        original.setEmail("nappi@n.it");
 
 
         when(mockProfileDAO.getByID(1)).thenReturn(original);

@@ -53,7 +53,6 @@ public class GetCommentHistoryS extends HttpServlet {
 
         resp.getWriter().print(jsonObject);
 
-        return;
     }
 
 }

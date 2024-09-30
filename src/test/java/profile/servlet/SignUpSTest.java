@@ -13,6 +13,9 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
@@ -62,9 +65,14 @@ class SignUpSTest {
         when(mockProfileDAO.insert(any(UtenteEntity.class))).thenReturn(true);
 
 
+        //Writer
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(stringWriter);
+        when(response.getWriter()).thenReturn(printWriter);
+
         signUpS.doPost(request, response);
 
-        verify(response).getWriter().print("{username:\"pino\", }");
+        assert (stringWriter).toString().contains("{username:\"pino\", }");
 
 
     }

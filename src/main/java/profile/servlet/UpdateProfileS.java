@@ -9,8 +9,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import javax.sql.DataSource;
 
+import org.json.JSONObject;
 import profile.dao.ProfileDAO;
 
 import profile.entity.UtenteEntity;
@@ -34,17 +36,17 @@ public class UpdateProfileS extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("application/json");
 
+		JSONObject json = new JSONObject();
 
-
-		UtenteEntity cw = new UtenteEntity();
+		UtenteEntity user = new UtenteEntity();
 		UtenteEntity originale = new UtenteEntity();
 		int change = 0;
 		String id = request.getParameter("id");
 		String userName = request.getParameter("userName");
-		String email = request.getParameter("email");
 		String password = request.getParameter("pass");
-		String comp = request.getParameter("comp");
+		Part part = request.getPart("cover");
 
 		if(id == null || id.equalsIgnoreCase("")){
 			utils.UtilityClass.print("###### Errore con l'id Content Writer!"); //da eliminare
@@ -58,46 +60,36 @@ public class UpdateProfileS extends HttpServlet {
 		} catch (SQLException e){
 			utils.UtilityClass.print(e);
 		}
+		if (originale.getRuolo().equals(UtenteEntity.Role.content_writer.toString())){
+			if(part.getSize() > 0) {
+				String filename = "profile/" + id + ".jpg";
+				request.setAttribute("Upload", true);
+				request.setAttribute("InputStream", part.getInputStream());
+				request.setAttribute("Path", filename);
+				request.getRequestDispatcher("FileManager").include(request, response);
+			}
+		}
 
-		cw.setId(Integer.parseInt(id));
+		user.setId(Integer.parseInt(id));
 		if(userName != null && !(userName.equalsIgnoreCase(""))){
-			cw.setUserName(userName);
+			user.setUserName(userName);
 			change++;
 		} else
-			cw.setUserName(originale.getUserName());
+			user.setUserName(originale.getUserName());
 
-		if(email != null && !(email.equalsIgnoreCase(""))){
-			cw.setEmail(email);
-			change++;
-		} else
-			cw.setEmail(originale.getEmail());
 
 		if(password != null && !(password.equalsIgnoreCase(""))){
-			cw.setPasswd(CifraPassword.toHash(password));
+			user.setPasswd(CifraPassword.toHash(password));
 			change++;
 		} else
-			cw.setPasswd(originale.getPasswd());
+			user.setPasswd(originale.getPasswd());
 
-		if(comp != null && !(comp.equalsIgnoreCase(""))){
-			cw.setCompetenze(comp);
-			change++;
-		} else
-			cw.setCompetenze(originale.getCompetenze());
-
-		if(change != 0){
+		if(change > 0){
 			try{
 
-				if(profileDAO.update(cw))
-					utils.UtilityClass.print("###### Aggiornamento Ham_user effettuato!"); //da eliminare
-				else
-					utils.UtilityClass.print("###### Aggiornamento Ham_user fallito!"); //da eliminare
-				
-				RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/LoginS");
-				
-				request.setAttribute("email", cw.getEmail());
-				request.setAttribute("password", cw.getPasswd());
-				
-				requestDispatcher.forward(request, response);
+				profileDAO.update(user);
+				response.getWriter().print(json.put("result", "done"));
+
 				
 			} catch (SQLException e){
 				utils.UtilityClass.print(e);
