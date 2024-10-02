@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "NextPage", value = "/NextPage")
+@WebServlet("NextPage")
 public class NextPageS extends HttpServlet {
 
     @Override
@@ -23,11 +23,12 @@ public class NextPageS extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         response.setContentType("application/json");
+        JSONObject jsonObject = new JSONObject();
 
         Navigator navigator = (Navigator) request.getSession().getAttribute("Navigator");
         Page page = navigator.next();
 
-        JSONObject jsonObject = new JSONObject();
+
         if(page != null) {
             jsonObject.append("id", page.getId());
             jsonObject.append("type", page.getType().toString());

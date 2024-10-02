@@ -104,7 +104,7 @@ public class ProfileDAO implements GenericCrudOp<UtenteEntity, Integer, String> 
 
 
 
-        int res = 0;
+        boolean res = false;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         String sql = "INSERT into Ham_user(userName, email, passwd, competenze, ruolo) VALUES (?,?,?,?,?)";
@@ -114,14 +114,17 @@ public class ProfileDAO implements GenericCrudOp<UtenteEntity, Integer, String> 
             connection = ds.getConnection();
             preparedStatement = connection.prepareStatement(sql);
 
+            String pass = CifraPassword.toHash(entity.getPasswd());
+
             preparedStatement.setString(1, entity.getUserName());
             preparedStatement.setString(2, entity.getEmail());
-            preparedStatement.setString(3, entity.getPasswd());
+            preparedStatement.setString(3, pass);
             preparedStatement.setString(4, entity.getCompetenze());
             preparedStatement.setString(5, entity.getRuolo());
 
             utils.UtilityClass.print(">.Inserimento nuovo UtenteEntity: " + preparedStatement.toString());
-            res = preparedStatement.executeUpdate();
+            if(preparedStatement.executeUpdate() > 0)
+                res = true;
 
         } finally {
             if (preparedStatement != null)
@@ -129,7 +132,7 @@ public class ProfileDAO implements GenericCrudOp<UtenteEntity, Integer, String> 
             if (connection != null)
                 connection.close();
         }
-        return res == 1;
+        return res;
 
     }
 

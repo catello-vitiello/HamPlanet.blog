@@ -9,7 +9,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 
-@WebServlet(name = "PrevPage", value = "/PrevPage")
+@WebServlet("PrevPage")
 public class PrevPageS extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -20,11 +20,12 @@ public class PrevPageS extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         response.setContentType("application/json");
+        JSONObject jsonObject = new JSONObject();
 
         Navigator navigator = (Navigator) request.getSession().getAttribute("Navigator");
         Page page = navigator.prev();
 
-        JSONObject jsonObject = new JSONObject();
+
         if(page != null) {
             jsonObject.append("id", page.getId());
             jsonObject.append("type", page.getType().toString());

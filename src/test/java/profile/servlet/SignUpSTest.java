@@ -6,12 +6,14 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import profile.dao.ProfileDAO;
 import profile.entity.UtenteEntity;
+import utils.CifraPassword;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -35,6 +37,8 @@ class SignUpSTest {
     private ProfileDAO mockProfileDAO;
     @Mock
     private RequestDispatcher mockRequestDispatcher;
+    @Mock
+    private Part cover;
 
     private SignUpS signUpS;
 
@@ -47,7 +51,6 @@ class SignUpSTest {
         // Configura il mock di ServletConfig e ServletContext
         when(servletConfig.getServletContext()).thenReturn(servletContext);
         when(request.getServletContext()).thenReturn(servletContext);
-        when(servletContext.getRequestDispatcher(anyString())).thenReturn(mockRequestDispatcher);
 
         signUpS.init(servletConfig);
         signUpS.setProfileDAO(mockProfileDAO);
@@ -55,6 +58,16 @@ class SignUpSTest {
 
     @Test
     void signUpUser() throws Exception {
+        UtenteEntity user = new UtenteEntity();
+        user.setUserName("pino");
+        user.setEmail("pino@gmail.com");
+        user.setPasswd("pino");
+
+        user.setRuolo(UtenteEntity.Role.utente);
+
+        when(request.getPart("cover")).thenReturn(cover);
+
+
         when(request.getParameter("username")).thenReturn("pino");
         when(request.getParameter("email")).thenReturn("pino@gmail.com");
         when(request.getParameter("passwd")).thenReturn("pino");
@@ -62,8 +75,9 @@ class SignUpSTest {
 
 
 
-        when(mockProfileDAO.insert(any(UtenteEntity.class))).thenReturn(true);
+        when(mockProfileDAO.insert(user)).thenReturn(true);
 
+        when(request.getRequestDispatcher("FileManager")).thenReturn(mockRequestDispatcher);
 
         //Writer
         StringWriter stringWriter = new StringWriter();
@@ -72,9 +86,94 @@ class SignUpSTest {
 
         signUpS.doPost(request, response);
 
-        assert (stringWriter).toString().contains("{username:\"pino\", }");
+        assert (stringWriter).toString().contains("true");
 
 
+    }
+
+    @Test
+    void signUpContentwriter() throws Exception {
+        UtenteEntity user = new UtenteEntity();
+        user.setUserName("pino");
+        user.setEmail("pino@gmail.com");
+        user.setPasswd("pino");
+        user.setCompetenze("test competenze");
+
+        user.setRuolo(UtenteEntity.Role.content_writer);
+
+        when(request.getPart("cover")).thenReturn(cover);
+
+
+        when(request.getParameter("username")).thenReturn("pino");
+        when(request.getParameter("email")).thenReturn("pino@gmail.com");
+        when(request.getParameter("passwd")).thenReturn("pino");
+        when(request.getParameter("comp")).thenReturn("test competenze");
+
+
+
+        when(mockProfileDAO.insert(user)).thenReturn(true);
+
+        when(request.getRequestDispatcher("FileManager")).thenReturn(mockRequestDispatcher);
+
+        //Writer
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(stringWriter);
+        when(response.getWriter()).thenReturn(printWriter);
+
+        signUpS.doPost(request, response);
+
+        assert (stringWriter).toString().contains("true");
+
+
+    }
+
+
+
+    @Test
+    public void testDoPost_CredentialsMissing() throws Exception {
+        // Simula una richiesta con credenziali mancanti
+        when(request.getParameter("username")).thenReturn(null);
+        when(request.getParameter("email")).thenReturn(null);
+        when(request.getParameter("passwd")).thenReturn(null);
+
+        // Simula lo stream di output della risposta
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter writer = new PrintWriter(stringWriter);
+        when(response.getWriter()).thenReturn(writer);
+
+        // Chiamata al metodo doPost
+        signUpS.doPost(request, response);
+
+        // Verifica che la risposta JSON contenga un messaggio di errore
+        writer.flush(); // Scrive i dati su stringWriter
+        assert (stringWriter.toString().contains("credenziali non inserite"));
+    }
+
+    @Test
+    public void testDoPost_ExistingEmail() throws Exception {
+        // Simula una richiesta con email già in uso
+        when(request.getParameter("username")).thenReturn("testuser");
+        when(request.getParameter("email")).thenReturn("sbocciario@hamplanet.blog.it");
+        when(request.getParameter("passwd")).thenReturn("password");
+        when(request.getParameter("comp")).thenReturn("");
+
+        when(request.getPart("cover")).thenReturn(cover);
+
+        // Simula che l'email esista già
+        when(mockProfileDAO.checkEmail("sbocciario@hamplanet.blog.it")).thenReturn(true);
+
+        // Simula lo stream di output della risposta
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter writer = new PrintWriter(stringWriter);
+        when(response.getWriter()).thenReturn(writer);
+
+        // Chiamata al metodo doPost
+        signUpS.doPost(request, response);
+
+        // Verifica che la risposta JSON contenga un messaggio di errore
+        writer.flush();
+
+        assert(stringWriter.toString().contains("Email gia in uso"));
     }
 
 

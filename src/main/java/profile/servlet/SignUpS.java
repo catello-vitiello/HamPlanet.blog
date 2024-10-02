@@ -2,6 +2,7 @@ package profile.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Writer;
 import java.sql.SQLException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -40,26 +41,31 @@ public class SignUpS extends HttpServlet {
 		response.setContentType("application/json");
 		JSONObject obj = new JSONObject();
 
+		PrintWriter writer = response.getWriter();
+
 		UtenteEntity user = new UtenteEntity();
 
 		String username, email, competenze;
 		String passwd = null;
 
 		Part cover = request.getPart("cover");
-		username = request.getParameter("userName");
+		username = request.getParameter("username");
 		email = request.getParameter("email");
 		String pass_to_hash = request.getParameter("passwd");
-		if (pass_to_hash != null)
-			passwd = utils.CifraPassword.toHash(pass_to_hash);
+
+
 
 		competenze = request.getParameter("comp");
 
-		if (username == null || email == null || passwd == null )
-			response.getWriter().print(obj.put("errore", "credenziali non inserite"));
+		if (username == null || email == null || pass_to_hash == null ){
+			response.getWriter().print(obj.append("errore", "credenziali non inserite"));
+			return;
+		}
+
 
 		user.setUserName(username);
 		user.setEmail(email);
-		user.setPasswd(passwd);
+		user.setPasswd(pass_to_hash);
 
 		/*
 		Slot di codice per la gestione della registrazione dell'utente*
@@ -73,12 +79,9 @@ public class SignUpS extends HttpServlet {
 				//check sull'email
 				if (profileDAO.checkEmail(email)) {
 
-					obj.put("username", username);
-					obj.put("email", email);
-					obj.put("ruolo", UtenteEntity.Role.utente);
 					obj.put("errore", "Email gia in uso");
 
-					response.getWriter().print(obj);
+					writer.print(obj);
 
 					return;
 				}
@@ -87,14 +90,27 @@ public class SignUpS extends HttpServlet {
 				if (profileDAO.checkUserName(username)) {
 
 					obj.put("errore", "Username gia in uso");
-					response.getWriter().print(obj);
+					writer.print(obj);
 
 					return;
 				}
 
 				user.setRuolo(UtenteEntity.Role.utente);
 
-				profileDAO.insert(user);
+				if (profileDAO.insert(user)) {
+					obj.put("result", true);
+
+					String filename = "profile/" + user.getId() + ".jpg";
+
+					request.setAttribute("Upload", true);
+					request.setAttribute("InputStream", cover.getInputStream());
+					request.setAttribute("Path", filename);
+					request.getRequestDispatcher("FileManager").include(request, response);
+
+
+				}else {
+					obj.put("result", false);
+				}
 
 
 
@@ -111,7 +127,7 @@ public class SignUpS extends HttpServlet {
 
 					obj.put("errore", "Email gia in uso");
 
-					response.getWriter().print(obj);
+					writer.print(obj);
 
 					return;
 				}
@@ -121,7 +137,7 @@ public class SignUpS extends HttpServlet {
 
 					obj.put("errore", "Username gia in uso");
 
-					response.getWriter().print(obj);
+					writer.print(obj);
 					return;
 				}
 
@@ -129,10 +145,7 @@ public class SignUpS extends HttpServlet {
 				user.setRuolo(UtenteEntity.Role.content_writer);
 
 				if (profileDAO.insert(user)) {
-					obj.put("username", username);
-					obj.put("email", email);
-					obj.put("competenze", competenze);
-					obj.put("ruolo", UtenteEntity.Role.content_writer);
+					obj.put("result", true);
 
 					String filename = "profile/" + user.getId() + ".jpg";
 
@@ -142,15 +155,17 @@ public class SignUpS extends HttpServlet {
 					request.getRequestDispatcher("FileManager").include(request, response);
 
 
+				}else {
+					obj.put("result", false);
 				}
 			} catch (SQLException e) {
 				utils.UtilityClass.print(e);
 			}
 
 		}
-		//REDIRECT TO LOGIN
-		request.setAttribute("email", user.getEmail());
-		request.setAttribute("password", pass_to_hash);
-		request.getRequestDispatcher("Login").forward(request, response);
+
+
+		writer.print(obj);
+
 	}
 }

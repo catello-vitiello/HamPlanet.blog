@@ -62,6 +62,9 @@ public class UtenteEntity implements Serializable, Cloneable{
     public String getRuolo() {
 		return String.valueOf(ruolo);
 	}
+    public Role getRuoloEnum(){
+        return ruolo;
+    }
 
 	public void setRuolo(String ruolo) {
 		this.ruolo = Role.valueOf(ruolo);
@@ -91,17 +94,19 @@ public class UtenteEntity implements Serializable, Cloneable{
     }
 
     @Override
-    public boolean equals(Object o){
-        if(o == null)
-            return false;
-
-        if(getClass() != o.getClass())
-            return false;
+    public boolean equals(Object o) {
+        if (this == o) return true; // Se è lo stesso oggetto, restituisce true
+        if (o == null || getClass() != o.getClass()) return false; // Verifica se l'oggetto è null o di un'altra classe
 
         UtenteEntity altro = (UtenteEntity) o;
-        return( (id == altro.getId()) && (userName.equalsIgnoreCase(altro.getUserName())) && (email.equalsIgnoreCase(altro.getEmail()))
-                && (passwd.equalsIgnoreCase(altro.getPasswd())) && (competenze.equalsIgnoreCase(altro.getCompetenze())) 
-                && (ruolo.equals(altro.getRuolo())) );
+
+        // Controllo di uguaglianza per i campi, gestendo i casi null in modo sicuro
+        return id == altro.getId() &&
+                (userName != null ? userName.equalsIgnoreCase(altro.getUserName()) : altro.getUserName() == null) &&
+                (email != null ? email.equalsIgnoreCase(altro.getEmail()) : altro.getEmail() == null) &&
+                (passwd != null ? passwd.equalsIgnoreCase(altro.getPasswd()) : altro.getPasswd() == null) &&
+                (competenze != null ? competenze.equalsIgnoreCase(altro.getCompetenze()) : altro.getCompetenze() == null) &&
+                ruolo == altro.getRuoloEnum(); // Confronto diretto sugli enum
     }
 
 
