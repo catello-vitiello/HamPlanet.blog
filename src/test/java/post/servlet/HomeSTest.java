@@ -1,30 +1,23 @@
 package post.servlet;
 
-import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import post.dao.PostDAO;
 import post.entity.PostEntity;
-import profile.entity.UtenteEntity;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.*;
 
-class RetrievePostTest {
+class HomeSTest {
 
     @Mock
     private HttpServletRequest request;
@@ -40,20 +33,20 @@ class RetrievePostTest {
     private RequestDispatcher mockRequestDispatcher;
 
 
-    private RetrievePost retrievePost;
+    private HomeS homeS;
 
     @BeforeEach
     void setUp() throws Exception {
         MockitoAnnotations.openMocks(this);
 
-        retrievePost = new RetrievePost();
+        homeS = new HomeS();
 
         when(servletConfig.getServletContext()).thenReturn(servletContext);
         when(request.getServletContext()).thenReturn(servletContext);
         when(servletContext.getRequestDispatcher("/index.jsp")).thenReturn(mockRequestDispatcher);
 
-        retrievePost.init(servletConfig);
-        retrievePost.setPostDAO(mockPostDAO);
+        homeS.init(servletConfig);
+        homeS.setPostDAO(mockPostDAO);
     }
 
     @Test
@@ -83,7 +76,7 @@ class RetrievePostTest {
 
 
 
-        retrievePost.doPost(request, response);
+        homeS.doPost(request, response);
 
 
         verify(mockPostDAO, times(1)).getAll(null);

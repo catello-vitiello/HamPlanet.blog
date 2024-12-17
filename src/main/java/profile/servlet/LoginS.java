@@ -13,10 +13,11 @@ import javax.sql.DataSource;
 
 import navigation.Navigator;
 import navigation.Page;
+import org.json.JSONObject;
 import profile.dao.ProfileDAO;
 
 
-@WebServlet("/LoginS")
+@WebServlet("/Login")
 public class LoginS extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -38,43 +39,41 @@ public class LoginS extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
+		response.setContentType("application/json");
+		JSONObject json = new JSONObject();
+		json.put("login", false);
 		//DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
 		//ProfileDAO model = new ProfileDAO(ds);
 		
 		String email, password;
 		
 		email = request.getParameter("email");
-		password = request.getParameter("pass");
+		password = request.getParameter("password");
 		
-		if((email == null || password == null) || (email.equalsIgnoreCase("") || password.equalsIgnoreCase("")) ) {
-			
-			utils.UtilityClass.print("IF di controllo");
-			email = (String) request.getAttribute("email");
-			password = (String) request.getAttribute("password");
-			
-			try {
-				
-				HttpSession session = request.getSession(false);
-
-				if (profileDAO.login(email, password)) {
-					session.setAttribute("profile", profileDAO.getByEmail(email));
-				}
-				//session.setAttribute("loggato", (boolean) profileDAO.login(email, password));
-
-				//CifraPassword.checkPass(password, passwordNelDB);
-				//session.setAttribute("cw", profileDAO.getByEmail(email));
-				
-				RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("./WaitPage.html"); //area utente
-				requestDispatcher.forward(request, response);
-				
-				return;
-				
-			}catch (SQLException e) {
-				utils.UtilityClass.print(e);
-			}
-			
-		}
+//		if((email == null || password == null) || (email.equalsIgnoreCase("") || password.equalsIgnoreCase("")) ) {
+//
+//			utils.UtilityClass.print("IF di controllo");
+//
+//
+//			try {
+//
+//				HttpSession session = request.getSession(false);
+//
+//				if (profileDAO.login(email, password)) {
+//					session.setAttribute("profile", profileDAO.getByEmail(email));
+//				}
+//
+//
+//				RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("./WaitPage.html"); //area utente
+//				requestDispatcher.forward(request, response);
+//
+//				return;
+//
+//			}catch (SQLException e) {
+//				utils.UtilityClass.print(e);
+//			}
+//
+//		}
 		
 		try {
 			
@@ -82,21 +81,20 @@ public class LoginS extends HttpServlet {
 			
 			 if(profileDAO.login(email, password)) {
 				 session.setAttribute("profile", profileDAO.getByEmail(email));
+				 json.put("login", true);
 
 				 //NAVIGATOR
 				 Navigator navigator = new Navigator();
 				 navigator.setCurrent(new Page(0, Page.Type.HOME));
 				 session.setAttribute("Navigator", navigator);
 
-
-				 RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/index.jsp");
-				 requestDispatcher.forward(request, response);
 			 }
+
 			
 		}catch (SQLException e) {
 			utils.UtilityClass.print(e);
 		}
-		
+		response.getWriter().print(json);
 	}
 
 }

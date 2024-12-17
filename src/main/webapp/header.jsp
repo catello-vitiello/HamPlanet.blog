@@ -13,7 +13,7 @@
         <nav>
             <a href="index.jsp">Home</a>
             <a href="#">Categorie</a>
-            <a href="Login.jsp">Login/Registrati</a>
+            <a href="login.jsp">Login/Registrati</a>
         </nav>
         <div class="search-bar">
             <input type="text" placeholder="Cerca...">

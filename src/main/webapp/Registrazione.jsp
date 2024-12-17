@@ -23,7 +23,7 @@
                 
                 <!--LINK TO LOGIN-->
                 <div class="forLog">
-                    <p>Hai già un ID Ham Planet Blog? <a href="Login.jsp">Accedi qui ></a></p>
+                    <p>Hai già un ID Ham Planet Blog? <a href="login.jsp">Accedi qui ></a></p>
                 </div>
                 
 

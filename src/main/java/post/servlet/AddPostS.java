@@ -6,6 +6,7 @@ import profile.entity.UtenteEntity;
 import utils.UtilityClass;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import javax.sql.DataSource;
@@ -13,6 +14,11 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 @WebServlet("/AddPost")
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2,  // 2 MB
+        maxFileSize = 1024 * 1024 * 5,    // 5 MB
+        maxRequestSize = 1024 * 1024 * 10 // 10 MB
+)
 public class AddPostS extends HttpServlet {
 
     private static final long serialVersionUID = 9898431841L;
@@ -54,14 +60,16 @@ public class AddPostS extends HttpServlet {
                 post.setIdContent_Writer(user.getId());
 
                 try {
-                    postDAO.insert(post);
-                    int postId = 0;
+                    if(!postDAO.insert(post))
+                        return;
+
+                    int postId = postDAO.getByName(post.getNomePost());
 
                     if (cover.getSize() > 0){
                         String filename = "post/" + postId + ".jpeg";
                         req.setAttribute("Upload", true);
                         req.setAttribute("InputStream", cover.getInputStream());
-                        req.setAttribute("path", filename);
+                        req.setAttribute("Path", filename);
                         req.getRequestDispatcher("/FileManager").include(req, resp);
 
 

@@ -12,13 +12,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.LinkedList;
 
-@WebServlet("/retrivePosts")
-public class RetrievePost extends HttpServlet {
+@WebServlet("/Home")
+public class HomeS extends HttpServlet {
 
     private PostDAO postDAO;
 
@@ -40,34 +41,35 @@ public class RetrievePost extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("application/json");
+        //resp.setContentType("application/json");
 
         Collection<PostEntity> posts;
 
+
         try{
-            Collection<JSONObject> collection = new LinkedList<>();
+            //Collection<JSONObject> collection = new LinkedList<>();
             posts = postDAO.getAll(null);
 
-            for(PostEntity p : posts){
+//            for(PostEntity p : posts){
+//
+//                JSONObject obj = new JSONObject();
+//                obj.put("id", p.getId());
+//                obj.put("id-cw", p.getIdContent_Writer());
+//                obj.put("name", p.getNomePost());
+//                obj.put("body", p.getTesto());
+//
+//                collection.add(obj);
+//
+//            }
+//
+//            collection.forEach(
+//                    x -> {
+//                        UtilityClass.print(x.toString());
+//                    }
+//            );
 
-                JSONObject obj = new JSONObject();
-                obj.put("id", p.getId());
-                obj.put("id-cw", p.getIdContent_Writer());
-                obj.put("name", p.getNomePost());
-                obj.put("body", p.getTesto());
-
-                collection.add(obj);
-
-            }
-
-            collection.forEach(
-                    x -> {
-                        UtilityClass.print(x.toString());
-                    }
-            );
-
-            RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/index.jsp");
-            req.setAttribute("collection", collection);
+            RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/home.jsp");
+            req.setAttribute("posts", posts);
             requestDispatcher.forward(req, resp);
 
         } catch (SQLException e){

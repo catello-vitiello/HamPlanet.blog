@@ -24,7 +24,7 @@ CREATE TABLE Ham_user
 CREATE TABLE Post
 (
     id INT AUTO_INCREMENT,
-    nomePost VARCHAR(200) NOT NULL,
+    nomePost VARCHAR(200) UNIQUE NOT NULL,
     testo TEXT NOT NULL,
     idcontent_writer int NOT NULL,
     PRIMARY KEY(id),

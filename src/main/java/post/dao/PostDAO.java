@@ -28,6 +28,29 @@ public class PostDAO implements GenericCrudOp<PostEntity, Integer, Object> {
     }
 
 
+    public int getByName(String nomePost)throws SQLException{
+
+        String sql = "SELECT id FROM Post WHERE nomePost = ?";
+        ResultSet rs = null;
+
+        try(Connection connection = ds.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ){
+
+            preparedStatement.setString(1, nomePost);
+
+            rs = preparedStatement.executeQuery();
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+
+        }finally {
+            if (rs != null)
+                rs.close();
+        }
+        return -1;
+    }
+
     /********************************************************/
     /*	               	  LIKE POST		               	*/
     /********************************************************/

@@ -42,8 +42,7 @@ class PostSTest {
     private HttpSession session;
     @Mock
     private PostDAO mockPostDAO;
-    @Mock
-    private CommentoDAO mockCommentoDAO;
+
     @Mock
     private Navigator mockNavigator;
 
@@ -60,7 +59,7 @@ class PostSTest {
         when(servletContext.getRequestDispatcher("/post.jsp")).thenReturn(requestDispatcher);
 
         postS.init(servletConfig);
-        postS.setDAO(mockPostDAO, mockCommentoDAO);
+        postS.setDAO(mockPostDAO);
 
 
     }
@@ -74,21 +73,12 @@ class PostSTest {
         postTest.setNomePost("test");
         postTest.setIdContent_Writer(4);
 
-        //Commento Test
-        CommentoEntity commentoTest = new CommentoEntity();
-        commentoTest.setIdPost(1);
-        commentoTest.setContenutoCommento("test commento");
-        commentoTest.setIdUtente(5);
 
-
-        Collection<CommentoEntity> commentoTestCollection = new ArrayList<>();
-        commentoTestCollection.add(commentoTest);
 
         when(request.getParameter("postId")).thenReturn("1");
         when(request.getParameter("new_page")).thenReturn("true");
 
         when(mockPostDAO.getByID(1)).thenReturn(postTest);
-        when(mockCommentoDAO.getAllByPost(1)).thenReturn(commentoTestCollection);
 
 
         when(request.getSession(false)).thenReturn(session);
@@ -98,11 +88,11 @@ class PostSTest {
         postS.doGet(request, response);
 
         verify(mockPostDAO, times(1)).getByID(1);
-        verify(mockCommentoDAO, times(1)).getAllByPost(1);
         verify(mockNavigator).save();
 
-        verify(request).setAttribute(eq("post"), any(JSONObject.class));
+        verify(request).setAttribute(eq("post"), eq(postTest));
         verify(requestDispatcher).forward(request, response);
+
     }
 
 }

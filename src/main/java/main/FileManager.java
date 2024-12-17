@@ -1,32 +1,58 @@
 package main;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLDecoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @WebServlet(name = "FileManager", value = "/FileManager")
+@WebInitParam(name="file-upload", value = "/files")
 public class FileManager extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+    private static final Logger LOGGER = Logger.getLogger(FileManager.class.getName());
+
+    // Percorso della cartella esterna dove verranno salvati i file caricati
+    private static final String UPLOAD_DIR = "/files/images/";
 
     private static final int BUFFER = 4096;
     private String filePath;
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public FileManager() {
+        super();
 
-    public void init() throws ServletException {
-        this.filePath = "/files";
     }
 
     @Override
+    public void init() throws ServletException {
+        super.init();
+    }
+
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
     }
 
-    @Override
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         Boolean upload = request.getAttribute("Upload") != null;
+
+
 
         if(!upload) {
 
@@ -56,16 +82,29 @@ public class FileManager extends HttpServlet {
 
         } else {
 
-            InputStream in = (InputStream) request.getAttribute("InputStream");
             String path = (String) request.getAttribute("Path");
+            // Definisci il percorso del file di destinazione
+            String relativePath = UPLOAD_DIR + path;
 
-            File file = new File(filePath + "/" + path);
-            OutputStream out = new FileOutputStream(file);
-            byte[] buffer = new byte[BUFFER];
-            while(in.read(buffer) >= 0)
-                out.write(buffer);
-            out.close();
-            in.close();
+            Path uploadPath = Paths.get(getServletContext().getRealPath(""), relativePath);
+
+            // Crea la directory se non esiste
+            Path dir = uploadPath.getParent();
+            Files.createDirectories(dir);
+
+            InputStream in = (InputStream) request.getAttribute("InputStream");
+
+
+            // Salva il file nel percorso specificato
+            try {
+
+                Files.copy(in, uploadPath, StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                LOGGER.log(Level.WARNING, "Uploader error", e);
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Errore nel salvataggio del file.");
+            }
+
+
 
         }
 

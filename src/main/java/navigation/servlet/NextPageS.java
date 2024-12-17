@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("NextPage")
+@WebServlet("/NextPage")
 public class NextPageS extends HttpServlet {
 
     @Override
