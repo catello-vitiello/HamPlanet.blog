@@ -188,6 +188,7 @@ public class ProfileDAO implements GenericCrudOp<UtenteEntity, Integer, String> 
 
             preparedStatement.setString(1, user.getUserName());
             preparedStatement.setString(2, utils.CifraPassword.toHash(user.getPasswd()));
+            preparedStatement.setInt(3, user.getId());
 
             utils.UtilityClass.print(">.Update su Content_Writer: " + preparedStatement.toString());
             res = preparedStatement.executeUpdate();

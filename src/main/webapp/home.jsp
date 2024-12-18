@@ -25,7 +25,7 @@
     <h1 class="text-center">Home</h1>
     <div class="row row-cols-1 row-cols-md-3 g-4">
         <c:if test="${empty posts}">
-            <c:redirect url="/RetrievePost" />
+            <c:redirect url="/Home" />
         </c:if>
         <!-- Ciclo JSTL per iterare sui post passati dalla servlet -->
         <c:forEach var="post" items="${posts}">

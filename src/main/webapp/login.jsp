@@ -23,7 +23,7 @@
                 </div>
                 <div class="div">
                     <h5>Email</h5>
-                    <input id="email" type="text" class="input">
+                    <label for="email"></label><input id="email" name="email" type="text" class="input">
                 </div>
             </div>
             <div class="input-div pass">
@@ -32,7 +32,7 @@
                 </div>
                 <div class="div">
                     <h5>Password</h5>
-                    <input id="password" type="password" class="input">
+                    <input id="password" name="password" type="password" class="input">
                 </div>
             </div>
             <div style="display: inline">
