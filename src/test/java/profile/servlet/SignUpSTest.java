@@ -23,7 +23,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class SignUpSTest {
+public class SignUpSTest {
 
     @Mock
     private HttpServletRequest request;
@@ -43,7 +43,7 @@ class SignUpSTest {
     private SignUpS signUpS;
 
     @BeforeEach
-    void setUp()throws Exception {
+    public void setUp()throws Exception {
         MockitoAnnotations.openMocks(this);
 
         signUpS = new SignUpS();
@@ -57,7 +57,7 @@ class SignUpSTest {
     }
 
     @Test
-    void signUpUser() throws Exception {
+    public void signUpUser() throws Exception {
         UtenteEntity user = new UtenteEntity();
         user.setUserName("pino");
         user.setEmail("pino@gmail.com");
@@ -92,7 +92,7 @@ class SignUpSTest {
     }
 
     @Test
-    void signUpContentwriter() throws Exception {
+    public void signUpContentwriter() throws Exception {
         UtenteEntity user = new UtenteEntity();
         user.setUserName("pino");
         user.setEmail("pino@gmail.com");

@@ -11,14 +11,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
-
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.sql.Connection;
 
 import static org.mockito.Mockito.when;
 
-public class AddCommentoIntegrationTest {
+public class DeleteCommentoIntegrationTest {
+
+
 
     @Mock
     private HttpServletRequest request;
@@ -29,18 +30,31 @@ public class AddCommentoIntegrationTest {
     @Mock
     private DataSource mockDataSource;
 
+    private Connection connection;
+    private DataSource datasource;
+
+
+
+    private Connection setUp() throws Exception {
+
+        datasource = IntegrationTestIS.getTestDataSource();
+        connection = datasource.getConnection();
+
+        connection.setAutoCommit(false); // Disabilita l'auto-commit
+        return connection;
+    }
+
+
     @Test
-    public void addCommentTest() throws Exception{
+    public void deleteOwnCommentTest() throws Exception{
 
         MockitoAnnotations.openMocks(this);
 
-        DataSource ds = IntegrationTestIS.getTestDataSource();
-        Connection conn = ds.getConnection();
-        conn.setAutoCommit(false);
 
+
+        when(mockDataSource.getConnection()).thenReturn(setUp(), setUp());
+//        when(mockDataSource.getConnection()).thenReturn(setUp());
         CommentoDAO dao = new CommentoDAO(mockDataSource);
-        when(mockDataSource.getConnection()).thenReturn(conn);
-
 
         //mock user
         UtenteEntity user = new UtenteEntity();
@@ -49,8 +63,8 @@ public class AddCommentoIntegrationTest {
 
 
 
-        when(request.getParameter("commento")).thenReturn("test");
-        when(request.getParameter("postID")).thenReturn("1");
+        when(request.getParameter("commentoID")).thenReturn("2");
+        when(request.getParameter("postID")).thenReturn("4");
         when(request.getSession(false)).thenReturn(session);
         when(session.getAttribute("profile")).thenReturn(user);
 
@@ -59,11 +73,10 @@ public class AddCommentoIntegrationTest {
         PrintWriter writer = new PrintWriter(stringWriter);
         when(response.getWriter()).thenReturn(writer);
 
-        AddCommentoS addCommentoS = new AddCommentoS();
-        addCommentoS.setCommentoDAO(dao);
+        RemoveCommentoS deleteCommentoS = new RemoveCommentoS();
+        deleteCommentoS.setCommentoDAO(dao);
 
-        addCommentoS.doPost(request, response);
-
+        deleteCommentoS.doPost(request, response);
 
         assert (stringWriter.toString().contains("{\"outcome\":true}"));
 

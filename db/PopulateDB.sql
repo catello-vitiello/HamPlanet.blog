@@ -22,7 +22,7 @@ insert into Ham_user(userName, email, passwd, competenze, ruolo) values
 
 -- POPOLAMENTO DELLA TABELLA POST
 insert into Post(nomepost, testo, idcontent_writer) values
-                                                        ('Post_1', 'I prosciutti sono troppo bellissimi', 1),
+                                                        ('Post_1', 'I prosciutti sono troppo belli', 1),
                                                         ('Post_2', 'Evviva la bresaola', 2),
                                                         ('Post_3', 'Il capocollo è troppo saporito', 3),
                                                         ('Post_4', 'Spider-man mangiava tanto salame napoletano', 4);

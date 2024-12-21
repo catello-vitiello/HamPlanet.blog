@@ -1,5 +1,6 @@
 package post.servlet;
 
+import org.json.JSONObject;
 import post.dao.PostDAO;
 import post.entity.PostEntity;
 import profile.entity.UtenteEntity;
@@ -45,6 +46,9 @@ public class AddPostS extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("application/json");
+
+        JSONObject json = new JSONObject();
 
         String title = req.getParameter("title");
         String plainText = req.getParameter("text");
@@ -74,6 +78,7 @@ public class AddPostS extends HttpServlet {
 
 
                     }
+                    json.put("success", true);
 
                 } catch (SQLException sqlException) {
                     UtilityClass.print(sqlException);
@@ -82,6 +87,6 @@ public class AddPostS extends HttpServlet {
             }
         }
 
-
+        resp.getWriter().print(json);
     }
 }

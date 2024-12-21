@@ -18,7 +18,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class UpdateProfileSTest {
+public class UpdateProfileSTest {
 
     @Mock
     private HttpServletRequest request;

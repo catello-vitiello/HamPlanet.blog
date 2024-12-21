@@ -75,7 +75,7 @@ public class DeletePostS extends HttpServlet {
             }
 
         }
-        jsonObject.append("result", result);
+        jsonObject.put("result", result);
         resp.getWriter().print(jsonObject);
 
 

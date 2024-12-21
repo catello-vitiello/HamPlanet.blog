@@ -18,6 +18,8 @@ import profile.entity.UtenteEntity;
 import profile.servlet.LoginS;
 import utils.MockDataSource;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.reflect.Field;
 
 import static org.mockito.Mockito.*;
@@ -48,8 +50,8 @@ public class LoginTest {
     private LoginS loginServlet;
 
     @BeforeEach
-    void setUp() throws Exception {
-        MockitoAnnotations.openMocks(this);
+    public void setUp() throws Exception {
+        MockitoAnnotations.initMocks(this);
 
         // Inizializza la servlet
         loginServlet = new LoginS();
@@ -67,22 +69,27 @@ public class LoginTest {
     }
 
     @Test
-    void testDoPostWithValidCredentials() throws Exception {
+    public void testDoPostWithValidCredentials() throws Exception {
         // Configura il comportamento del mock del DAO
         when(request.getParameter("email")).thenReturn("n@n.it");
-        when(request.getParameter("pass")).thenReturn("test");
+        when(request.getParameter("password")).thenReturn("test");
         when(mockProfileDAO.login("n@n.it", "test")).thenReturn(true);
         when(mockProfileDAO.getByEmail("n@n.it")).thenReturn(new UtenteEntity()); // Usa un oggetto fittizio
+
+        //Writer
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter writer = new PrintWriter(stringWriter);
+        when(response.getWriter()).thenReturn(writer);
+
 
         // Esegui il metodo doPost
         loginServlet.doPost(request, response);
 
         // Verifica che la sessione sia aggiornata con il profilo
         verify(session).setAttribute(eq("profile"), any());
-        verify(session).setAttribute(eq("Navigator"), any());
 
-        // Verifica che la servlet faccia il forward all'index.jsp
-        verify(requestDispatcher).forward(request, response);
+
+        assert (stringWriter).toString().equals("{\"login\":true}");
     }
 
 

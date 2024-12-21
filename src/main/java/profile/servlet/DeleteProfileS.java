@@ -41,6 +41,8 @@ public class DeleteProfileS extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("application/json");
+        JSONObject json = new JSONObject();
 
         HttpSession session = request.getSession(false);
         if (session != null) {
@@ -59,21 +61,26 @@ public class DeleteProfileS extends HttpServlet {
                     if (id != null && !id.isEmpty()) {
                         UtenteEntity delete = profileDAO.getByID(Integer.parseInt(id));
 
-                        profileDAO.delete(delete);
+                        boolean result = profileDAO.delete(delete);
+                        json.put("success", result);
+
 
                     }
                 }else {
 
-                    if (profileDAO.delete(user))
+                    if (profileDAO.delete(user)) {
+                        json.put("success", true);
                         utils.UtilityClass.print("###### Eliminazione Ham_user effettuata!"); //da eliminare
-                    else
+                    }else {
+                        json.put("success", false);
                         utils.UtilityClass.print("###### Eliminazione Ham_user fallita!"); //da eliminare
+                    }
                 }
             } catch (SQLException e) {
                 utils.UtilityClass.print(e);
             }
         }
-        		
+        response.getWriter().print(json);
 	}
 
 }

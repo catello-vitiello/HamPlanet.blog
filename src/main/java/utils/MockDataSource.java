@@ -8,8 +8,8 @@ public class MockDataSource {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUrl("jdbc:mysql://localhost:3306/freedb_HPBlog_db");
-        dataSource.setUsername("root");
-        dataSource.setPassword("Sferrari21*MySql92410");
+        dataSource.setUsername("is_test");
+        dataSource.setPassword("is_test");
         dataSource.setDefaultAutoCommit(false);
         dataSource.setAutoCommitOnReturn(false);
         dataSource.setRollbackOnReturn(true);

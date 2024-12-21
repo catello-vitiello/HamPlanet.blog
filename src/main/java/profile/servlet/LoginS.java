@@ -83,11 +83,6 @@ public class LoginS extends HttpServlet {
 				 session.setAttribute("profile", profileDAO.getByEmail(email));
 				 json.put("login", true);
 
-				 //NAVIGATOR
-				 Navigator navigator = new Navigator();
-				 navigator.setCurrent(new Page(0, Page.Type.HOME));
-				 session.setAttribute("Navigator", navigator);
-
 			 }
 
 			

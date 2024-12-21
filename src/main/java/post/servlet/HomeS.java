@@ -1,5 +1,7 @@
 package post.servlet;
 
+import navigation.Navigator;
+import navigation.Page;
 import org.json.JSONObject;
 import post.dao.PostDAO;
 import post.entity.PostEntity;
@@ -11,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.File;
 import java.io.IOException;
@@ -67,6 +70,13 @@ public class HomeS extends HttpServlet {
 //                        UtilityClass.print(x.toString());
 //                    }
 //            );
+
+            //NAVIGATION
+            HttpSession session = req.getSession(false);
+            //NAVIGATOR
+            Navigator navigator = new Navigator();
+            navigator.setCurrent(new Page(0, Page.Type.HOME));
+            session.setAttribute("Navigator", navigator);
 
             RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/home.jsp");
             req.setAttribute("posts", posts);

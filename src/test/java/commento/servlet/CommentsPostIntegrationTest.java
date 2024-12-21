@@ -26,9 +26,9 @@ class CommentsPostIntegrationTest{
 
     @Test
     public void commentsPostIntegrationTest() throws Exception{
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
-        DataSource ds = IntegrationTestIS.getConnection();
+        DataSource ds = IntegrationTestIS.getTestDataSource();
 
         CommentoDAO commentoDAO = new CommentoDAO(ds);
 

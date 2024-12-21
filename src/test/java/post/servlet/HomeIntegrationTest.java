@@ -6,18 +6,24 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import post.dao.PostDAO;
 import post.entity.PostEntity;
+import utils.IntegrationTestIS;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
+import java.sql.Connection;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
 
-class HomeSTest {
+public class HomeIntegrationTest {
 
     @Mock
     private HttpServletRequest request;
@@ -27,8 +33,6 @@ class HomeSTest {
     private ServletContext servletContext;
     @Mock
     private ServletConfig servletConfig;
-    @Mock
-    private PostDAO mockPostDAO;
     @Mock
     private RequestDispatcher mockRequestDispatcher;
 
@@ -44,42 +48,17 @@ class HomeSTest {
         when(servletConfig.getServletContext()).thenReturn(servletContext);
         when(request.getServletContext()).thenReturn(servletContext);
         when(servletContext.getRequestDispatcher("/home.jsp")).thenReturn(mockRequestDispatcher);
-
         homeS.init(servletConfig);
-        homeS.setPostDAO(mockPostDAO);
+
+        PostDAO postDAO = new PostDAO(IntegrationTestIS.getTestDataSource());
+
+        homeS.setPostDAO(postDAO);
     }
 
     @Test
     void testRetrievePost() throws Exception {
 
-        Collection<PostEntity> collection = new LinkedList<>();
-
-        PostEntity post_test_1= new PostEntity();
-        PostEntity post_test_2= new PostEntity();
-
-        post_test_1.setId(1);
-        post_test_2.setId(2);
-
-        post_test_1.setNomePost("test_1");
-        post_test_2.setNomePost("test_2");
-
-        post_test_1.setIdContent_Writer(6);
-        post_test_2.setIdContent_Writer(6);
-
-        post_test_1.setTesto("test_1");
-        post_test_2.setTesto("test_2");
-
-        collection.add(post_test_1);
-        collection.add(post_test_2);
-
-        when(mockPostDAO.getAll(null)).thenReturn(collection);
-
-
-
         homeS.doPost(request, response);
-
-
-        verify(mockPostDAO, times(1)).getAll(null);
 
         verify(request).setAttribute(eq("posts"), any(Collection.class));
         verify(mockRequestDispatcher).forward(request, response);

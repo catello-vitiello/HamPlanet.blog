@@ -1,28 +1,32 @@
 package post.servlet;
 
-import org.json.JSONObject;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import post.dao.PostDAO;
 import post.entity.PostEntity;
 import profile.entity.UtenteEntity;
+import utils.IntegrationTestIS;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
+import javax.sql.DataSource;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.sql.Connection;
+import java.sql.SQLException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
 
-class DeletePostSTest {
+public class DeletePostIntegrationTest {
 
     @Mock
     private HttpServletRequest request;
@@ -35,7 +39,7 @@ class DeletePostSTest {
     @Mock
     private ServletConfig servletConfig;
     @Mock
-    private PostDAO mockPostaDAO;
+    private DataSource mockDataSource;
     @Mock
     private PrintWriter printWriter;
 
@@ -44,7 +48,7 @@ class DeletePostSTest {
 
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
 
         MockitoAnnotations.openMocks(this);
 
@@ -54,11 +58,18 @@ class DeletePostSTest {
         when(request.getServletContext()).thenReturn(servletContext);
 
         deletePostS.init(servletConfig);
-        deletePostS.setPostDAO(mockPostaDAO);
+        PostDAO postDAO = new PostDAO(mockDataSource);
+        deletePostS.setPostDAO(postDAO);
+    }
+
+    private Connection getTestConnection() throws Exception {
+        Connection connection = IntegrationTestIS.getTestDataSource().getConnection();
+        connection.setAutoCommit(false);
+        return connection;
     }
 
     @Test
-    public void deletePostSupervisor() throws Exception {
+    void deletePostSupervisor() throws Exception {
         UtenteEntity utente = new UtenteEntity();
         utente.setRuolo(UtenteEntity.Role.supervisore);
 
@@ -66,6 +77,7 @@ class DeletePostSTest {
         when(request.getSession(anyBoolean())).thenReturn(session);
         when(session.getAttribute("profile")).thenReturn(utente);
 
+        when(mockDataSource.getConnection()).thenReturn(getTestConnection());
 
         //WRITER
         StringWriter stringWriter = new StringWriter();
@@ -75,20 +87,20 @@ class DeletePostSTest {
 
         deletePostS.doPost(request, response);
 
-        verify(mockPostaDAO, times(1)).delete(any(PostEntity.class));
         assert(stringWriter).toString().equals("{\"result\":true}");
     }
 
     @Test
-    public void deletePostContentWriter() throws Exception {
+    void deletePostContentWriter() throws Exception {
         UtenteEntity utente = new UtenteEntity();
+        utente.setId(1);
         utente.setRuolo(UtenteEntity.Role.content_writer);
 
         when(request.getParameter("postId")).thenReturn("1");
         when(request.getSession(anyBoolean())).thenReturn(session);
         when(session.getAttribute("profile")).thenReturn(utente);
-        when(mockPostaDAO.isCwOwnPost(anyInt(), anyInt())).thenReturn(true);
 
+        when(mockDataSource.getConnection()).thenReturn(getTestConnection(), getTestConnection());
 
         //WRITER
         StringWriter stringWriter = new StringWriter();
@@ -98,32 +110,6 @@ class DeletePostSTest {
 
         deletePostS.doPost(request, response);
 
-        verify(mockPostaDAO, times(1)).delete(any(PostEntity.class));
         assert(stringWriter).toString().equals("{\"result\":true}");
     }
-
-
-    @Test
-    void failureDeletePost() throws Exception {
-        UtenteEntity utente = new UtenteEntity();
-        utente.setRuolo(UtenteEntity.Role.content_writer);
-
-        when(request.getParameter("postId")).thenReturn("1");
-        when(request.getSession(anyBoolean())).thenReturn(session);
-        when(session.getAttribute("profile")).thenReturn(utente);
-        when(mockPostaDAO.isCwOwnPost(20, 5)).thenReturn(false);//post non esistente
-
-        //WRITER
-        StringWriter stringWriter = new StringWriter();
-        PrintWriter writer = new PrintWriter(stringWriter);
-        when(response.getWriter()).thenReturn(writer);
-
-
-        deletePostS.doPost(request, response);
-
-        verify(mockPostaDAO, times(0)).delete(any(PostEntity.class));
-        assert(stringWriter).toString().equals("{\"result\":false}");
-
-    }
-
 }

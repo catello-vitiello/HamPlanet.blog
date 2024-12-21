@@ -20,7 +20,7 @@ import java.io.StringWriter;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-class GetProfileSTest {
+public class GetProfileSTest {
 
     @Mock
     private HttpServletRequest request;
@@ -38,7 +38,7 @@ class GetProfileSTest {
 
 
     @BeforeEach
-    void setUp()throws Exception {
+    public void setUp()throws Exception {
         MockitoAnnotations.openMocks(this);
 
         getProfileS = new GetProfileS();
@@ -50,7 +50,7 @@ class GetProfileSTest {
 
 
     @Test
-    void testGetProfileS() throws Exception {
+    public void testGetProfileS() throws Exception {
 
         //profilo fittizio
         UtenteEntity user_test = new UtenteEntity();

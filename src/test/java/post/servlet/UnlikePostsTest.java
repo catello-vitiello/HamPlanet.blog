@@ -16,10 +16,9 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.*;
 
-class UnlikePostsTest {
+public class UnlikePostsTest {
 
     @Mock
     private HttpServletRequest request;
@@ -38,7 +37,7 @@ class UnlikePostsTest {
     private UnlikePosts unlikePosts;
 
     @BeforeEach
-    void setUp() throws Exception {
+    public void setUp() throws Exception {
         MockitoAnnotations.openMocks(this);
 
         unlikePosts = new UnlikePosts();
@@ -51,7 +50,7 @@ class UnlikePostsTest {
     }
 
     @Test
-    void testUnlikePost() throws Exception {
+    public void testUnlikePost() throws Exception {
 
         UtenteEntity user = new UtenteEntity();
         user.setRuolo(UtenteEntity.Role.utente);

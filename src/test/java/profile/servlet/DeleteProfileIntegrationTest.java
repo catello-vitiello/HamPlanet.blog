@@ -6,6 +6,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import profile.dao.ProfileDAO;
 import profile.entity.UtenteEntity;
+import utils.IntegrationTestIS;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -13,18 +14,19 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
+import javax.sql.DataSource;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.sql.Connection;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-public class DeleteProfileSTest {
+public class DeleteProfileIntegrationTest {
+
     @Mock
-    private ProfileDAO mockProfileDAO;
+    private DataSource mockDataSource;
 
     @Mock
     private HttpServletRequest request;
@@ -48,8 +50,15 @@ public class DeleteProfileSTest {
     private DeleteProfileS deleteProfileS;
     private UtenteEntity utenteEntity;
 
+    private Connection getTestConnection() throws Exception {
+        Connection conn = IntegrationTestIS.getTestDataSource().getConnection();
+        conn.setAutoCommit(false);
+        return conn;
+
+    }
+
     @BeforeEach
-    public void setUp()throws Exception{
+    void setUp()throws Exception{
         MockitoAnnotations.openMocks(this);
 
         deleteProfileS = new DeleteProfileS();
@@ -61,31 +70,26 @@ public class DeleteProfileSTest {
 
 
         deleteProfileS.init(servletConfig);
-        deleteProfileS.setProfileDAO(mockProfileDAO);
+        ProfileDAO profileDAO = new ProfileDAO(mockDataSource);
+        deleteProfileS.setProfileDAO(profileDAO);
 
 
     }
 
     @Test
-    public void testDeleteProfileSupervisor() throws Exception{
+    void testDeleteProfileSupervisor() throws Exception{
 
         utenteEntity = new UtenteEntity();
         utenteEntity.setId(1);
         utenteEntity.setEmail("n@n.it");
         utenteEntity.setRuolo(UtenteEntity.Role.supervisore);
 
-        UtenteEntity entityToDelete =new UtenteEntity();
-        entityToDelete.setId(5);
-        entityToDelete.setEmail("pluto@p.it");
-
 
         when(request.getSession(false)).thenReturn(session);
         when(session.getAttribute("profile")).thenReturn(utenteEntity);
-        when(request.getParameter("id")).thenReturn("5");
+        when(request.getParameter("id")).thenReturn("6");
 
-        when(mockProfileDAO.getByID(5)).thenReturn(entityToDelete);
-
-        when(mockProfileDAO.delete(entityToDelete)).thenReturn(true);
+        when(mockDataSource.getConnection()).thenReturn(getTestConnection(), getTestConnection());
 
         //Writer
         StringWriter stringWriter = new StringWriter();
@@ -98,7 +102,7 @@ public class DeleteProfileSTest {
     }
 
     @Test
-    public void testDeleteOwnProfile() throws Exception{
+    void testDeleteOwnProfile() throws Exception{
 
         utenteEntity = new UtenteEntity();
         utenteEntity.setId(5);
@@ -109,7 +113,7 @@ public class DeleteProfileSTest {
         when(request.getSession(false)).thenReturn(session);
         when(session.getAttribute("profile")).thenReturn(utenteEntity);
 
-        when(mockProfileDAO.delete(utenteEntity)).thenReturn(true);
+        when(mockDataSource.getConnection()).thenReturn(getTestConnection());
 
         //Writer
         StringWriter stringWriter = new StringWriter();
@@ -120,5 +124,4 @@ public class DeleteProfileSTest {
 
         assertEquals("{\"success\":true}", stringWriter.toString());
     }
-
 }
