@@ -45,7 +45,7 @@ public class UpdateProfileS extends HttpServlet {
 		int change = 0;
 		String id = request.getParameter("id");
 		String userName = request.getParameter("userName");
-		String password = request.getParameter("pass");
+		String password = request.getParameter("password");
 		Part part = request.getPart("cover");
 
 		if(id == null || id.equalsIgnoreCase("")){
@@ -87,8 +87,11 @@ public class UpdateProfileS extends HttpServlet {
 		if(change > 0){
 			try{
 
-				profileDAO.update(user);
-				response.getWriter().print(json.put("result", "done"));
+				if (profileDAO.update(user)){
+					json.put("result", true);
+					response.getWriter().print(json);
+				}
+
 
 				
 			} catch (SQLException e){

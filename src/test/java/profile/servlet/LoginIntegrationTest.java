@@ -4,6 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import profile.dao.ProfileDAO;
+import profile.entity.UtenteEntity;
+import utils.IntegrationTestIS;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -12,22 +15,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
-
-import profile.dao.ProfileDAO;
-import profile.entity.UtenteEntity;
-import profile.servlet.LoginS;
-import utils.MockDataSource;
-
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.lang.reflect.Field;
+import java.sql.Connection;
+import java.sql.SQLException;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-public class LoginTest {
+public class LoginIntegrationTest {
+
 
     @Mock
-    private ProfileDAO mockProfileDAO;
+    private DataSource mockDataSource;
 
     @Mock
     private HttpServletRequest request;
@@ -49,6 +51,12 @@ public class LoginTest {
 
     private LoginS loginServlet;
 
+    private Connection getTestConnection() throws Exception {
+        Connection conn = IntegrationTestIS.getTestDataSource().getConnection();
+        conn.setAutoCommit(false);
+        return conn;
+    }
+
     @BeforeEach
     public void setUp() throws Exception {
         MockitoAnnotations.openMocks(this);
@@ -62,7 +70,12 @@ public class LoginTest {
         when(servletContext.getRequestDispatcher(anyString())).thenReturn(requestDispatcher);
 
         loginServlet.init(servletConfig);
-        loginServlet.setProfileDAO(mockProfileDAO);
+
+
+        when(mockDataSource.getConnection()).thenReturn(getTestConnection(), getTestConnection());
+        ProfileDAO profileDAO = new ProfileDAO(mockDataSource);
+
+        loginServlet.setProfileDAO(profileDAO);
 
 
         when(request.getSession(anyBoolean())).thenReturn(session);
@@ -73,8 +86,6 @@ public class LoginTest {
         // Configura il comportamento del mock del DAO
         when(request.getParameter("email")).thenReturn("n@n.it");
         when(request.getParameter("password")).thenReturn("test");
-        when(mockProfileDAO.login("n@n.it", "test")).thenReturn(true);
-        when(mockProfileDAO.getByEmail("n@n.it")).thenReturn(new UtenteEntity()); // Usa un oggetto fittizio
 
         //Writer
         StringWriter stringWriter = new StringWriter();

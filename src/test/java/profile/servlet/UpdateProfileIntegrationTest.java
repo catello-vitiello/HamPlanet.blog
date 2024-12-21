@@ -6,6 +6,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import profile.dao.ProfileDAO;
 import profile.entity.UtenteEntity;
+import utils.IntegrationTestIS;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -16,12 +17,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class UpdateProfileSTest {
+public class UpdateProfileIntegrationTest {
 
     @Mock
     private HttpServletRequest request;
@@ -50,7 +51,9 @@ public class UpdateProfileSTest {
         when(servletContext.getRequestDispatcher(anyString())).thenReturn(requestDispatcher);
 
         updateProfileS.init(servletConfig);
-        updateProfileS.setProfileDAO(mockProfileDAO);
+
+        ProfileDAO profileDAO = new ProfileDAO(IntegrationTestIS.getTestDataSource());
+        updateProfileS.setProfileDAO(profileDAO);
 
 
     }
@@ -58,9 +61,10 @@ public class UpdateProfileSTest {
     @Test
     void updateTest()throws Exception {
 
-        when(request.getParameter("id")).thenReturn("1");
+        when(request.getParameter("id")).thenReturn("6");
         when(request.getParameter("userName")).thenReturn("pino");
         when(request.getParameter("password")).thenReturn("pino");
+
 
         UtenteEntity original = new UtenteEntity();
         original.setId(1);
@@ -80,5 +84,6 @@ public class UpdateProfileSTest {
         assert (stringWriter).toString().equals("{\"result\":true}");
 
     }
+
 
 }

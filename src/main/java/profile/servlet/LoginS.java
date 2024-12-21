@@ -78,6 +78,8 @@ public class LoginS extends HttpServlet {
 		try {
 			
 			HttpSession session = request.getSession(true);
+			Navigator navigator = new Navigator();
+			session.setAttribute("Navigator", navigator);
 			
 			 if(profileDAO.login(email, password)) {
 				 session.setAttribute("profile", profileDAO.getByEmail(email));
