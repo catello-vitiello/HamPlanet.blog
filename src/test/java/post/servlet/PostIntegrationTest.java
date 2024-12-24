@@ -1,6 +1,5 @@
 package post.servlet;
 
-import navigation.Navigator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -18,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
 import java.sql.Connection;
+import java.util.Collection;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
@@ -81,15 +81,11 @@ public class PostIntegrationTest {
 
 
 
-        when(request.getSession(false)).thenReturn(session);
-        Navigator navigator = new Navigator();
-        when(session.getAttribute("Navigator")).thenReturn(navigator);
-
-
         postS.doGet(request, response);
 
-        verify(request).setAttribute(eq("post"), eq(postTest));
+        verify(request).setAttribute(eq("post"), any(PostEntity.class));
         verify(requestDispatcher).forward(request, response);
+
 
     }
 

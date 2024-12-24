@@ -12,6 +12,7 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -31,6 +32,8 @@ class HomeSTest {
     private PostDAO mockPostDAO;
     @Mock
     private RequestDispatcher mockRequestDispatcher;
+    @Mock
+    private HttpSession mockHttpSession;
 
 
     private HomeS homeS;
@@ -44,6 +47,7 @@ class HomeSTest {
         when(servletConfig.getServletContext()).thenReturn(servletContext);
         when(request.getServletContext()).thenReturn(servletContext);
         when(servletContext.getRequestDispatcher("/home.jsp")).thenReturn(mockRequestDispatcher);
+        when(request.getSession(false)).thenReturn(mockHttpSession);
 
         homeS.init(servletConfig);
         homeS.setPostDAO(mockPostDAO);
@@ -73,7 +77,6 @@ class HomeSTest {
         collection.add(post_test_2);
 
         when(mockPostDAO.getAll(null)).thenReturn(collection);
-
 
 
         homeS.doPost(request, response);

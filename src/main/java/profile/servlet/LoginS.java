@@ -11,8 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
-import navigation.Navigator;
-import navigation.Page;
+
 import org.json.JSONObject;
 import profile.dao.ProfileDAO;
 
@@ -78,8 +77,7 @@ public class LoginS extends HttpServlet {
 		try {
 			
 			HttpSession session = request.getSession(true);
-			Navigator navigator = new Navigator();
-			session.setAttribute("Navigator", navigator);
+
 			
 			 if(profileDAO.login(email, password)) {
 				 session.setAttribute("profile", profileDAO.getByEmail(email));

@@ -1,87 +1,208 @@
+@import url(https://fonts.googleapis.com/css?family=Calibri:400,300,700);
+
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
+    vertical-align: middle;
     display: flex;
-    justify-content: center;
-    padding-top: 20px;
-}
-.post-container {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 90%;
-    max-width: 600px;
-}
-.post-image {
-    width: 100%;
-    border-radius: 10px;
-}
-.post-content {
-    padding: 10px 0;
-}
-.post-title {
-    font-size: 1.5em;
-    margin: 0;
-}
-.post-body {
-    font-size: 1em;
-    margin: 10px 0;
-    color: #666;
-}
-.like-section {
-    display: flex;
+    flex-direction: column;
     align-items: center;
-    margin-bottom: 20px;
+    gap: 3rem;
+    font-family: 'Calibri', sans-serif !important;
+    background: linear-gradient(to right, rgba(140,209,229,255), rgba(129,144,220,255));
 }
-.like-button {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    font-size: 1em;
-    color: #007BFF;
+
+.post-box{
+    position: relative;
+    background: linear-gradient(to right, rgba(254,254,254,255), rgba(214,213,211,255));
+    width: max-content;
+    max-height: max-content;
+    border-radius: 15px;
+    font-size: 20px;
 }
-.like-button span {
-    margin-left: 5px;
+
+.form{
+    position: relative;
+    background: linear-gradient(to right, rgba(254,254,254,255), rgba(214,213,211,255));
+    width: 60rem;
+    max-height: max-content;
+    border-radius: 15px;
+    font-size: 20px;
 }
-.comments-section {
-    margin-top: 20px;
+
+.title{
+    font-family: 'Calibri', sans-serif;
+    text-align: center !important;
+    margin: .8rem;
+
 }
-.comment {
-    margin-bottom: 15px;
+
+.post-box > img{
+    position: absolute;
+    top: 0;
+    left: 0;
 }
-.comment-author {
-    font-weight: bold;
+
+
+.post-box > form
+{
+    margin: 2rem 0 0 6rem;
+
 }
-.comment-body {
-    margin: 5px 0;
+
+input[type="text"] {
+    border-radius: 25px; /* Rende il bordo ovale */
+    padding: 10px; /* Aggiunge spazio interno per un aspetto migliore */
+    width: max-content; /* Imposta una larghezza desiderata per il campo di input */
+    font-size: 16px; /* Regola la dimensione del testo */
+    box-sizing: border-box; /* Garantisce che padding e bordo non aumentino la dimensione totale dell'input */
+
 }
-.comment-form {
+
+.div-divcontent {
     display: flex;
     flex-direction: column;
 }
-.comment-form textarea {
-    width: 100%;
+
+.catalogo{
+    border-radius: 25px; /* Rende il bordo ovale */
+    padding: 10px; /* Aggiunge spazio interno per un aspetto migliore */
+    width: max-content; /* Imposta una larghezza desiderata per il campo di input */
+    font-size: 20px; /* Regola la dimensione del testo */
+    box-sizing: border-box; /* Garantisce che padding e bordo non aumentino la dimensione totale dell'input */
+    background: rgba(255, 255, 255, 0.7);
+    position: relative;
+    height: max-content;
+}
+
+.catalogo > ul{
+    list-style: none;
+}
+
+.post-box > form > *
+{
+    margin-bottom: .05rem;
+}
+
+
+.catalogo > img{
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 1rem 0 0 1rem;
+}
+
+.catalogo > h3{
+    margin-left: 4rem;
+}
+
+.divisione_content{
+
+    display: flex;
+    flex-direction: row;
+    grid-auto-rows: 15px;
+    column-gap: 25px;
+}
+
+.aggiungi_prodotto{
+    border-radius: 25px; /* Rende il bordo ovale */
+    padding: 10px; /* Aggiunge spazio interno per un aspetto migliore */
+    width: max-content; /* Imposta una larghezza desiderata per il campo di input */
+    font-size: 20px; /* Regola la dimensione del testo */
+    box-sizing: border-box; /* Garantisce che padding e bordo non aumentino la dimensione totale dell'input */
+    background: rgba(255, 255, 255, 0.6);
+    position: relative;
+    height: max-content;
+}
+
+.aggiungi_prodotto > img{
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 1rem 0 0 1rem;
+}
+
+.aggiungi_prodotto > h3{
+    margin-left: 5rem;
+}
+
+
+p > .text_box {
+
+    /* Imposta una larghezza desiderata per il campo di input */
+    font-size: 21px; /* Regola la dimensione del testo */
+    box-sizing: border-box; /* Garantisce che padding e bordo non aumentino la dimensione totale dell'input */
+    padding-top: 2rem;
+    height: max-content;
+    margin-left: 2rem;
+    margin-right: 2rem;
+}
+
+.button {
+    border: 2px solid orange;
+    border-radius: 25px;
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    resize: none;
-    margin-bottom: 10px;
+    background: rgba(252, 155, 15, 0.6);
+
 }
-.comment-form button {
-    width: 100%;
+
+.logout{
+    border: 2px solid rgba(53,168,246,1);
+    border-radius: 25px;
     padding: 10px;
-    background-color: #007BFF;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
+    background: rgba(53,168,246, 0.5);
+    margin-bottom: 2rem;
+    color: #FFFFFF;
+    text-decoration: none;
 }
-.comment-form button:hover {
-    background-color: #0056b3;
+
+.display{
+    flex-direction: row;
 }
+
+.postimg{
+    padding: 15px !important;
+    width: 50% !important;
+    height: auto !important;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.3); /* Applica l'ombra */
+    border-radius: 8px; /* (Opzionale) Arrotonda gli angoli */
+
+
+}
+
+.like{
+    padding-left: 3rem;
+}
+
+
+.card-body {
+    background: linear-gradient(to right, rgba(254,254,254,255), rgba(214,213,211,255));
+    border-radius: 20px;
+}
+.comments-section {
+    margin-top: 40px;
+    border-radius: 20px;
+}
+.comment-card {
+    margin-bottom: 15px;
+    border-radius: 20px;
+}
+.username {
+    font-weight: bold;
+    background: linear-gradient(to right, rgba(140,209,229,255), rgba(129,144,220,255));
+    border-radius: 20px;
+}
+
+.card__footer {
+    display: flex;
+    padding: 1rem;
+    margin-top: auto;
+}
+
+.user {
+    display: flex;
+    gap: .5rem;
+}
+
+.user__image {
+    border-radius: 50%;
+}
+

@@ -1,5 +1,6 @@
 package commento.dao;
 
+import commento.entity.CommentoDTO;
 import commento.entity.CommentoEntity;
 import databaseServices.GenericCrudOp;
 
@@ -65,12 +66,13 @@ public class CommentoDAO implements GenericCrudOp<CommentoEntity, Integer, Objec
     /********************************************************/
     /*	               	  GET ALL COMMENTO BY POST		               	*/
     /********************************************************/
-    public Collection<CommentoEntity> getAllByPost(int postId) throws SQLException {
+    public Collection<CommentoDTO> getAllByPost(int postId) throws SQLException {
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String sql = "SELECT * FROM Commento WHERE idpost = ?";
-        Collection<CommentoEntity> commentoCollection = new LinkedList<>();
+        String sql = "SELECT c.id, c.contenutocommento, u.username FROM Commento c INNER JOIN ham_user u ON c.iduser = u.id WHERE idpost = ?";
+        //String sql = "SELECT * FROM Commento WHERE idpost = ?";
+        Collection<CommentoDTO> commentoCollection = new LinkedList<>();
 
 
 
@@ -84,11 +86,10 @@ public class CommentoDAO implements GenericCrudOp<CommentoEntity, Integer, Objec
 
             rs = ps.executeQuery();
             while (rs.next()){
-                CommentoEntity commento = new CommentoEntity();
-                commento.setId(rs.getInt(1));
-                commento.setIdPost(rs.getInt(2));
-                commento.setIdUtente(rs.getInt(3));
-                commento.setContenutoCommento(rs.getString(4));
+                CommentoDTO commento = new CommentoDTO(
+                        rs.getInt(1),
+                        rs.getString(3),
+                        rs.getString(2));
                 commentoCollection.add(commento);
             }
 

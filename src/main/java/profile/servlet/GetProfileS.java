@@ -1,20 +1,15 @@
 package profile.servlet;
 
 import java.io.IOException;
-import java.sql.SQLException;
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.sql.DataSource;
 
-import navigation.Navigator;
-import navigation.Page;
+
 import org.json.JSONObject;
-import profile.dao.ProfileDAO;
 
 import profile.entity.UtenteEntity;
 
@@ -55,13 +50,6 @@ public class GetProfileS extends HttpServlet {
 			json.put("user", utente);
 			utils.UtilityClass.print(utente.toString()); //da eliminare
 
-
-
-			//NAVIGATION
-			Navigator navigator = (Navigator) session.getAttribute("Navigator");
-			if (new_page)
-				navigator.save();
-			navigator.setCurrent(new Page(id, Page.Type.PROFILE));
 
 		}
 		response.getWriter().print(json);

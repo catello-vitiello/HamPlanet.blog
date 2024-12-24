@@ -1,7 +1,6 @@
 package post.servlet;
 
-import navigation.Navigator;
-import navigation.Page;
+
 import org.json.JSONObject;
 import post.dao.PostDAO;
 import post.entity.PostEntity;
@@ -71,12 +70,6 @@ public class HomeS extends HttpServlet {
 //                    }
 //            );
 
-            //NAVIGATION
-            HttpSession session = req.getSession(false);
-            //NAVIGATOR
-            Navigator navigator = new Navigator();
-            navigator.setCurrent(new Page(0, Page.Type.HOME));
-            session.setAttribute("Navigator", navigator);
 
             RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/home.jsp");
             req.setAttribute("posts", posts);

@@ -1,11 +1,9 @@
 package profile.servlet;
 
-import navigation.Navigator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import profile.dao.ProfileDAO;
 import profile.entity.UtenteEntity;
 
 import javax.servlet.ServletConfig;
@@ -17,7 +15,6 @@ import javax.servlet.http.HttpSession;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 public class GetProfileSTest {
@@ -59,12 +56,10 @@ public class GetProfileSTest {
         user_test.setEmail("test@test.com");
         user_test.setUserName("test");
 
-        Navigator navigator = new Navigator();
 
         when(request.getSession(false)).thenReturn(session);
 
         when(session.getAttribute("profile")).thenReturn(user_test);
-        when(session.getAttribute("Navigator")).thenReturn(navigator);
 
 
 
@@ -76,7 +71,6 @@ public class GetProfileSTest {
 
         getProfileS.doPost(request, response);
 
-        assert(navigator.getCurrent().getId() == 1);
         assert (stringWriter).toString().contains("user");
 
 

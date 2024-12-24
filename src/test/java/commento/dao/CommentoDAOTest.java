@@ -1,5 +1,6 @@
 package commento.dao;
 
+import commento.entity.CommentoDTO;
 import commento.entity.CommentoEntity;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -32,7 +33,7 @@ public class CommentoDAOTest {
     @Test
     public void getAllByPost() throws Exception{
         int id = 1;
-        Collection<CommentoEntity> collection = dao.getAllByPost(id);
+        Collection<CommentoDTO> collection = dao.getAllByPost(id);
         assertNotNull(collection);
     }
 

@@ -1,72 +1,102 @@
-<%@ page import="java.util.Collection" %>
-<%@ page import="post.entity.PostEntity" %>
-<%@ page import="java.util.Iterator" %>
-<%@ page import="org.json.JSONObject" %>
-<%@ page import="org.json.JSONArray" %>
-<%@ page import="commento.entity.CommentoEntity" %>
+<%@ page import="profile.entity.UtenteEntity" %>
+<!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<!DOCTYPE html>
-<html lang="it">
+
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualizza Post</title>
+    <title>Title</title>
+    <link rel="stylesheet" href="FileCSS/post.css">
 
-    <link rel="stylesheet" href="./FileCSS/post.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+
 
 </head>
 <body>
 
-<%
 
-    JSONObject post = (JSONObject) request.getAttribute("post");
-    if(post == null){
-        response.sendRedirect("Post");
-        return;
-    }
-
-%>
-
-<div class="post-container">
-        <img src="https://via.placeholder.com/600x400" alt="Post Image" class="post-image">
-        <c:if test="${ not empty post }">
-        <div class="post-content">
-            <h2 class="post-title"> ${ post.get("title") } </h2>
-            <p class="post-body"> ${ post.get("text") } </p>
-        </div>
+<div class="post-box">
+    <div class = "divisione_content">
+        <c:if test="${empty post}">
+            <c:redirect url="/Home" />
         </c:if>
-        <div class="like-section">
-            <button class="like-button" onclick="toggleLike()">
-                <span id="like-icon"> <img src="Icon/like.png"> </span>
-                <span id="like-count">0</span> Mi piace
-            </button>
-        </div>
-        <div class="comments-section">
-            <h3>Commenti</h3>
 
-            <div id="comments-list">
-                <%
-                    if(post != null){
-                        JSONArray commenti = (JSONArray) post.get("commenti");
-                        int i=0;
-                        while(i < commenti.length()){
-                            String bean = commenti.get(i) + "\n";
-                            i++;
-                %>
-                    <div>
-                    <%= bean %>
-                    </div>
-                <%
-                        }
-                    }
-                %>
+
+        <div class="div-divcontent post-div" >
+            <input type="hidden" id="postId" name="postId" value="${post.id}">
+            <h1 class="title" id="name" name="Titolo Articolo">${post.nomePost}</h1>
+            <div>
+                <img class="postimg" src="files/images/post/${post.id}.jpeg" alt="">
             </div>
-            <form class="comment-form">
-                <textarea id="comment-text" rows="3" placeholder="Aggiungi un commento..." required></textarea>
-                <button type="submit">Pubblica</button>
-            </form>
+            <div class="card__footer">
+                <div class="user">
+                    <img src="https://i.pravatar.cc/40?img=1" alt="user__image" class="user__image">
+                    <div class="user__info">
+                        <h5 id="cw-${post.idContent_Writer}">Unknown</h5>
+                    </div>
+                </div>
+            </div>
+            <p class="text_box" id="descrizione" name="Descrizione">
+                ${post.testo}
+            </p><br><br>
+
+
+
         </div>
+
+
+
     </div>
+    <div class = divisionde_content>
+        <div class = "div-divcontent">
+            <a onclick="" class="like">
+
+                <img src="Icon/like.png" alt="like">
+            </a>
+        </div>
+
+
+        <div class="container comments-section">
+            <!-- Titolo -->
+            <h2 class="text-center mb-4">Commenti</h2>
+
+            <form class="form" id="form_commento" method="post">
+                <!-- Form per Inserire un Nuovo Commento (SOPRA la Lista) -->
+                <div class="card shadow mb-4">
+                    <div class="card-body">
+                        <!-- Campo Contenuto del Commento -->
+                        <div class="mb-3">
+
+                            <label for="post"></label>
+                            <input id="post" type="hidden" value="${post.id}">
+                            <label for="commento" class="form-label"> Commenta</label>
+                            <textarea class="form-control" id="commento" rows="4" placeholder="Scrivi il tuo commento qui..."></textarea>
+                        </div>
+                        <!-- Pulsante di Invio -->
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Invia Commento</button>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+
+            <!-- Sezione Lista dei Commenti -->
+            <div id="comments-container">
+                <!-- I commenti verranno aggiunti dinamicamente qui -->
+            </div>
+        </div>
+
+    </div>
+</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="FileJavaScript/post.js"></script>
+
+
 </body>
 </html>

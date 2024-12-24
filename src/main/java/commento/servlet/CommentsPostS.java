@@ -3,6 +3,7 @@ package commento.servlet;
 import com.mysql.cj.xdevapi.JsonArray;
 import com.mysql.cj.xdevapi.JsonValue;
 import commento.dao.CommentoDAO;
+import commento.entity.CommentoDTO;
 import commento.entity.CommentoEntity;
 import org.json.JSONObject;
 import profile.entity.UtenteEntity;
@@ -58,8 +59,10 @@ public class CommentsPostS extends HttpServlet {
         if (postId != null ) {
 
             try {
-                Collection<CommentoEntity> collection =  commentoDAO.getAllByPost(Integer.parseInt(postId));
-                jsonObject.put("commenti", collection);
+                Collection<CommentoDTO> collection =  commentoDAO.getAllByPost(Integer.parseInt(postId));
+
+                jsonObject.put("comments", collection);
+
 
             } catch (SQLException e) {
                 UtilityClass.print(e);

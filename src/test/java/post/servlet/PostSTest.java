@@ -1,7 +1,6 @@
 package post.servlet;
 
 
-import navigation.Navigator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -40,8 +39,6 @@ class PostSTest {
     @Mock
     private PostDAO mockPostDAO;
 
-    @Mock
-    private Navigator mockNavigator;
 
     private PostS postS;
 
@@ -78,14 +75,9 @@ class PostSTest {
         when(mockPostDAO.getByID(1)).thenReturn(postTest);
 
 
-        when(request.getSession(false)).thenReturn(session);
-        when(session.getAttribute("Navigator")).thenReturn(mockNavigator);
-
-
         postS.doGet(request, response);
 
         verify(mockPostDAO, times(1)).getByID(1);
-        verify(mockNavigator).save();
 
         verify(request).setAttribute(eq("post"), eq(postTest));
         verify(requestDispatcher).forward(request, response);

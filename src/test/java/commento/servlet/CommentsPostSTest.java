@@ -1,6 +1,7 @@
 package commento.servlet;
 
 import commento.dao.CommentoDAO;
+import commento.entity.CommentoDTO;
 import commento.entity.CommentoEntity;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
@@ -66,26 +67,22 @@ class CommentsPostSTest {
         when(request.getParameter("postID")).thenReturn("3");
 
         //commenti di test
-        CommentoEntity test_commento_1 = new CommentoEntity();
-        CommentoEntity test_commento_2 = new CommentoEntity();
+        CommentoDTO test_commento_1 = new CommentoDTO();
+        CommentoDTO test_commento_2 = new CommentoDTO();
 
         //set id
         test_commento_1.setId(1);
         test_commento_2.setId(2);
 
         //set utente
-        test_commento_1.setIdUtente(5);
-        test_commento_2.setIdUtente(6);
+        test_commento_1.setUsername("pippo");
+        test_commento_2.setUsername("pluto");
 
         //set contentuto commento
-        test_commento_1.setContenutoCommento("test 1");
-        test_commento_2.setContenutoCommento("test 2");
+        test_commento_1.setCommento("test 1");
+        test_commento_2.setCommento("test 2");
 
-        //set post
-        test_commento_1.setIdPost(3);
-        test_commento_2.setIdPost(3);
-
-        Collection<CommentoEntity> test_collection = new ArrayList<>();
+        Collection<CommentoDTO> test_collection = new ArrayList<>();
 
         test_collection.add(test_commento_1);
         test_collection.add(test_commento_2);
@@ -99,7 +96,7 @@ class CommentsPostSTest {
         when(response.getWriter()).thenReturn(writer);
 
         JSONObject test_json = new JSONObject();
-        test_json.put("commenti", test_collection);
+        test_json.put("comments", test_collection);
 
         commentsPostS.doPost(request, response);
 
