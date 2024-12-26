@@ -1,6 +1,11 @@
-DROP DATABASE IF EXISTS freedb_HPBlog_db;
-CREATE DATABASE freedb_HPBlog_db;
-USE freedb_HPBlog_db;
+DROP DATABASE IF EXISTS hamplanet;
+CREATE DATABASE hamplanet;
+
+DROP USER IF EXISTS 'is_test'@'localhost';
+CREATE USER 'is_test'@'localhost' IDENTIFIED BY 'is_test';
+GRANT ALL ON hamplanet.* TO 'is_test'@'localhost';
+
+USE hamplanet;
 
 DROP TABLE IF EXISTS Like_;
 DROP TABLE IF EXISTS Commento;
@@ -55,12 +60,4 @@ CREATE TABLE Tokens
     token CHAR(10) PRIMARY KEY,
     overseer int NULL,
     FOREIGN KEY (overseer) REFERENCES Ham_user(id) ON DELETE CASCADE
-);
-
-CREATE TABLE pending
-(
-    idContent_writer int NOT NULL,
-    verify enum('verified', 'waiting', 'rejected') DEFAULT 'waiting',
-    PRIMARY KEY (idContent_writer),
-    FOREIGN KEY (idContent_writer) REFERENCES Ham_user(id) ON DELETE CASCADE
 );

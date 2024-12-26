@@ -28,7 +28,7 @@ public class MainContext implements ServletContextListener {
 			Context inContext = new InitialContext();
 			Context envContext = (Context) inContext.lookup("java:comp/env");
 
-			ds = (DataSource) envContext.lookup("jdbc/freedb_hpblog_db");
+			ds = (DataSource) envContext.lookup("jdbc/hamplanet");
 
 
 			try {

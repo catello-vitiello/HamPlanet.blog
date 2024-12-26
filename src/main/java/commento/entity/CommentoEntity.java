@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class CommentoEntity implements Serializable, Cloneable{
 
     private int id, idPost, idUtente;
-    private String contenutoCommento;
+    private String testo;
 
 
     public CommentoEntity(){
@@ -16,7 +16,7 @@ public class CommentoEntity implements Serializable, Cloneable{
 
         this.id = id;
         this.idPost = idPost;
-        this.contenutoCommento = contenutoCommento;
+        this.testo = contenutoCommento;
         this.idUtente = idUtente;
 
     }
@@ -46,12 +46,12 @@ public class CommentoEntity implements Serializable, Cloneable{
     }
 
 
-    public String getContenutoCommento() {
-        return contenutoCommento;
+    public String getCommento() {
+        return testo;
     }
 
     public void setContenutoCommento(String contenutoCommento) {
-        this.contenutoCommento = contenutoCommento;
+        this.testo = contenutoCommento;
     }
 
     @Override
@@ -59,7 +59,7 @@ public class CommentoEntity implements Serializable, Cloneable{
 
         String s = "";
 
-            s = getClass().getName() + "[ID= " + id + ", idPost= " + idPost + ", idUser= " + idUtente + ", commento= " + contenutoCommento + "]";
+            s = getClass().getName() + "[ID= " + id + ", idPost= " + idPost + ", idUser= " + idUtente + ", testo= " + testo + "]";
 
         return s;
     }
@@ -76,7 +76,7 @@ public class CommentoEntity implements Serializable, Cloneable{
         return id == altro.id &&
                 idPost == altro.idPost &&
                 idUtente == altro.idUtente &&
-                (contenutoCommento != null ? contenutoCommento.equals(altro.contenutoCommento) : altro.contenutoCommento == null);
+                (testo != null ? testo.equals(altro.testo) : altro.testo == null);
 
     }
 
@@ -86,7 +86,7 @@ public class CommentoEntity implements Serializable, Cloneable{
         res = 31 * res + id;
         res = 31 * res + idPost;
         res = 31 * res + idUtente;
-        res = 31 * res + (contenutoCommento != null ? contenutoCommento.hashCode() : 0);
+        res = 31 * res + (testo != null ? testo.hashCode() : 0);
         return res;
     }
 

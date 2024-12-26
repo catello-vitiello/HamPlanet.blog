@@ -1,3 +1,5 @@
+use hamplanet;
+
 -- procedura che genera una stringa di caratteri alfanumerica casuale e la inserisce mìnel campo token della tabella Tokens
 DROP PROCEDURE IF EXISTS generateRandomStringAndInsert;
 DELIMITER //
@@ -67,16 +69,4 @@ BEGIN
 END;
 //DELIMITER ;
 
--- trigger che ogni volta che viene creato un nuovo profilo profile esso viene messo in waiting
-DROP TRIGGER IF EXISTS addContentWriterToQueue_trigger;
-DELIMITER //
-CREATE TRIGGER addContentWriterToQueue_trigger
-AFTER INSERT ON Ham_user
-FOR EACH ROW
-BEGIN
-	IF NEW.ruolo = 'content_writer' THEN
-		INSERT INTO pending(idContent_writer) VALUES (NEW.id);
-	END IF;
-END;
-// DELIMITER ;
 
