@@ -194,7 +194,7 @@ public class CommentoDAO implements GenericCrudOp<CommentoEntity, Integer, Objec
         try {
             connection = ds.getConnection();
             ps = connection.prepareStatement(sql);
-            ps.setString(1, entity.getContenutoCommento());
+            ps.setString(1, entity.getCommento());
             ps.setInt(2, entity.getId());
 
             utils.UtilityClass.print(">.UPDATE SU CommentoEntity: " + ps.toString());
@@ -260,7 +260,7 @@ public class CommentoDAO implements GenericCrudOp<CommentoEntity, Integer, Objec
             ps = connection.prepareStatement(sql);
             ps.setInt(1, entity.getIdPost());
             ps.setInt(2, entity.getIdUtente());
-            ps.setString(3, entity.getContenutoCommento());
+            ps.setString(3, entity.getCommento());
             utils.UtilityClass.print(">.INSERT INTO CommentoEntity: " + ps.toString());
 
             if(ps.executeUpdate() > 0)

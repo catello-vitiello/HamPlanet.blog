@@ -7,7 +7,7 @@ public class MockDataSource {
     public static BasicDataSource createDataSource() {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/hamplanet");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/db_test_is");
         dataSource.setUsername("is_test");
         dataSource.setPassword("is_test");
         dataSource.setDefaultAutoCommit(false);

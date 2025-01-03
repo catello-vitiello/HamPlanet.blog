@@ -22,7 +22,6 @@ public class ProfileDAOTest {
     public static void setUp() {
         System.out.println("Start of the Functional Test on Profile!\n");
         profileDAO = new ProfileDAO(utils.MockDataSource.createDataSource());
-        pDao = new ProfileDAO(utils.MockDataSourceReal.createDataSource());
     }
 
     //Test retrive all  user with content writer role
@@ -224,15 +223,12 @@ public class ProfileDAOTest {
 
     }
 
-    //check status Content Writer
+    //check token
     @Test
-    public void checkStatus() throws SQLException{
-
-        UtenteEntity u = new UtenteEntity();
-        u.setEmail("m.rossi@live.it1");
-
-        Assertions.assertNotNull(profileDAO.status(u));
-
+    public void checkIsValidToken() throws SQLException{
+        Assertions.assertTrue(profileDAO.isValidToken("testtoken"));
     }
+
+
 
 }

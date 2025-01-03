@@ -137,6 +137,33 @@ public class ProfileDAO implements GenericCrudOp<UtenteEntity, Integer, String> 
     }
 
 
+    /********************************************************/
+    /*	               	CHECK IF IS A VALID TOKEN	        */
+    /********************************************************/
+    public boolean isValidToken(String token) throws SQLException {
+
+
+        String sql = "SELECT EXISTS ( SELECT 1 FROM tokens  WHERE token = ? AND overseer IS NULL ) AS valid_record";
+        ResultSet rs = null;
+
+        try(Connection connection = ds.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+
+            preparedStatement.setString(1, token);
+            rs = preparedStatement.executeQuery();
+            if(rs.next()){
+                if (rs.getInt("valid_record") == 1)
+                    return true;
+            }
+
+        }finally {
+            if (rs != null)
+                rs.close();
+        }
+        return false;
+    }
+
+
 
     /********************************************************/
     /*	               	 DELETE HAM_USER	               	*/

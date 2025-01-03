@@ -56,17 +56,5 @@ BEGIN
 END;
 //DELIMITER ;
 
--- trigger che elimina il profile quando gli viene rifiutato il profilo al momento della verifica
-DROP TRIGGER IF EXISTS after_invalidContentWriter_trigger;
-DELIMITER //
-CREATE TRIGGER after_invalidContentWriter_trigger
-AFTER UPDATE ON pending
-FOR EACH ROW
-BEGIN
-	IF NEW.verify = 'rejected' THEN
-		DELETE FROM Ham_user WHERE id = OLD.idContent_writer;
-	END IF;
-END;
-//DELIMITER ;
 
 

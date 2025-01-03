@@ -1,9 +1,9 @@
 DROP DATABASE IF EXISTS hamplanet;
 CREATE DATABASE hamplanet;
 
-DROP USER IF EXISTS 'is_test'@'localhost';
-CREATE USER 'is_test'@'localhost' IDENTIFIED BY 'is_test';
-GRANT ALL ON hamplanet.* TO 'is_test'@'localhost';
+DROP USER IF EXISTS 'hamuser'@'localhost';
+CREATE USER 'hamuser'@'localhost' IDENTIFIED BY 'hamplanet';
+GRANT ALL ON hamplanet.* TO 'hamuser'@'localhost';
 
 USE hamplanet;
 

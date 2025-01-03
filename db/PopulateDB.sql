@@ -1,4 +1,4 @@
-USE freedb_HPBlog_db;
+USE hamplanet;
 
 -- popolamento tabelle Ham_user
 insert into Ham_user(userName, email, passwd, competenze, ruolo) values
