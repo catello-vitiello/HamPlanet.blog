@@ -17,7 +17,7 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet("/RemoveCommentoS")
+@WebServlet("/DeleteComment")
 public class RemoveCommentoS extends HttpServlet {
 
     private static final long serialVersionUID = 897431L;

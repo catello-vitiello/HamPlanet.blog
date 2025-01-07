@@ -35,20 +35,16 @@ public class GetProfileS extends HttpServlet {
 
 			UtenteEntity utente = (UtenteEntity) session.getAttribute("profile");
 
-			int id = Integer.parseInt(request.getParameter("pageId"));
-			boolean new_page = Boolean.parseBoolean(request.getParameter("new_page"));
-
-
-
 
 			if (utente== null) {
 				utils.UtilityClass.print("##### Errore nel recuperare il ID del Ham_user");
-				//mandare su una pagina di errore
 				return;
 			}
 
-			json.put("user", utente);
-			utils.UtilityClass.print(utente.toString()); //da eliminare
+			json.put("user", utente.getUserName());
+			json.put("email", utente.getEmail());
+			json.put("role", utente.getRuoloEnum());
+			json.put("id", utente.getId());
 
 
 		}

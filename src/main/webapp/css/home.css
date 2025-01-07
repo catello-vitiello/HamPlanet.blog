@@ -1,0 +1,136 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap");
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+
+.home-container {
+    font-family: "Quicksand", sans-serif;
+    display: grid;
+    place-items: center;
+    height: max-content;
+    width: 100%;
+    background: #7f7fd5;
+    background: radial-gradient(#41a687, #9eedd1);
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 100%;
+    margin-block: 2rem;
+    gap: 2rem;
+}
+
+
+img {
+    max-width: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+/* Assicura che tutte le card abbiano la stessa altezza */
+.card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.3);
+    /* border-width: thin; */
+}
+
+.tag {
+    align-self: flex-start;
+    padding: .25em .75em;
+    border-radius: 1em;
+    font-size: .75rem;
+}
+
+.tag + .tag {
+    margin-left: .5em;
+}
+
+.tag-blue {
+    background: #56CCF2;
+    background: linear-gradient(to bottom, #2F80ED, #56CCF2);
+    color: #fafafa;
+}
+
+.tag-brown {
+    background: #D1913C;
+    background: linear-gradient(to bottom, #FFD194, #D1913C);
+    color: #fafafa;
+}
+
+.tag-red {
+    background: #cb2d3e;
+    background: linear-gradient(to bottom, #ef473a, #cb2d3e);
+    color: #fafafa;
+}
+
+.card__body h4 {
+    font-size: 1.5rem;
+    text-transform: capitalize;
+}
+
+
+.user {
+    display: flex;
+    gap: .5rem;
+}
+
+.user__image {
+    border-radius: 50%;
+}
+
+.user__info > small {
+    color: #666;
+}
+
+/* Imposta un'altezza fissa per le immagini e adatta la larghezza */
+.card__header img {
+    width: 100%;
+    height: 200px; /* Altezza fissa */
+    object-fit: cover; /* Adatta l'immagine mantenendo le proporzioni */
+}
+
+
+
+/* Configura il corpo della card per occupare lo spazio disponibile */
+.card__body {
+    flex: 1;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Limita l'altezza del paragrafo e aggiunge i puntini di sospensione per il testo lungo */
+.card__body p {
+    flex: 1;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Numero di righe da mostrare */
+    -webkit-box-orient: vertical;
+}
+
+/* Stile per il footer della card */
+.card__footer {
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+}
+
+/* Stile per l'immagine del profilo nel footer */
+.user .cw-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+}

@@ -47,7 +47,6 @@ public class PostS extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String postId = req.getParameter("postId");
-        boolean new_page = Boolean.parseBoolean(req.getParameter("new_page"));
 
 
 

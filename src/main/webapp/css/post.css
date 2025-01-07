@@ -1,19 +1,20 @@
 @import url(https://fonts.googleapis.com/css?family=Calibri:400,300,700);
 
-body {
+.post-body {
     vertical-align: middle;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 3rem;
     font-family: 'Calibri', sans-serif !important;
-    background: linear-gradient(to right, rgba(140,209,229,255), rgba(129,144,220,255));
+    background: linear-gradient(to bottom, #41a687, #9eedd1);
 }
 
 .post-box{
+    margin: 5%;
     position: relative;
-    background: linear-gradient(to right, rgba(254,254,254,255), rgba(214,213,211,255));
-    width: max-content;
+    background: linear-gradient(to right, rgba(254,254,254,255), rgb(240, 240, 240));
+    width: 80%;
     max-height: max-content;
     border-radius: 15px;
     font-size: 20px;
@@ -21,11 +22,17 @@ body {
 
 .form{
     position: relative;
-    background: linear-gradient(to right, rgba(254,254,254,255), rgba(214,213,211,255));
+    background: linear-gradient(to right, rgba(254,254,254,255), rgb(239, 239, 239));
     width: 60rem;
     max-height: max-content;
     border-radius: 15px;
     font-size: 20px;
+}
+.title-div{
+    display: inline;
+    margin: 0 auto;
+    padding: 2%;
+    font-size: 56px
 }
 
 .title{
@@ -60,6 +67,9 @@ input[type="text"] {
 .div-divcontent {
     display: flex;
     flex-direction: column;
+    width: 80%;
+    margin: 0 auto;
+    align-content: center;
 }
 
 .catalogo{
@@ -102,47 +112,20 @@ input[type="text"] {
     column-gap: 25px;
 }
 
-.aggiungi_prodotto{
-    border-radius: 25px; /* Rende il bordo ovale */
-    padding: 10px; /* Aggiunge spazio interno per un aspetto migliore */
-    width: max-content; /* Imposta una larghezza desiderata per il campo di input */
-    font-size: 20px; /* Regola la dimensione del testo */
-    box-sizing: border-box; /* Garantisce che padding e bordo non aumentino la dimensione totale dell'input */
-    background: rgba(255, 255, 255, 0.6);
-    position: relative;
-    height: max-content;
-}
-
-.aggiungi_prodotto > img{
-    position: absolute;
-    top: 0;
-    left: 0;
-    margin: 1rem 0 0 1rem;
-}
-
-.aggiungi_prodotto > h3{
-    margin-left: 5rem;
-}
 
 
-p > .text_box {
+.text_box {
 
     /* Imposta una larghezza desiderata per il campo di input */
     font-size: 21px; /* Regola la dimensione del testo */
     box-sizing: border-box; /* Garantisce che padding e bordo non aumentino la dimensione totale dell'input */
     padding-top: 2rem;
     height: max-content;
-    margin-left: 2rem;
-    margin-right: 2rem;
+    margin-left: 2em;
+    margin-right: 2em;
+    margin-top: 2em;
 }
 
-.button {
-    border: 2px solid orange;
-    border-radius: 25px;
-    padding: 10px;
-    background: rgba(252, 155, 15, 0.6);
-
-}
 
 .logout{
     border: 2px solid rgba(53,168,246,1);
@@ -158,14 +141,33 @@ p > .text_box {
     flex-direction: row;
 }
 
-.postimg{
-    padding: 15px !important;
-    width: 50% !important;
+.img-post-wrp {
+    display: flex; /* Usa Flexbox per il layout */
+    justify-content: center; /* Centra l'immagine orizzontalmente */
+    align-items: center; /* Centra l'immagine verticalmente */
+    width: 100%; /* Assicura che il div prenda tutto lo spazio disponibile */
+    height: auto; /* Opzionale: Specifica un'altezza fissa se necessario */
+    overflow: hidden; /* Nasconde eventuali parti eccedenti */
+    position: relative; /* Per eventuali aggiustamenti posizionali */
+}
+
+.postimg {
+    max-width: 100%; /* Adatta l'immagine alle dimensioni */
+    max-height: 100%; /* Impedisce all'immagine di uscire dall'area del contenitore */
     height: auto !important;
     box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.3); /* Applica l'ombra */
     border-radius: 8px; /* (Opzionale) Arrotonda gli angoli */
+}
 
-
+.img-post-wrp {
+    margin: 0 auto;
+    width: 800px; /* Larghezza fissa del contenitore */
+    height: 670px; /* Altezza fissa del contenitore */
+    overflow: hidden; /* Nasconde eventuali parti eccedenti dell'immagine */
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .like{
@@ -174,8 +176,9 @@ p > .text_box {
 
 
 .card-body {
-    background: linear-gradient(to right, rgba(254,254,254,255), rgba(214,213,211,255));
-    border-radius: 20px;
+    background: white;
+    border-radius: 1%;
+    border-bottom: solid;
 }
 .comments-section {
     margin-top: 40px;
@@ -186,8 +189,9 @@ p > .text_box {
     border-radius: 20px;
 }
 .username {
+    padding-left: 1rem;
     font-weight: bold;
-    background: linear-gradient(to right, rgba(140,209,229,255), rgba(129,144,220,255));
+    background: linear-gradient(to right, rgba(140,209,229,255), rgb(255, 255, 255), rgb(255, 255, 255));
     border-radius: 20px;
 }
 
@@ -202,7 +206,22 @@ p > .text_box {
     gap: .5rem;
 }
 
+.cw-img{
+    width: 100%; /* Adatta l'immagine al contenitore */
+    height: auto; /* Mantieni le proporzioni */
+    max-width: 80px; /* Limita la larghezza massima */
+    object-fit: cover;
+    border-radius: 50%;
+}
+
 .user__image {
     border-radius: 50%;
+}
+
+.btn-delete {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50% !important;
 }
 
