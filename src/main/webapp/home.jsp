@@ -17,9 +17,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/home.css" rel="stylesheet">
 </head>
-<body>
+<body id="homepage">
 
-<%@include file="header.html"%>
+<%@include file="header.jsp"%>
 <div class="home-container">
     <div class="container mt-5">
         <h1 class="text-center">HamPlanet.blog</h1>
@@ -32,7 +32,7 @@
                 <div class="col">
                     <div class="card">
                         <div class="card__header">
-                            <a href="http://localhost:8585/HamPlanet-blog/Post?postId=${post.id}">
+                            <a class="link-to-post" href="http://localhost:8585/HamPlanet-blog/Post?postId=${post.id}">
                                 <img src="files/images/post/${post.id}.jpeg" alt="error">
 
                             </a>
@@ -44,7 +44,7 @@
                         </div>
                         <div class="card__footer">
                             <div class="user">
-                                <img class="cw-img" src="files/images/profile/${post.idContent_Writer}.jpeg" alt="user__image" class="user__image">
+                                <img class="cw-img user__image" src="files/images/profile/${post.idContent_Writer}.jpeg" alt="user__image" >
                                 <div class="user__info">
                                     <h5 id="cw-${post.idContent_Writer}">Unknown</h5>
                                 </div>

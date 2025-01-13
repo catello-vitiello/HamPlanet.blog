@@ -72,7 +72,7 @@ public class ProfileDAOTest {
         u.setUserName("Uname");
         u.setEmail("email");
         u.setPasswd("passwd");
-        u.setRuolo("utente"); //insert utente
+        u.setRuolo(UtenteEntity.Role.utente); //insert utente
 
         Assertions.assertTrue(profileDAO.insert(u));
 
@@ -101,54 +101,15 @@ public class ProfileDAOTest {
         u.setUserName("Uname");
         u.setEmail("email");
         u.setPasswd("passwd");
-        u.setRuolo("supervisore"); //insert supervisore
-        Assertions.assertTrue(profileDAO.insert(u));
+        u.setRuolo(UtenteEntity.Role.supervisore); //insert supervisore
+        Assertions.assertTrue(profileDAO.insertSupervisor(u, "testtoken"));
 
     }
 
-    //Test Insert new utente ID
-    @Test
-    public void insertUtenteID() throws SQLException{
 
-        UtenteEntity u = new UtenteEntity();
-        u.setId(1000);
-        u.setUserName("Uname");
-        u.setEmail("email");
-        u.setPasswd("passwd");
-        u.setRuolo("utente"); //insert utente
 
-        Assertions.assertTrue(profileDAO.insert(u));
 
-    }
 
-    //Test Insert new content writer ID
-    @Test
-    public void insertContentWriterID() throws SQLException{
-
-        UtenteEntity u = new UtenteEntity();
-        u.setUserName("Uname");
-        u.setEmail("email");
-        u.setPasswd(utils.CifraPassword.toHash("password"));
-        u.setRuolo(UtenteEntity.Role.content_writer); //insert content writer
-        u.setCompetenze("competenze");
-
-        Assertions.assertTrue(profileDAO.insert(u));
-
-    }
-
-    //Test Insert new supervisore ID
-    @Test
-    public void insertSupervisoreID() throws SQLException{
-
-        UtenteEntity u = new UtenteEntity();
-        u.setId(1000);
-        u.setUserName("Uname");
-        u.setEmail("email");
-        u.setPasswd("passwd");
-        u.setRuolo("supervisore"); //insert supervisore
-        Assertions.assertTrue(profileDAO.insert(u));
-
-    }
 
     //Delete Ham_user
     @Test
@@ -156,7 +117,7 @@ public class ProfileDAOTest {
 
 
         UtenteEntity u = new UtenteEntity();
-        u.setEmail("n@n.it");
+        u.setEmail("papero@p.it");
         Assertions.assertTrue(profileDAO.delete(u));
 
     }

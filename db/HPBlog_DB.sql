@@ -19,7 +19,7 @@ CREATE TABLE Ham_user
 (
     id INT AUTO_INCREMENT,
     username VARCHAR(60) NOT NULL,
-    email VARCHAR(60) NOT NULL,
+    email VARCHAR(60) UNIQUE NOT NULL,
     passwd VARCHAR(600) NOT NULL,
     competenze TEXT,
     ruolo enum('supervisore', 'utente', 'content_writer') DEFAULT 'utente',

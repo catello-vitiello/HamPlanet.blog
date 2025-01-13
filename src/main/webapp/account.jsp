@@ -9,44 +9,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Admin</title>
+    <title>Profile</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/account.css">
     <style>
         body {
-            background: linear-gradient(to right, rgba(140,209,229,255), rgba(129,144,220,255));
+            background: linear-gradient(to right, rgb(158, 237, 209), rgb(65, 166, 135));
         }
     </style>
 </head>
-<body>
+<body >
 
-<%@include file="header.html"%>
+<%@include file="header.jsp"%>
 
-<% UtenteEntity user = (UtenteEntity) session.getAttribute("profile"); %>
+<div id="user-account" class="<%=user.getRuolo()%>">
 
-<div class="form">
-    <img  class="propic" src = "files/images/post/1.jpeg">
-    <form>
-        <div class = "divisione_content">
-
-            <label class="center" for="name">Nome Utente:</label>
-            <input class="container-account" type="text" id="name" name="Nome" value="<%=user.getUserName()%>"><br><br>
-            <label class="center" for="name">Password:</label>
-
-            <input class="password-container" type="password" id="password" class="password-input" value="" placeholder="Insert new password">
+    <div class="form">
+        <%if (user.getRuoloEnum().equals(UtenteEntity.Role.content_writer)){%>
 
 
-            <%if (user.getRuoloEnum().equals(UtenteEntity.Role.content_writer)){%>
-                <label class="center" for="name">Descrizione:</label>
-                <textarea  class="description-container" id="descrizione" name="Descrizione"><%=user.getCompetenze()%></textarea><br><br>
-            <%}%>
+
+        <div class="img-wrap">
+            <div class="image-preview" id="imagePreview">
+                <img class="propic" id="previewImg" src="files/images/profile/<%=user.getId()%>.jpeg" alt="Anteprima immagine" />
+                <label class="upload-btn icon-btn" for="file-input"><i class="fa-solid fa-pencil"></i></label>
+                <!-- Input nascosto -->
+                <input id="file-input" style="display: none" type="file" accept="image/jpeg">
+            </div>
+
         </div>
+
+        <%}%>
+        <form>
+            <div class = "divisione_content">
+
+                <label class="center" for="userName">Nome Utente:</label>
+                <input class="container-account" type="text" id="userName" name="userName" value="<%=user.getUserName()%>"><br><br>
+                <label class="center" for="password">Password:</label>
+
+                <input class="password-container" type="password" id="password" class="password-input" value="" placeholder="Insert new password">
+
+
+                <%if (user.getRuoloEnum().equals(UtenteEntity.Role.content_writer)){%>
+                    <label class="center" for="descrizione">Descrizione:</label>
+                    <textarea  class="description-container" id="descrizione" name="Descrizione"><%=user.getCompetenze()%></textarea><br><br>
+                <%}%>
+            </div>
+        </form>
         <div class="buttons-row">
-            <input class="save-changes" type="submit" id="submit" value="Conferma modifiche"><br><br>
-            <input class="delate-profile" type="submit" id="elimina" value="Elimina profilo">
+            <input class="save-changes" type="button" id="updatebutton" value="Conferma modifiche" ><br><br>
+            <input class="delate-profile" type="button" id="elimina" value="Elimina profilo" onclick="deleteProfile()">
         </div>
-    </form>
+    </div>
 </div>
-
+<!-- Il Modal -->
+<div id="successModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Update effettuato con successo!</h2>
+        <p>La tua operazione è stata completata senza errori.</p>
+    </div>
+</div>
 
 
 <%@include file="footer.html"%>

@@ -16,7 +16,7 @@ import profile.dao.ProfileDAO;
 import profile.entity.UtenteEntity;
 
 
-@WebServlet("/DeleteProfileS")
+@WebServlet("/DeleteProfile")
 public class DeleteProfileS extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -69,6 +69,7 @@ public class DeleteProfileS extends HttpServlet {
                 }else {
 
                     if (profileDAO.delete(user)) {
+                        session.invalidate();
                         json.put("success", true);
                         utils.UtilityClass.print("###### Eliminazione Ham_user effettuata!"); //da eliminare
                     }else {

@@ -52,7 +52,7 @@ public class PostEntity implements Serializable, Cloneable{
         this.testo = testo;
     }
 
-    public boolean isLiked() {
+    public boolean getIsLiked() {
         return isLiked;
     }
 
@@ -77,7 +77,7 @@ public class PostEntity implements Serializable, Cloneable{
 
         PostEntity altro = (PostEntity) o;
 
-        return( (id==altro.getId()) && (idContent_Writer==altro.getIdContent_Writer()) && (isLiked==altro.isLiked()))
+        return( (id==altro.getId()) && (idContent_Writer==altro.getIdContent_Writer()) && (isLiked==altro.getIsLiked()))
         && (nomePost.equals(altro.getNomePost())) && (testo.equals(altro.getTesto()) );
     }
 

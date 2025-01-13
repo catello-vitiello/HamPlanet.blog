@@ -1,0 +1,88 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+.home-container {
+    font-family: "Quicksand", sans-serif;
+    display: grid;
+    place-items: center;
+    height: max-content;
+    width: 100%;
+    background: #7f7fd5;
+    background: radial-gradient(#41a687, #9eedd1);
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 100%;
+    margin-block: 2rem;
+    gap: 2rem;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 5em auto;
+    max-width: 600px;
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+label {
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+input, textarea {
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 0.5rem;
+    font-size: 1rem;
+    width: 100%;
+}
+
+input[type="file"] {
+    padding: 0.3rem;
+}
+
+textarea {
+    resize: none;
+}
+
+button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    background: radial-gradient(#008f17, rgba(31, 156, 66, 0.8));
+    border: none;
+    border-radius: 5% !important;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background: radial-gradient(#008315, rgba(28, 133, 56, 0.8));
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}

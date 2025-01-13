@@ -13,6 +13,7 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -36,6 +37,8 @@ public class UpdateProfileIntegrationTest {
     private ProfileDAO mockProfileDAO;
     @Mock
     private RequestDispatcher requestDispatcher;
+    @Mock
+    private HttpSession session;
 
     private UpdateProfileS updateProfileS;
 
@@ -49,6 +52,7 @@ public class UpdateProfileIntegrationTest {
         when(servletConfig.getServletContext()).thenReturn(servletContext);
         when(request.getServletContext()).thenReturn(servletContext);
         when(servletContext.getRequestDispatcher(anyString())).thenReturn(requestDispatcher);
+        when(request.getSession(false)).thenReturn(session);
 
         updateProfileS.init(servletConfig);
 
@@ -61,13 +65,13 @@ public class UpdateProfileIntegrationTest {
     @Test
     void updateTest()throws Exception {
 
-        when(request.getParameter("id")).thenReturn("6");
         when(request.getParameter("userName")).thenReturn("pino");
         when(request.getParameter("password")).thenReturn("pino");
 
 
         UtenteEntity original = new UtenteEntity();
         original.setId(1);
+        when(session.getAttribute("profile")).thenReturn(original);
 
         //Writer
         StringWriter stringWriter = new StringWriter();

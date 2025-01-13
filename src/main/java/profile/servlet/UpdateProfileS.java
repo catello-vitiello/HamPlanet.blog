@@ -5,11 +5,9 @@ import java.sql.SQLException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
+import javax.servlet.http.*;
 import javax.sql.DataSource;
 
 import org.json.JSONObject;
@@ -19,6 +17,11 @@ import profile.entity.UtenteEntity;
 import utils.CifraPassword;
 
 @WebServlet("/UpdateProfile")
+@MultipartConfig(
+		fileSizeThreshold = 1024 * 1024 * 2,  // 2 MB
+		maxFileSize = 1024 * 1024 * 5,    // 5 MB
+		maxRequestSize = 1024 * 1024 * 10 // 10 MB
+)
 public class UpdateProfileS extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -27,8 +30,8 @@ public class UpdateProfileS extends HttpServlet {
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		DataSource ds = (DataSource) config.getServletContext().getAttribute("dataSource");
-		 profileDAO = new ProfileDAO(ds);
+		DataSource ds = (DataSource) config.getServletContext().getAttribute("DataSource");
+		profileDAO = new ProfileDAO(ds);
 	}
 
 	void setProfileDAO(ProfileDAO profileDAO){
@@ -40,29 +43,33 @@ public class UpdateProfileS extends HttpServlet {
 
 		JSONObject json = new JSONObject();
 
-		UtenteEntity user = new UtenteEntity();
+		UtenteEntity user;
 		UtenteEntity originale = new UtenteEntity();
 		int change = 0;
-		String id = request.getParameter("id");
+		boolean result = false;
+		HttpSession session = request.getSession(false);
+
+		user = (UtenteEntity) session.getAttribute("profile");
+
 		String userName = request.getParameter("userName");
 		String password = request.getParameter("password");
-		Part part = request.getPart("cover");
+		String bio = request.getParameter("descrizione");
 
-		if(id == null || id.equalsIgnoreCase("")){
-			utils.UtilityClass.print("###### Errore con l'id Content Writer!"); //da eliminare
-			//mandare su una pagina di errore
-			return;
-		}
 
-		try {
-			originale = profileDAO.getByID(Integer.parseInt(id));
 
-		} catch (SQLException e){
-			utils.UtilityClass.print(e);
-		}
-		if (originale.getRuolo().equals(UtenteEntity.Role.content_writer.toString())){
-			if(part.getSize() > 0) {
-				String filename = "profile/" + id + ".jpg";
+		if (user.getRuoloEnum().equals(UtenteEntity.Role.content_writer)){
+
+			if (bio != null && !bio.isEmpty()) {
+				user.setCompetenze(bio);
+				change++;
+			}else
+				user.setCompetenze(originale.getCompetenze());
+
+
+			Part part = request.getPart("cover");
+			if(part != null && part.getSize() > 0) {
+
+				String filename = "profile/" + user.getId() + ".jpeg";
 				request.setAttribute("Upload", true);
 				request.setAttribute("InputStream", part.getInputStream());
 				request.setAttribute("Path", filename);
@@ -70,7 +77,6 @@ public class UpdateProfileS extends HttpServlet {
 			}
 		}
 
-		user.setId(Integer.parseInt(id));
 		if(userName != null && !(userName.equalsIgnoreCase(""))){
 			user.setUserName(userName);
 			change++;
@@ -79,7 +85,7 @@ public class UpdateProfileS extends HttpServlet {
 
 
 		if(password != null && !(password.equalsIgnoreCase(""))){
-			user.setPasswd(CifraPassword.toHash(password));
+			user.setPasswd(password);
 			change++;
 		} else
 			user.setPasswd(originale.getPasswd());
@@ -87,17 +93,15 @@ public class UpdateProfileS extends HttpServlet {
 		if(change > 0){
 			try{
 
-				if (profileDAO.update(user)){
-					json.put("result", true);
-					response.getWriter().print(json);
-				}
-
+				result = profileDAO.update(user);
 
 				
 			} catch (SQLException e){
 				utils.UtilityClass.print(e);
 			}
 		}
+		json.put("result", result);
+		response.getWriter().print(json);
 	}
 
 }

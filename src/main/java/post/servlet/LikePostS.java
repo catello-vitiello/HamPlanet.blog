@@ -14,7 +14,7 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet("/LikePostS")
+@WebServlet("/Like")
 public class LikePostS extends HttpServlet {
 
     private static final long serialVersionUID = 871483285L;
@@ -50,8 +50,8 @@ public class LikePostS extends HttpServlet {
 
             if (user.getRuolo().equals(UtenteEntity.Role.utente.toString())) {
                 try {
-                    postDAO.like(Integer.parseInt(idPost), user.getId());
-                    result = true;
+                    result = postDAO.like(Integer.parseInt(idPost), user.getId());
+
                 } catch (SQLException e) {
                     UtilityClass.print(e);
                 }

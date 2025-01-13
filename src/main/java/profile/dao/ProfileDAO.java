@@ -5,10 +5,7 @@ import profile.entity.UtenteEntity;
 import databaseServices.GenericCrudOp;
 import utils.CifraPassword;
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -137,6 +134,43 @@ public class ProfileDAO implements GenericCrudOp<UtenteEntity, Integer, String> 
     }
 
 
+    public boolean insertSupervisor(UtenteEntity supervisor, String token) throws SQLException {
+
+        boolean res = false;
+        String user_sql = "INSERT into Ham_user(userName, email, passwd, competenze, ruolo) VALUES (?,?,?,?,?)";
+        String idsql = "SELECT id FROM Ham_user WHERE email = ?";
+        String sql = "UPDATE tokens SET overseer = ? WHERE token = ?";
+
+        try (Connection connection = ds.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(user_sql);
+                PreparedStatement tokenps = connection.prepareStatement(sql); PreparedStatement idps = connection.prepareStatement(idsql)) {
+
+            preparedStatement.setString(1, supervisor.getUserName());
+            preparedStatement.setString(2, supervisor.getEmail());
+            preparedStatement.setString(3, supervisor.getPasswd());
+            preparedStatement.setString(4, supervisor.getCompetenze());
+            preparedStatement.setString(5, supervisor.getRuolo());
+
+            if(preparedStatement.executeUpdate() > 0) {
+                idps.setString(1, supervisor.getEmail());
+                ResultSet rs = idps.executeQuery();
+                if(rs.next()) {
+
+
+                    tokenps.setInt(1, Integer.parseInt(rs.getString("id")));
+                    tokenps.setString(2, token);
+
+
+                    utils.UtilityClass.print(">.Inserimento nuovo supervisore in token: " + preparedStatement);
+                    if (tokenps.executeUpdate() > 0)
+                        res = true;
+                }
+            }
+        }
+        return res;
+
+    }
+
+
     /********************************************************/
     /*	               	CHECK IF IS A VALID TOKEN	        */
     /********************************************************/
@@ -203,31 +237,42 @@ public class ProfileDAO implements GenericCrudOp<UtenteEntity, Integer, String> 
     @Override
     public boolean update(UtenteEntity user) throws SQLException {
 
-        int res = 0;
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        String sql = "UPDATE Ham_user SET userName = ? , passwd = ? WHERE id = ?";
+        String usersql = "UPDATE Ham_user SET userName = ? WHERE id = ?";
+        String cwsql = "UPDATE Ham_user SET competenze = ? WHERE id = ?";
+        String nopass = "UPDATE Ham_user SET passwd = ? WHERE id = ?";
 
-        try{
+        try(Connection connection = ds.getConnection();
+            PreparedStatement userps = connection.prepareStatement(usersql);
+            PreparedStatement cwps = connection.prepareStatement(cwsql);
+            PreparedStatement nopassps = connection.prepareStatement(nopass)){
 
-            connection = ds.getConnection();
-            preparedStatement = connection.prepareStatement(sql);
+            userps.setString(1, user.getUserName());
+            userps.setInt(2, user.getId());
+            if( userps.executeUpdate() < 1){
+                return false;
+            }
 
-            preparedStatement.setString(1, user.getUserName());
-            preparedStatement.setString(2, utils.CifraPassword.toHash(user.getPasswd()));
-            preparedStatement.setInt(3, user.getId());
 
-            utils.UtilityClass.print(">.Update su Content_Writer: " + preparedStatement.toString());
-            res = preparedStatement.executeUpdate();
+            if (user.getPasswd() != null && user.getPasswd().length() > 8){
+                nopassps.setString(1, utils.CifraPassword.toHash(user.getPasswd()));
+                nopassps.setInt(2, user.getId());
+                if (nopassps.executeUpdate() < 1) {
+                    return false;
+                }
+            }
 
-        } finally {
-            if(preparedStatement != null)
-                preparedStatement.close();
-            if(connection != null)
-                connection.close();
+            if (user.getRuoloEnum().equals(UtenteEntity.Role.content_writer)){
+                cwps.setString(1, user.getCompetenze());
+                cwps.setInt(2, user.getId());
+                if (cwps.executeUpdate() < 1) {
+                    return false;
+                }
+            }
+
+
         }
 
-        return res == 1;
+        return true;
     }
     
     /********************************************************/
@@ -324,7 +369,7 @@ public class ProfileDAO implements GenericCrudOp<UtenteEntity, Integer, String> 
     		ps.setString(1, email);
 
     		
-    		utils.UtilityClass.print(">.Try to login: " + ps.toString());
+    		utils.UtilityClass.print(">.Try to login: " + ps);
             rs = ps.executeQuery();
     		
             if(rs.next()) {

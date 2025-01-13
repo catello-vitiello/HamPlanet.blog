@@ -14,7 +14,7 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet("/UnLike")
+@WebServlet("/Unlike")
 public class UnlikePosts extends HttpServlet {
 
     private static final long serialVersionUID = 12348301L;

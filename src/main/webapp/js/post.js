@@ -2,6 +2,8 @@
 const user = {}
 const roles = {'supervisore': 'supervisore', 'utente': 'utente', 'contentwriter': 'content_writer'};
 const postId = $("#postId").val();
+var like = $("#likeIcon").attr("src") === "Icon/like.png";
+
 
 // Funzione per caricare i commenti dal server
 function loadComments() {
@@ -19,11 +21,12 @@ function loadComments() {
             for (const x in comments) {
                 let commento = comments[x];
 
-                console.log(user);
                 if (user.role === roles.supervisore){
                     container.append(`<div class="card comment-card shadow-sm">
                         <div class="card-body" id="commento-${commento.id}">
-                            <h6 class="card-subtitle mb-2 username">${commento.username}</h6>
+                            <button  onclick="tmp(${commento.idUtente})"  class="delete-super">
+                                <h6   class="card-subtitle mb-2 username">${commento.username}</h6>
+                            </button>
                             <p class="card-text">${commento.commento}</p>
                             <button type="button" class="btn btn-danger btn-delete" onclick="deleteComment(${commento.id})">
                                 <span aria-hidden="true">&times;</span>
@@ -33,11 +36,13 @@ function loadComments() {
                     </div>`);
                 }else {
                     container.append(`<div class="card comment-card shadow-sm">
-                        <div class="card-body" id="commento-${commento.id}">
+                        <div  class="card-body" id="commento-${commento.id}">
                             <h6 class="card-subtitle mb-2 username">${commento.username}</h6>
                             <p class="card-text">${commento.commento}</p>
                         </div>
                     </div>`);
+
+
                 }
             }
         },
@@ -47,6 +52,24 @@ function loadComments() {
     });
 }
 
+function deleteProfileSuper(id){
+
+    $("#confirmationModal").modal("hide");
+
+    $.ajax({
+        url: 'DeleteProfile',
+        method: 'POST',
+        dataType: 'json',
+        data: {'id': id},
+        success: function (response) {
+            if (response.success){
+                location.reload();
+
+            }
+        }
+    })
+
+}
 
 
 function deleteComment(id){
@@ -70,7 +93,7 @@ function attachCommentForm(){
     form.addEventListener('submit', function (event) {
         event.preventDefault();
 
-        let commento = $("#commento").val();
+        let commento = $("#commento_area").val();
 
 
 
@@ -118,7 +141,44 @@ function deletePost(){
     })
 }
 
+function  tmp(id){
+    $("#confirmationModal").modal("show");
+    $("#confirmDelete").attr("data-id", id);
+    $("#confirmDelete").on("click", function () {
+        deleteProfileSuper(event.target.dataset.id)
+    });
+}
+
 $(document).ready(function(){
+
+// Riferimenti agli elementi del DOM
+    const modal = document.getElementById("confirmationModal");
+    const closeButton = document.querySelector(".close");
+    const cancelButton = document.getElementById("cancelDelete");
+
+
+
+
+
+    // Chiudere il modal quando si clicca sulla 'x' o sul bottone "Annulla"
+    closeButton.onclick = function() {
+
+    };
+
+    cancelButton.onclick = function() {
+        $("#confirmationModal").modal("hide");
+    };
+
+    // Chiudere il modal quando si clicca al di fuori del contenuto
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            $("#confirmationModal").modal("hide");
+        }
+    };
+
+    // Azione di conferma eliminazione
+
+
 
     $.ajax({
         url: 'Profile',
@@ -139,10 +199,54 @@ $(document).ready(function(){
 
     loadComments();
 
-
-
-
 })
+
+function toggleLike() {
+    const likeIcon = $("#likeIcon");
+
+    // Cambia stato
+    like = !like;
+
+    // Aggiorna l'immagine a seconda dello stato
+    if (like) {
+        likesetup();
+        likeIcon.attr('src', "Icon/like.png"); // Immagine per "like"
+    } else {
+        likesetup();
+        likeIcon.attr('src', "Icon/nolike.png"); // Immagine per "unlike"
+    }
+
+
+}
+
+function likesetup()
+{
+    const likeurl = 'Like';
+    const unlikeurl = 'Unlike';
+
+    var url = likeurl;
+    if (like){
+        url = likeurl;
+    }else {
+        url = unlikeurl;
+    }
+    $.ajax({
+        url: url,
+        method: 'POST',
+        dataType: 'json',
+        data: {'postId': postId},
+        success: function (response) {
+            if (response.result) {
+                console.log(url + " done");
+            }else {
+                console.log(url + " not done");
+            }
+        },
+        error: function (xhr, status, error) {
+
+        }
+    })
+}
 
 
 // Seleziona tutti gli elementi con la classe user__info

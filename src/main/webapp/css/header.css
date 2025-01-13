@@ -21,6 +21,11 @@ header {
     background-color: #343a40;
     padding: 20px 10px;
     margin:0px;
+    display: flex !important;
+}
+
+.space{
+    width: 80%;
 }
 
 .header a {
@@ -45,7 +50,8 @@ header {
 }
 
 a{
-    color:#ff7000 ;
+    /* display: flex; */
+    color:#ff7000;
 }
 a:hover{
     color:#343a40;
@@ -67,13 +73,13 @@ a:hover{
     font-weight: bolder;
     border-radius:100%;
     color: #343a40;
-    box-shadow: 0 70px 2px rgba(255, 112, 0, 0.50) inset;
+    box-shadow: 0 70px 2px rgba(59, 198, 66, 0.5) inset;
 }
 .slider-menu>li.drop:hover {
     font-weight: bolder;
     border-radius:100%;
     color: #343a40;
-    box-shadow: 0 70px 2px rgba(255, 112, 0, 0.50) inset;
+    box-shadow: 0 70px 2px rgba(59, 198, 66, 0.5) inset;
 }
 
 li.drop {
@@ -89,7 +95,7 @@ li.drop {
     margin-left: 2px;
     font-family: 'Quicksand', sans-serif;
     padding:20px 20px 20px 20px;
-    color: #ff7000;
+    color: #4aff68;
     cursor: pointer;
     transition: 0.3s linear all;
 
@@ -133,12 +139,12 @@ ul li ul li {
 
 ul li ul li a:hover {
     padding-left: 10px;
-    border-left: 2px solid #ff7000;
+    border-left: 2px solid #41a687;
     transition: all 0.3s ease;
 }
 
 .slider-menu li.icon a, li.drop a {
-    color: #ff7000; /* Imposta il colore desiderato */
+    color: #41a687; /* Imposta il colore desiderato */
     text-decoration: none; /* Rimuovi la sottolineatura dei link */
 }
 
@@ -157,5 +163,5 @@ ul li ul li a:hover {
 
 
 .dropdown a{
-    color:#ff7000 !important;
+    color: #c2ff91 !important;
 }

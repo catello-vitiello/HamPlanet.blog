@@ -12,6 +12,7 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -34,6 +35,8 @@ public class UpdateProfileSTest {
     @Mock
     private ProfileDAO mockProfileDAO;
     @Mock
+    private HttpSession mockSession;
+    @Mock
     private RequestDispatcher requestDispatcher;
 
     private UpdateProfileS updateProfileS;
@@ -48,6 +51,7 @@ public class UpdateProfileSTest {
         when(servletConfig.getServletContext()).thenReturn(servletContext);
         when(request.getServletContext()).thenReturn(servletContext);
         when(servletContext.getRequestDispatcher(anyString())).thenReturn(requestDispatcher);
+        when(request.getSession(false)).thenReturn(mockSession);
 
         updateProfileS.init(servletConfig);
         updateProfileS.setProfileDAO(mockProfileDAO);
@@ -64,6 +68,7 @@ public class UpdateProfileSTest {
 
         UtenteEntity original = new UtenteEntity();
         original.setId(1);
+        when(mockSession.getAttribute("profile")).thenReturn(original);
 
         //Writer
         StringWriter stringWriter = new StringWriter();
@@ -71,7 +76,6 @@ public class UpdateProfileSTest {
         when(response.getWriter()).thenReturn(writer);
 
 
-        when(mockProfileDAO.getByID(1)).thenReturn(original);
 
         when(mockProfileDAO.update(any(UtenteEntity.class))).thenReturn(true);
 

@@ -4,6 +4,7 @@ package post.servlet;
 
 import post.dao.PostDAO;
 import post.entity.PostEntity;
+import profile.entity.UtenteEntity;
 import utils.UtilityClass;
 
 import javax.servlet.RequestDispatcher;
@@ -12,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -48,12 +50,26 @@ public class PostS extends HttpServlet {
 
         String postId = req.getParameter("postId");
 
+        HttpSession session = req.getSession(false);
+        UtenteEntity user = (UtenteEntity) session.getAttribute("profile");
+        int id = Integer.parseInt(postId);
+
 
 
         if (postId != null && !postId.isEmpty()){
 
             try {
                 PostEntity post = postDAO.getByID(Integer.parseInt(postId));
+                if (post == null){
+                    RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/home.jsp");
+                    requestDispatcher.forward(req, resp);
+                    return;
+
+                }
+                if (user.getRuoloEnum().equals(UtenteEntity.Role.utente))
+                    post.setLiked(postDAO.isLiked(user.getId(), id));
+                else
+                    post.setLiked(false);
                 req.setAttribute("post", post);
             } catch (SQLException e) {
                 UtilityClass.print(e);
@@ -61,6 +77,7 @@ public class PostS extends HttpServlet {
 
 
         }
+
 
 
         RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/post.jsp");

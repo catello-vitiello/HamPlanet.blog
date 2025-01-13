@@ -140,7 +140,7 @@ public class PostDAO implements GenericCrudOp<PostEntity, Integer, Object> {
 	@Override
 	public PostEntity getByID(Integer id) throws SQLException {
 		
-		PostEntity p = new PostEntity();
+		PostEntity p = null;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         String sql = "SELECT * FROM " + POST_TABLE + " p WHERE p.id = ?";
@@ -153,6 +153,7 @@ public class PostDAO implements GenericCrudOp<PostEntity, Integer, Object> {
             utils.UtilityClass.print(">.RECUPERO PostEntity PER ID: " + preparedStatement.toString());
             ResultSet rs = preparedStatement.executeQuery();
             if(rs.next()){
+                p = new PostEntity();
                 p.setId(rs.getInt("id"));
         		p.setNomePost(rs.getString("nomePost"));
         		p.setTesto(rs.getString("testo"));

@@ -20,7 +20,7 @@ import java.sql.SQLException;
         maxFileSize = 1024 * 1024 * 5,    // 5 MB
         maxRequestSize = 1024 * 1024 * 10 // 10 MB
 )
-public class AddPostS extends HttpServlet {
+public class    AddPostS extends HttpServlet {
 
     private static final long serialVersionUID = 9898431841L;
 
@@ -78,7 +78,7 @@ public class AddPostS extends HttpServlet {
 
 
                     }
-                    json.put("success", true);
+                    json.put("result", true);
 
                 } catch (SQLException sqlException) {
                     UtilityClass.print(sqlException);

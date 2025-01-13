@@ -6,6 +6,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import post.dao.PostDAO;
 import post.entity.PostEntity;
+import profile.entity.UtenteEntity;
 import utils.IntegrationTestIS;
 
 import javax.servlet.RequestDispatcher;
@@ -52,6 +53,7 @@ public class PostIntegrationTest {
         when(servletConfig.getServletContext()).thenReturn(servletContext);
         when(request.getServletContext()).thenReturn(servletContext);
         when(servletContext.getRequestDispatcher("/post.jsp")).thenReturn(requestDispatcher);
+        when(request.getSession(false)).thenReturn(session);
 
         postS.init(servletConfig);
 
@@ -74,10 +76,13 @@ public class PostIntegrationTest {
         postTest.setNomePost("Post_1");
         postTest.setIdContent_Writer(1);
 
+        UtenteEntity utente = new UtenteEntity();
+        utente.setId(4);
+        utente.setRuolo(UtenteEntity.Role.content_writer);
+        when(session.getAttribute("profile")).thenReturn(utente);
 
 
         when(request.getParameter("postId")).thenReturn("1");
-        when(request.getParameter("new_page")).thenReturn("true");
 
 
 

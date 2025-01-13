@@ -19,6 +19,14 @@ inputs.forEach(input => {
     input.addEventListener("blur", remcl);
 });
 
+function showLoading(){
+    $("#loading").css("display", "flex");
+}
+
+function hideLoading(){
+    $("#loading").css("display", "none");
+}
+
 function login() {
 event.preventDefault();
 
@@ -27,27 +35,30 @@ event.preventDefault();
     let password = document.getElementById("password").value;
 
 
-
+    showLoading();
     $.ajax({
         url: 'Login',
         method: 'POST',
         data: { email: email, password: password },
         dataType: 'json',
         success: function(data) {
-            console.log("risposta" + data.login);
+
+            hideLoading();
+
             const home =  "./home.jsp";
             let outcome = data.login;
             if(outcome){
                 window.location.href = home;
             }
             else {
-                let error = document.getElementById("error-message");
-                error.innerHTML = "Email or password entered are incorrect!";
+                const error= "Email or password entered are incorrect!";
+                $("#error-message").html(error);
+
             }
         },
         error: function() {
-
-                alert("Problemi nell'esecuzione della richiesta: nella risposta nel tempo limite");
+                hideLoading();
+            $("#error-message").html("Problemi nell'esecuzione della richiesta: nella risposta nel tempo limite");
 
         }
     });

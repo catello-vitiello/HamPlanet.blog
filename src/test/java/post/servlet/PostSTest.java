@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import post.dao.PostDAO;
 import post.entity.PostEntity;
+import profile.entity.UtenteEntity;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -51,6 +52,7 @@ class PostSTest {
         when(servletConfig.getServletContext()).thenReturn(servletContext);
         when(request.getServletContext()).thenReturn(servletContext);
         when(servletContext.getRequestDispatcher("/post.jsp")).thenReturn(requestDispatcher);
+        when(request.getSession(false)).thenReturn(session);
 
         postS.init(servletConfig);
         postS.setDAO(mockPostDAO);
@@ -67,12 +69,17 @@ class PostSTest {
         postTest.setNomePost("test");
         postTest.setIdContent_Writer(4);
 
+        UtenteEntity utente = new UtenteEntity();
+        utente.setId(5);
+        utente.setRuolo(UtenteEntity.Role.utente);
+        when(session.getAttribute("profile")).thenReturn(utente);
+
 
 
         when(request.getParameter("postId")).thenReturn("1");
-        when(request.getParameter("new_page")).thenReturn("true");
 
         when(mockPostDAO.getByID(1)).thenReturn(postTest);
+        when(mockPostDAO.isLiked(utente.getId(), postTest.getId())).thenReturn(true);
 
 
         postS.doGet(request, response);

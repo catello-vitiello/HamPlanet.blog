@@ -6,6 +6,7 @@ import java.io.Writer;
 import java.sql.SQLException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +18,12 @@ import org.json.JSONObject;
 import profile.dao.ProfileDAO;
 import profile.entity.UtenteEntity;
 
-@WebServlet("/SignUp")
+@WebServlet("/Signup")
+@MultipartConfig(
+		fileSizeThreshold = 1024 * 1024 * 2,  // 2 MB
+		maxFileSize = 1024 * 1024 * 5,    // 5 MB
+		maxRequestSize = 1024 * 1024 * 10 // 10 MB
+)
 public class SignUpS extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -46,80 +52,42 @@ public class SignUpS extends HttpServlet {
 		UtenteEntity user = new UtenteEntity();
 
 		String username, email, competenze;
-		String passwd = null;
+		boolean result = false;
 
-		Part cover = request.getPart("cover");
+
 		username = request.getParameter("username");
+
 		email = request.getParameter("email");
-		String pass_to_hash = request.getParameter("passwd");
-
-
-
+		String pass_to_hash = request.getParameter("password");
+		String token = request.getParameter("token");
 		competenze = request.getParameter("comp");
+
 
 		if (username == null || email == null || pass_to_hash == null ){
 			response.getWriter().print(obj.append("errore", "credenziali non inserite"));
 			return;
 		}
 
-
 		user.setUserName(username);
 		user.setEmail(email);
 		user.setPasswd(pass_to_hash);
 
-		/*
-		Slot di codice per la gestione della registrazione dell'utente*
-		Controllo se il campo competenze è nullo o vuoto, in questo caso vuol dire che l'user
-		che vuole registrarsi è un utente
-		 */
-		if (competenze.equalsIgnoreCase("") || competenze == null) {
 
+		//insert supervisor
+		if (token != null && !token.isEmpty()) {
 			try {
+				if(profileDAO.isValidToken(token)){
+					user.setRuolo(UtenteEntity.Role.supervisore);
+					profileDAO.insertSupervisor(user, token);
 
-				//check sull'email
-				if (profileDAO.checkEmail(email)) {
-
-					obj.put("errore", "Email gia in uso");
-
-					writer.print(obj);
-
-					return;
-				}
-
-				//check sull'userName
-				if (profileDAO.checkUserName(username)) {
-
-					obj.put("errore", "Username gia in uso");
-					writer.print(obj);
-
-					return;
-				}
-
-				user.setRuolo(UtenteEntity.Role.utente);
-
-				if (profileDAO.insert(user)) {
 					obj.put("result", true);
-
-					String filename = "profile/" + user.getId() + ".jpg";
-
-					request.setAttribute("Upload", true);
-					request.setAttribute("InputStream", cover.getInputStream());
-					request.setAttribute("Path", filename);
-					request.getRequestDispatcher("FileManager").include(request, response);
-
-
-				}else {
-					obj.put("result", false);
 				}
-
-
-
 			} catch (SQLException e) {
 				utils.UtilityClass.print(e);
 			}
-
-		} else { //Inserimento Content Writer
-
+		}
+		//insert cw
+		else if (competenze != null && !competenze.isEmpty()) {
 			try {
 
 				//check sull'email
@@ -132,22 +100,16 @@ public class SignUpS extends HttpServlet {
 					return;
 				}
 
-				//check sull'userName
-				if (profileDAO.checkUserName(username)) {
-
-					obj.put("errore", "Username gia in uso");
-
-					writer.print(obj);
-					return;
-				}
 
 				user.setCompetenze(competenze);
 				user.setRuolo(UtenteEntity.Role.content_writer);
 
 				if (profileDAO.insert(user)) {
 					obj.put("result", true);
+					Part cover = request.getPart("cover");
+					user = profileDAO.getByEmail(user.getEmail());
 
-					String filename = "profile/" + user.getId() + ".jpg";
+					String filename = "profile/" + user.getId() + ".jpeg";
 
 					request.setAttribute("Upload", true);
 					request.setAttribute("InputStream", cover.getInputStream());
@@ -158,6 +120,33 @@ public class SignUpS extends HttpServlet {
 				}else {
 					obj.put("result", false);
 				}
+			} catch (SQLException e) {
+				utils.UtilityClass.print(e);
+			}
+
+
+
+		} else { //Inserimento user
+
+			try {
+
+				//check sull'email
+				if (profileDAO.checkEmail(email)) {
+
+					obj.put("errore", "Email gia in uso");
+
+					writer.print(obj);
+
+					return;
+				}
+
+
+				user.setRuolo(UtenteEntity.Role.utente);
+
+                obj.put("result", profileDAO.insert(user));
+
+
+
 			} catch (SQLException e) {
 				utils.UtilityClass.print(e);
 			}

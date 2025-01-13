@@ -84,7 +84,7 @@ class AddPostSTest {
         addPostS.doPost(request, response);
 
         //verifica
-        assert (stringWriter).toString().contains("success");
+        assert (stringWriter).toString().contains("{\"result\":true}");
     }
 
     @Test

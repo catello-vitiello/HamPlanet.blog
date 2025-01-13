@@ -59,6 +59,8 @@ public class LikePostSTest {
         when(request.getSession(false)).thenReturn(session);
         when(session.getAttribute("profile")).thenReturn(user);
 
+        when(mockPostDAO.like(1, user.getId())).thenReturn(true);
+
         //WRITER
         StringWriter stringWriter = new StringWriter();
         PrintWriter writer = new PrintWriter(stringWriter);

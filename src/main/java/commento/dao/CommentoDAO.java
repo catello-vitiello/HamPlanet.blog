@@ -70,7 +70,7 @@ public class CommentoDAO implements GenericCrudOp<CommentoEntity, Integer, Objec
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String sql = "SELECT c.id, c.contenutocommento, u.username FROM Commento c INNER JOIN ham_user u ON c.iduser = u.id WHERE idpost = ?";
+        String sql = "SELECT c.id, c.contenutocommento, c.iduser, u.username FROM Commento c INNER JOIN ham_user u ON c.iduser = u.id WHERE idpost = ?";
         //String sql = "SELECT * FROM Commento WHERE idpost = ?";
         Collection<CommentoDTO> commentoCollection = new LinkedList<>();
 
@@ -82,14 +82,15 @@ public class CommentoDAO implements GenericCrudOp<CommentoEntity, Integer, Objec
 
             ps.setInt(1, postId);
 
-            utils.UtilityClass.print(">.GET ALL By POST SU CommentoEntity: " + ps.toString());
+            utils.UtilityClass.print(">.GET ALL By POST SU CommentoEntity: " + ps);
 
             rs = ps.executeQuery();
             while (rs.next()){
                 CommentoDTO commento = new CommentoDTO(
                         rs.getInt(1),
-                        rs.getString(3),
-                        rs.getString(2));
+                        rs.getString(4),
+                        rs.getString(2),
+                        rs.getInt(3));
                 commentoCollection.add(commento);
             }
 

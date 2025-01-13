@@ -7,6 +7,7 @@ public class CommentoDTO {
     private int id;
     private String commento;
     private String username;
+    private int idUtente;
 
 
 
@@ -14,11 +15,12 @@ public class CommentoDTO {
 
     }
 
-    public CommentoDTO(int id, String username, String contenutoCommento){
+    public CommentoDTO(int id, String username, String contenutoCommento, int idUtente){
 
         this.id = id;
         this.commento = contenutoCommento;
         this.username = username;
+        this.idUtente = idUtente;
 
     }
 
@@ -30,7 +32,13 @@ public class CommentoDTO {
         this.id = id;
     }
 
+    public  int getIdUtente() {
+        return idUtente;
+    }
 
+    public void setIdUtente(int idUtente) {
+        this.idUtente = idUtente;
+    }
 
     public String getUsername() {
         return username;
@@ -53,7 +61,7 @@ public class CommentoDTO {
     public String toString(){
 
 
-        return getClass().getName() + "[ID= " + id + ", username= " + username + ", commento= " + commento + "]";
+        return getClass().getName() + "[ID= " + id + ", id utente= " + idUtente + ", username= " + username + ", commento= " + commento + "]";
     }
 
     @Override

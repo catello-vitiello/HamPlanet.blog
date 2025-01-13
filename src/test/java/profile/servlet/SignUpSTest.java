@@ -65,19 +65,57 @@ public class SignUpSTest {
 
         user.setRuolo(UtenteEntity.Role.utente);
 
-        when(request.getPart("cover")).thenReturn(cover);
-
 
         when(request.getParameter("username")).thenReturn("pino");
         when(request.getParameter("email")).thenReturn("pino@gmail.com");
-        when(request.getParameter("passwd")).thenReturn("pino");
+        when(request.getParameter("password")).thenReturn("pino");
         when(request.getParameter("comp")).thenReturn("");
 
 
 
         when(mockProfileDAO.insert(user)).thenReturn(true);
 
-        when(request.getRequestDispatcher("FileManager")).thenReturn(mockRequestDispatcher);
+
+        //Writer
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(stringWriter);
+        when(response.getWriter()).thenReturn(printWriter);
+
+        signUpS.doPost(request, response);
+
+        assert (stringWriter).toString().contains("true");
+
+
+    }
+
+    @Test
+    public void signupSupervisor() throws Exception {
+        UtenteEntity user = new UtenteEntity();
+        user.setUserName("pino");
+        user.setEmail("pino@gmail.com");
+        user.setPasswd("pino");
+
+
+        user.setRuolo(UtenteEntity.Role.utente);
+
+        when(request.getPart("cover")).thenReturn(cover);
+
+        String token = "tydtydytk";
+
+        when(request.getParameter("username")).thenReturn("pino");
+        when(request.getParameter("email")).thenReturn("pino@gmail.com");
+        when(request.getParameter("password")).thenReturn("pino");
+        when(request.getParameter("comp")).thenReturn("");
+        when(request.getParameter("token")).thenReturn(token);
+
+
+        when(mockProfileDAO.isValidToken(token)).thenReturn(true);
+        UtenteEntity supervisor = user.clone();
+        supervisor.setRuolo(UtenteEntity.Role.supervisore);
+        supervisor.setId(5);
+
+        when(mockProfileDAO.insertSupervisor(supervisor, token)).thenReturn(true);
+
 
         //Writer
         StringWriter stringWriter = new StringWriter();
@@ -94,11 +132,11 @@ public class SignUpSTest {
     @Test
     public void signUpContentwriter() throws Exception {
         UtenteEntity user = new UtenteEntity();
+
         user.setUserName("pino");
         user.setEmail("pino@gmail.com");
         user.setPasswd("pino");
         user.setCompetenze("test competenze");
-
         user.setRuolo(UtenteEntity.Role.content_writer);
 
         when(request.getPart("cover")).thenReturn(cover);
@@ -106,12 +144,15 @@ public class SignUpSTest {
 
         when(request.getParameter("username")).thenReturn("pino");
         when(request.getParameter("email")).thenReturn("pino@gmail.com");
-        when(request.getParameter("passwd")).thenReturn("pino");
+        when(request.getParameter("password")).thenReturn("pino");
         when(request.getParameter("comp")).thenReturn("test competenze");
 
 
-
         when(mockProfileDAO.insert(user)).thenReturn(true);
+        UtenteEntity user2 = user.clone();
+        user2.setId(5);
+        user2.setRuolo(UtenteEntity.Role.content_writer);
+        when(mockProfileDAO.getByEmail(user.getEmail())).thenReturn(user2);
 
         when(request.getRequestDispatcher("FileManager")).thenReturn(mockRequestDispatcher);
 
@@ -134,7 +175,7 @@ public class SignUpSTest {
         // Simula una richiesta con credenziali mancanti
         when(request.getParameter("username")).thenReturn(null);
         when(request.getParameter("email")).thenReturn(null);
-        when(request.getParameter("passwd")).thenReturn(null);
+        when(request.getParameter("password")).thenReturn(null);
 
         // Simula lo stream di output della risposta
         StringWriter stringWriter = new StringWriter();
@@ -154,7 +195,7 @@ public class SignUpSTest {
         // Simula una richiesta con email già in uso
         when(request.getParameter("username")).thenReturn("testuser");
         when(request.getParameter("email")).thenReturn("sbocciario@hamplanet.blog.it");
-        when(request.getParameter("passwd")).thenReturn("password");
+        when(request.getParameter("password")).thenReturn("password");
         when(request.getParameter("comp")).thenReturn("");
 
         when(request.getPart("cover")).thenReturn(cover);

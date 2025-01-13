@@ -17,10 +17,10 @@
 
 
 </head>
-<body>
+<body id="postpage">
 
-<%@include file="header.html"%>
-<% UtenteEntity user = (UtenteEntity) session.getAttribute("profile"); %>
+<%@include file="header.jsp"%>
+
 
 <div class="post-body">
     <div class="post-box">
@@ -34,8 +34,8 @@
                 <input type="hidden" id="postId" name="postId" value="${post.id}">
                 <div class="title-div" >
                     <span class="title" id="name" name="Titolo Articolo">${post.nomePost}</span>
-                    <% if (!user.getRuoloEnum().equals(Role.utente)){ %>
-                        <button type="button" class="btn btn-danger btn-delete">
+                    <% if (user.getRuoloEnum().equals(Role.supervisore)){ %>
+                        <button id="deletePostButton" type="button" class="btn btn-danger btn-delete" onclick="deletePost()">
                             <span aria-hidden="true">&times;</span>
                             <span class="visually-hidden">Elimina</span>
                         </button>
@@ -64,12 +64,19 @@
 
         </div>
         <div class = divisionde_content>
+            <%if (user.getRuoloEnum().equals(Role.utente)){%>
             <div class = "div-divcontent">
-                <a onclick="" class="like">
+                <button id="likeButton" onclick="toggleLike()" class="like">
+                    <c:if test="${post.isLiked}">
 
-                    <img src="Icon/like.png" alt="like">
-                </a>
+                        <img class="likeIcon" id="likeIcon" src="Icon/like.png"  alt="like">
+                    </c:if>
+                    <c:if test="${!post.isLiked}">
+                        <img class="likeIcon" id="likeIcon" src="Icon/nolike.png" alt="like">
+                    </c:if>
+                </button>
             </div>
+            <%}%>
 
 
             <div class="container comments-section">
@@ -86,12 +93,12 @@
 
                                 <label for="post"></label>
                                 <input id="post" type="hidden" value="${post.id}">
-                                <label for="commento" class="form-label"> Commenta</label>
-                                <textarea class="form-control" id="commento" rows="4" placeholder="Scrivi il tuo commento qui..."></textarea>
+                                <label for="commento_area" class="form-label"> Commenta</label>
+                                <textarea class="form-control" id="commento_area" rows="4" placeholder="Scrivi il tuo commento qui..."></textarea>
                             </div>
                             <!-- Pulsante di Invio -->
                             <div class="text-center">
-                                <button type="submit" class="btn btn-primary">Invia Commento</button>
+                                <button id="commentoSubmit" type="submit" class="btn btn-primary">Invia Commento</button>
                             </div>
                         </div>
                     </div>
@@ -109,6 +116,28 @@
         </div>
 </div>
 </div>
+
+<!-- Modal per la conferma -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalLabel">Conferma Eliminazione</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Sei sicuro di voler eliminare questo elemento? L'operazione è irreversibile.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelDelete" data-dismiss="modal">Annulla</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete">Conferma</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <%@include file="footer.html"%>
 
