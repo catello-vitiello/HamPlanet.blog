@@ -1,3 +1,4 @@
+import os
 import unittest
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
@@ -197,7 +198,11 @@ class TestPost(unittest.TestCase):
 
 class TestPostAddRemove(unittest.TestCase):
     driver = None
-    upload_file = "E:\\Download\\1000.jpeg"
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+
+    relative_path = os.path.join(current_dir, '.', 'resources', 'test.png')
+
+    absolute_path = os.path.abspath(relative_path)
 
     @classmethod
     def setUpClass(cls):
@@ -222,7 +227,7 @@ class TestPostAddRemove(unittest.TestCase):
 
         newpost_page = home.newpost_page()
 
-        newpost_page.uploadPost("selenium title", "test selenium", self.upload_file)
+        newpost_page.uploadPost("selenium title", "test selenium", self.absolute_path)
 
         self.assertEqual(self.driver.current_url, "http://localhost:8585/HamPlanet-blog/Home", "Non sei sulla home.")
 

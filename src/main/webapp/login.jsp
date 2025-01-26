@@ -8,14 +8,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body id="loginpage">
-<img class="wave" src="https://raw.githubusercontent.com/sefyudem/Responsive-Login-Form/master/img/wave.png">
+<img class="wave" src="Icon/login_wave.png">
 <div class="container">
     <div class="img">
-        <img src="https://raw.githubusercontent.com/sefyudem/Responsive-Login-Form/master/img/bg.svg">
+        <img src="Icon/login.svg">
     </div>
     <div class="login-content">
         <form >
-            <img src="https://raw.githubusercontent.com/sefyudem/Responsive-Login-Form/master/img/avatar.svg">
+            <img src="Icon/login_avatar.svg">
             <h2 class="title">HamPlanet.blog Login</h2>
 
             <div class="input-div one">

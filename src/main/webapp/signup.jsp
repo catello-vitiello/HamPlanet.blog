@@ -17,7 +17,11 @@
 
 
 <div class="form">
-    <div class="title">Benvenuto su HamPlanet.blog</div>
+
+    
+    <div class="title">
+        <a href="login.jsp"  rel="noopener" class="invisible-button"><i class="fa-regular fa-circle-left"></i></a>
+        Benvenuto su HamPlanet.blog</div>
     <div class="subtitle">Crea il tuo account!</div>
 
     <div id="choice-user">

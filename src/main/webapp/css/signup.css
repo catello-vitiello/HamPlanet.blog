@@ -4,6 +4,17 @@ body {
     background: linear-gradient(to bottom, #41a687, #9eedd1);
 }
 
+.invisible-button{
+
+    background-color: transparent;
+    border: none;
+
+}
+
+a .invisible-button::before, a .invisible-button::after {
+    pointer-events: none;
+}
+
 .form {
     background: linear-gradient(to right, rgb(60 179 113 / 0%), rgb(215 255 233));
     border-radius: 20px;
